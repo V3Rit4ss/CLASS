@@ -1,0 +1,212 @@
+API [ 2 ]
+
+1. 수학적 계산에 사용되는 클래스 Math
+
+※ Math 클래스가 제공하는 정적 메소드
+※ Math 클래스의 상수
+public class MathEx1 {
+	public static void main(String[] args) {
+		//Math의 static method 실습
+		System.out.println("2의 3승 : "+Math.pow(2, 3));
+		System.out.println("-9.9의 절대값:"+Math.abs(-9.9));
+		System.out.println("16의 제곱근 : "+Math.sqrt(16));
+		System.out.println("4와 7중에 작은값:"+Math.min(4, 7));
+		System.out.println("7과 9중 최대값:"+Math.max(7, 9));
+		//Math의 static final 변수(상수)
+		System.out.println("sin(PI)="+Math.sin(Math.PI));
+		System.out.println("cos(PI)="+Math.cos(Math.PI));
+		System.out.println("tan(PI)="+Math.tan(Math.PI));
+	}
+}
+※ Math 수학 계산에 유용한 메서드들
+public class MathEx2 {
+	public static void main(String[] args) {
+		System.out.println(" 소숫점에서 반올림, 올림, 버림");
+		System.out.println("9.12의 올림 : "+Math.ceil(9.12));
+		System.out.println("9.69의 반올림 : "+Math.round(9.69));
+		System.out.println("9.69 버림 : "+Math.floor(9.69));
+		System.out.println("소숫점 한자리에서 반올림, 올림, 버림");
+		System.out.println("9.12의 올림 : "+Math.ceil(9.12*10)/10);
+		System.out.println("9.69의 반올림 : "+Math.round(9.69*10)/10.0);
+		System.out.println("9.69 버림 : "+Math.floor(9.69*10)/10);
+		System.out.println("십의 자리에서 반올림, 올림, 버림");
+		System.out.println("11의 올림 : "+Math.ceil(11/10.0)*10);
+		System.out.println("19의 반올림 : "+Math.round(19/10.0)*10);
+		System.out.println("19 버림 : "+Math.floor(19/10.0)*10);
+	}
+}
+
+
+2. Random 클래스
+가장 많이 쓰이는 기능 중에 하나는 아마도 랜덤 숫자를 구하는 작업.
+예전에는 Math.random()을 많이 이용하였으나, 요즘은 Random클래스를 조금 더 많이 이용한다고 한다.
+
+※Math.random()
+Random() 메소드는 double타입의 임의의 수를 발생. 
+API documents(http://docs.oracle.com/javase/8/docs/api)을 보면 static이고, 반환 타입이 double임을 확인 할 수 있다. 
+Math클래스의 random()메소드가 static이기 때문에 객체 생성하지 않고 Math.random() 형으로 바로 실행할 수 있다.
+
+public class RandomEx {
+	public static void main(String[] args) {
+		double d = Math.random(); 		//random메소드는 static
+		System.out.println(d);			//0이상 1미만의 double난수
+
+		int di = (int)(d*10);
+		System.out.println(di);
+
+		Random random = new Random();
+		int i = random.nextInt();
+		System.out.println(i)
+
+		System.out.println((int)(d*10)+1);//1~10까지의 난수
+	}
+}
+
+※Random 클래스
+사용법이 아주 쉬워 요즘 많이 쓰이고 있는 클래스. 일반메소드는 객체를 생성 후 실행가능
+	public static void main(String[] args) {
+		Random random = new Random();
+		int iran = random.nextInt(10);	//0~9까지의 난수
+		double doubleran = random.nextDouble(); //Math.random()과 같음
+	}
+<예제>
+	public static void main(String[] args) {
+		Random random = new Random();
+		System.out.println("0부터 100까지의 난수 : " + random.nextInt(101));  
+		System.out.println("0부터 50까지의 난수 발생 :" + random.nextInt(51));  
+		System.out.println("0부터 20까지의 난수 발생 : " + random.nextInt(21));  
+		System.out.println("int형 전체 범위의 난수 발생 : " + random.nextInt());   
+		System.out.println("float 타입의 난수 발생 : " + random.nextFloat());  
+		System.out.println("double 타입의 난수 발생 : " + random.nextDouble());  
+		System.out.println("long 타입의 난수 발생 : " + random.nextLong());  
+		System.out.println("boolean 타입의 난수 발생 : " + random.nextBoolean());
+
+
+3. 자바 클래스의 상속 계층
+
+여러 개발자들이 여러 클래스의 공통된 특성(공통데이터와 메소드)은 슈퍼클래스로 선언하는 것이 좋다는 사실을 상속에서 알게되었다고 한다. 
+JDK 라이브러리 개발자들도 그런 식으로 상속관계를 갖도록 클래스를 설계했기 때문에 비슷한 기능의 클래스들이 같은 슈퍼 클래스를 갖게 되는 경우를 종종 볼 수 있다.
+그런데 클래스의 어떤 특성은 특정 부류의 클래스 뿐 아니라 자바의 모든 클래스들이 공통으로 갖는다. 그래서 자바에서는 그런 공통 특성을 추출하여 Object라는 클래스로 만들어 두었고 
+그리고 다른 모든 클래스들은 Object 클래스를 상속 받도록 만들어 두었다.
+extends Object라는 단어가 없어도 컴파일 과정에서 자동적으로 Object 의 서브 클래스가 된다.
+
+※ Object클래스의 메소드들
+
+	public String toString() 객체의 문자열을 반환한다.
+	public boolean equals(Object obj)
+	public int hashCode() 자바에서 객체를 식별하는 정수 값인 해시 코드를 반환(다량의 데이터를 저장&검색하는 해싱 기법에 사용된다.) 
+	protected Object Clone() 객체를 복사하는데 사용
+	protected void finalize() 객체를 더 이상 사용하지 않을 때 쓰레기 수집 기능을 수행한다.
+	public Class getClass() 객체의 클래스 이름을 Class형으로 반환한다
+	public void notify() 대기중인 스레드를 하나 다시 시작한다.
+	public void wait() 스레드의 작동을 중지하고 대기 상태로 만든다.
+
+1)	toString() ; 객체의 정보를 문자열로 제공할 목적으로 정의된 메서드.
+자바는 사용자가 모르게 내부적으로 동작하는 메소드 들이 많은데 그 중 하나가 toString().
+
+<예제>
+package com.ch.ex3tostring;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+public class Sawoon {
+	private String num;		// 사번
+	private String name;	// 이름
+	private String part;	// 부서
+	private Date enterDate; // 입사일
+	public Sawoon(){}
+	public Sawoon(String num, String name, String part){
+		this.num = num;
+		this.name = name;
+		this.part = part;
+		enterDate = new Date();
+	}
+	/*public void print(){
+		System.out.print("[사번]"+num+"\t[이름]"+name);
+		System.out.print("\t[부서]"+part+"\t[입사일]");
+		SimpleDateFormat sdf = 
+				new SimpleDateFormat("yy년MM월dd일(E)");
+		System.out.println(sdf.format(enterDate));
+	}*/
+	@Override
+	public String toString() {
+		String temp = "[사번]"+num+"\t[이름]"+name;
+		temp += "\t[부서]"+part+"\t[입사일]";
+		SimpleDateFormat sdf = 
+				new SimpleDateFormat("yy-MM-dd");
+		temp += sdf.format(enterDate);
+		return temp;
+	}
+}
+package com.ch.ex3tostring;
+public class SawoonMain {
+	public static void main(String[] args) {
+		Sawoon kang = new Sawoon("23A01","강동원","전산실");
+		Sawoon yu   = new Sawoon("22A10","유아인","비서실");
+		/*kang.print();
+		yu.print();*/
+		System.out.println(kang);
+		System.out.println(yu);
+	}
+}
+
+
+2)  equals()를 오버라이딩 할 수도 있다.
+
+package com.ch.ex4equals;
+public class Person {
+	private long juminNo;
+	public Person(){}
+	public Person(long juminNo){
+		this.juminNo = juminNo;
+	}
+	@Override     //p1.equals(p2)
+	public boolean equals(Object obj) {
+		// juminNo == obj.juminNo 이면 true리턴
+		//                  아니면  false 리턴
+		if(obj!=null && obj instanceof Person){
+			return juminNo==((Person)obj).juminNo;
+		}else{
+			return false;
+		}
+	}
+}
+package com.ch.ex4equals;
+public class PersonMain {
+	public static void main(String[] args) {
+		Person p1 = new Person(9001112085215L);
+		Person p2 = new Person(9001112085215L);
+		Person p3 = new Person(9805241052009L);
+		if(p1.equals(p2))
+			System.out.println("두 객체는 같은 사람이구만");
+		else
+			System.out.println("두 객체는 다른 사람이구만");
+		if(p1 == p2)
+			System.out.println("두 객체는 같은 객체네");
+		else
+			System.out.println("두 객체는 따로 네");
+	}
+}
+
+3)  hashCode() 해쉬코드를 반환
+
+	public static void main(String[] args) {
+		String str1 = new String("ABC");
+		String str2 = new String("ABC");
+		System.out.println(str1.hashCode());
+		System.out.println(str2.hashCode());
+		System.out.println(str1.equals(str2));
+	}
+
+4)  getClass메소드 : 객체가 속하는 클래스의 정보(이름)를 리턴
+
+class name, super class name, 필드, 메소드들을 확인할수 있다
+
+* getClass() : 객체가 속하는 클래스의 정보를 알아내는 메소드이다.
+
+* getName() : 클래스의 이름을 리턴하는 메소드이다.
+
+* getSuperclass() : 슈퍼 클래스의 정보를 리턴하는 메소드이다.
+
+* getDeclaredFields() : 클래스에 선언되어 있는 필드 정보를 가져오는 메소드이다.
+
+* getDeclaredMethod() : 클래스에 선언되어 있는 메소드 정보를 가져오는 메소드이다.

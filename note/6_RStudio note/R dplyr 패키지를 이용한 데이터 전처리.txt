@@ -1,0 +1,115 @@
+R dplyr 을 이용한 전처리.
+
+1. 데이터 준비, 패키지 준비
+mpg <- as.data.frame(ggplot2::mpg) #  => table 형과 데이터프레임형 혼합형을 데이터프레임형으로 만듬. 
+library(dplyr)   # dplyr 로드.
+library(ggplot2) # ggplot2 로드
+#없으면 install.packages("dplyr")
+
+
+2.데이터 파악.
+head(mpg) # 데이터 앞부분 6개.
+tail(mpg) #데이터 뒷부분 6개.
+edit(mpg) #뷰창
+View(mpg) #뷰창
+dim(mpg)  #차원
+summary(mpg) #최솟값, 1사분위수 , 중위수 ,3사분위수 ,최댓값
+
+3.변수명 수정.
+mpg <- rename(mpg, city=cty) #앞이 new 뒤가 old.
+mpg <- rename(mpg, highway = hwy)
+
+4.파생 변수 생성.
+#파생변수 생성.(계산식으로.)
+head(mpg)
+mpg$total = (mpg$city + mpg$highway)/2
+head(mpg, 3)
+
+#파생변수 생성.(조건식으로.)
+mean(mpg$total)
+mpg$test <- ifelse(mpg$total >= mean(mpg$total), "pass", "fail")
+
+5.빈도 확인.
+table(mpg$test) #빈도표 출력
+qplot(mpg$test) #막대그래프 생성
+
+
+[원하는 형태로 데이터 가공하기]
+데이터 전처리(Preprocessing) - dplyr 패키지
+
+(1)filter() : 행 추출 = 조건에 맞는 데이터 추출.
+exam <- read.csv("Data/exam.csv", header=T) #header= 있으면 T 없으면 F
+exam
+# %>% 단축키. ctrl+ shift + m
+exam %>% filter(class==1)
+#exam %>%  (들여쓰기.)
+#  filter(class==1) 이 함수만 가독성을 위해 이렇게 한다.
+#class 가 1이거나 2, 3 인 데이터추출.
+exam %>% 
+  filter(class==1 | class== 2 | class==3)
+exam %>% 
+  filter(class %in% c(1,2,3))
+#================  %in% 를 이용한것이 많이 쓰인다. ====
+
+
+(2)select() : 열(변수) 추출 = 필요한 변수 추출하기.
+
+exam %>%  #exam 에 있는 변수만 들어감.
+  select(class, english, math) # 추출하고자 하는 변수만 select함수안에 넣으면 된다.
+
+exam %>% 
+  select(-math) #' - ' 해당 변수만 제외하고 전체 출력.
+
+#class 가 1과 2의 행 중에서 영,수 데이터만 출력.
+exam %>% 
+  filter(class %in% c(1,2)) %>% # <- 추가하고 써야한다
+  select(english, math) #필터와 셀렉트 순서 바뀌어도 상관x.
+
+(3)arrange() :  정렬 = 정렬하기.
+exam %>% arrange(math) # 오름차순 정렬.
+exam %>% arrange(desc(math)) #내림차순 정렬.1
+exam %>% arrange(-math) # 내림차순 정렬.2
+exam %>% arrange(class, -math) # class 내림차순.
+exam %>% arrange(class, desc(math)) #class 오름차순 , class 가 같은경우 math 내림차순.
+(4)mutate() : 변수 추가(새필드) = 파생변수 추가. 출력하는 값만 변화. exam 변화 x.
+exam %>% 
+  mutate(total = math + english + science) #total 이 추가가 됨. 
+head(exam) # exam 에 추가가 되었는 지 확인, 하지만 추가가 되어있지않음.
+
+(5)summarise() : 통계치 산출 = 요약하기.
+#summarise 안에 들어갈수 있는 요약함수들 : mean, sum, sd, min, max, median, n (카운트횟수.)
+exam %>% 
+  summarise(mean_math=mean(math))
+
+(6)group_by() : 집단별로 나누기
++)집단별로 요약하기 group_by() + summarise()
+exam %>% 
+  group_by(class) %>% # 집단별.
+  summarise(mean_math = mean(math),
+            n=n(),  #n= 행 갯수.
+            max_eng = max(english)) %>% 
+  arrange(mean_math)
+
+(7) 열 합치기, 행 합치기.
+left_join() : 데이터 합치기(열)
+bind_rows() : 데이터 합치기(행)
+merge() : 중복데이터를 뺀 합치기.
+
+ex>
+test1 <- data.frame(id=c(1,2,3,4,5),
+                    midterm = c(70,80,90,95,99))
+test2 <- data.frame(id=c(1,2,3,4,5),
+                    final = c(90,80,70,60,99),
+                    teacherid = c(1,1,2,2,4))
+teacher <- data.frame(teacherid =c(1,2,3),
+                      teachername = c('Kim','Park','Ryu'))
+
+cbind(test1, test2) #id 가 두개라 쓰기가 좀 그럼.
+merge(test1, test2) # 중복된거 하나로 합쳐짐. 그래서 id 가 하나만 나옴.
+left_join(test1,test2, by='id') # merge 랑 같은걸로 알겠지만, 다르다.
+test2 # test2 와 teacherid cbind 불가.
+
+left_join(test2, teacher, by="teacherid") 
+merge(test2, teacher, by="teacherid", all= T) # NA 모두 처리해라.
+
+ 

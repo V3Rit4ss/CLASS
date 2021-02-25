@@ -1,0 +1,386 @@
+1. 문서 객체 모델 (Document Object Model : DOM) 
+  = 넓은 의미로 HTML 페이지를 인식하는 방식이고 좁은 의미로 document 객체 와 관련 객체의 집합
+
+1.1 문서 객체 모델과 관련된 용어 정리 : 태그, 문서객체, 노드
+1) 태그를 자바스크립트에서 이용할  수 있는 객체로 만든것이 문서 객체.
+
+2. 문서 객체 만들기(1) ; 텍스트 노드를 갖는 문서 객체 만들기
+1) 동적으로 문서 객체를 만들기
+- Document 객체의 노드 생성.
+createElement(tagName)  = 요소 노드를 생성합니다.
+createTextNode(text)  =  텍스트 노드를 생성합니다.
+
+- 문서 객체 연결
+appendChild(node) = 객체에 노드를 연결합니다.
+
+<script>
+        window.onload = function () {  //그래서 이렇게 하면 document 가 들어가있어서 아래가 댐. 2.
+            //h1태그 생성 - nextNode 생성 - 생성된 textNode h1 추가 -
+            var h1 = document.createElement('h1'); //document 를 다룰때는 document 가 있어야함. 1.
+            var textNode = document.createTextNode('추가한 텍스트');
+            // 생성된 nextNode 를 h1에 연결.
+            h1.appendChild(textNode);
+            //h1 을 body(document)에 연결
+            document.body.appendChild(h1);
+            //img 태그 생성 - src 속성 지정- body에 연결.
+            var img = document.createElement('img'); //img 태그 생성.
+            img.setAttribute('src', 'ch10_img/orange.jpg');
+            img.setAttribute('alt', '추가한 오렌지');
+            document.body.appendChild(img);
+            document.body.innerHTML += '<h1>추가</h1>';
+        };
+    </script>
+</head>
+<body>
+    <h1>TEXT NODE</h1>
+    <img src="ch10_img/orange.jpg" />
+</body>
+
+2) 문서 객체 만들기(2) ; 텍스트 노드를 갖지 않는 문서 객체 만들기
+<script>
+        window.onload = function () {
+            //변수 선언
+            var img = document.createElement('img');
+            //img.src = 'img/orange.jpg';
+            //img.alt = '오렌지';
+            //img.width = 300;
+            img.setAttribute('src', 'img/orange.jpg');
+            img.setAttribute('alt', '오렌지');
+            img.setAttribute('width', 300);            
+            document.body.appendChild(img);
+        }
+    </script>
+3) 문서 객체 만들기(3)
+<script>
+        window.onload = function () {
+            var output = '';
+            output += '<ul>';
+            output += '<li> Java</li>';
+            output += '<li> JavaScript</li>';
+            output += '</ul>';
+            //innerHTML 속성에 문자열을 할당
+            document.body.innerHTML = output;
+            document.body.innerHTML += '<h1>Document Object Model</h1>';
+        }
+    </script>
+
+
+1. 문서 객체 가져오기(1) ; 이미 존재하는 HTML 태그를 자바스크립트로 가져오는 방법 중 id로 가져오기
+1) getElementById(id) 태그의 id속성이 id와 일치하는 문서 객체를 가져 옵니다.
+
+2)문서 객체 가져오기(2) ; 태그이름이나 이름으로 가져오기
+getElementsByName(name); 태그의 name 속성이 name과 일치하는 문서 객체를 배열로 가져온다.
+
+<script>
+        var id, header1; //헤더1 을 밖에다 선언하면 블록안에서만 사용하지않고 모두 사용할수있다.
+        var toggle1 = 0, toggle2 = 0; //왔다 갔다 할수있는 토글변수 생성.
+        window.onload = function () {
+            header1 = document.getElementById('header-1');
+            header1.innerHTML = '시간';
+            var header2 = document.getElementById('header-2');
+            header2.innerHTML = new Date().toLocaleString();      // 시간 뿌리기
+            id = setInterval(function () {
+                header2.innerHTML = new Date().toLocaleString();
+
+            }, 1000);
+        };
+        function change(n) {
+            if (n == 1) {
+                if (toggle1 == 0) {
+                    header1.innerHTML = '바꿔';
+                    toggle1 = 1;
+                } else if (toggle1 == 1) {
+                    header1.innerHTML = 'HEADER-1';
+                    toggle1 = 0;
+                }
+              
+            } else if (n == 2) {
+                var header2 = document.getElementById('header-2');
+                if (toggle2 == 0) {
+                    header2.innerHTML = '바꿔';
+                    clearInterval(id);//타이머 중지.
+                    toggle2 = 1;
+                } else if (toggle2 == 1) {
+                    header2.innerHTML = 'HEADER-2';
+                    toggle2 = 0;  //토글방식.
+                }
+               
+            }
+               
+        }
+    </script>
+</head>
+<body>
+    <!--id 똑같은거 두개면 맨위에것만 나오고 오류는 안뜸.-->
+    <h1 id="header-1">HEADER-1</h1> <!--딱 찍어서 가져오고 싶은or 바꾸고싶은 두가지.-->
+    <h1 id="header-2">HEADER-2</h1>
+    <button onclick="change(1)">바꿔-1</button>
+    <button onclick="change(2)">바꿔-2</button>
+</body>
+
+
+3) 문서 객체 가져오기 ; 태그이름이나 이름으로 가져오기
+getElementsByName(name); 태그의 name 속성이 name과 일치하는 문서 객체를 배열로 가져온다.
+
+<script>
+        function login() { //익명,선언적 함수로 해도 상관무.
+            var id = document.getElementsByName("id")[0].value;
+            var pw = document.getElementsByName("pw")[0].value;
+            var M = document.getElementsByName("gender")[0];
+            var F = document.getElementsByName("gender")[1];
+            if (M.checked) {
+                alert('남자' + id + '님 - ' + pw);
+            } else if (F.checked) {
+                alert('여자' + id + '님 - ' + pw);
+            } else {
+                alert('성별을 선택하세요.');
+            }
+        };
+    </script>
+</head>
+<body>
+    <h1>로그인</h1>
+    <p>ID<input type="text" name="id" /></p>
+    <p>PW<input type="text" name="pw" /></p>
+    <p>
+        <input type="radio" name="gender" value="M" /> 남
+        <input type="radio" name="gender" value="F" /> 여
+    </p>
+    <!--form 태그안에 input type =버튼 을 안하면 submit 으로 된다. 밖에 이렇게하면 상관x-->
+    <p><button onclick="login()">로그인</button></p>
+
+</body>
+
+(4) getElementsByTagName(‘태그명’);
+
+<script>
+        window.onload = function () {
+            var head = document.getElementsByTagName('h1');
+            //head.forEach() 불가능. 내가 선언한 배열에서만 쓰이는 forEach().
+            for (var idx in head) {
+                head[idx].innerHTML = '바꿔';
+            }
+        };
+    </script>
+</head>
+<body>
+    <h1>HEADER</h1>
+    <h1>HEADER</h1>
+</body>
+
+5) 문서 객체 가져오기(3)
+1) document.querySelector(선택자) ; 선택자로 가장 처음 선택되는 문서 객체를 가져온다
+2) document.querySelectorAll(선택자); 선택자로 선택되는 문서 객체를 배열로 가져옵니다
+
+
+ <script>
+        window.onload = function () {
+            // .header(선택자)를 첫번쨰 하나 가져오기. -> 5번째 방법.
+            var header1 = document.querySelector('.header');  //css 선택자도 다 올수있다.
+            header1.innerHTML = '바꿔';
+
+            //.header(선택자) 다 가져오기. -> 6번째 방법. 배열로 가져올것임.
+            var head = document.querySelectorAll('.header'); // 배열.
+            for (var idx in head) {
+           //     head[idx].style.color ='red';
+            //    head[idx].style.backgroundColor = 'yellow';
+            //    head[idx].style.cssText = 'color:red; background-color:yellow;';
+                head[idx].style.cssText = 'color:white; background-color:green;'; //css 했던것처럼 하면댐.
+                //document.body.style.backgroundColor
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1 class="header">HEADER1</h1>
+    <h1 class="header">HEADER2</h1>
+</body>
+
+
+
+
+4. 문서 객체의 스타일 조작
+<title></title>
+<link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+    <script>
+	function header(i) {
+		if (i == 1) {
+		   var header1 = document.querySelector('#header-1');
+		   header1.style.border = '2px solid black';
+		} else if (i == 2) {
+		     var header2 = document.querySelector('#header-2');
+		      header2.style.color = 'orange';
+		      header2.style.fontFamily = 'Indie Flower, cursive'; // font-family가 아님
+		}
+	}
+    </script>
+</head>
+<body>
+    <h1 id="header-1" onclick="header(1)">HEADER</h1>
+    <h1 id="header-2" onclick="header(2)">HEADER</h1>
+</body>
+</html>
+
+
+
+5. 문서 객체 제거 
+  <script>
+        function append() {
+         /*   var h1 = document.createElement('h1');
+            var textNode = document.createTextNode('HEADER');
+            h1.appendChild(textNode);
+            document.body.appendChild(h1);
+         */
+            document.body.innerHTML += '<h1>HEADER</h1>';
+        }
+
+        function remove() {
+            var h1 = document.getElementsByTagName('h1'); //지워지지 않는배열이있어서 끝배열부터 삭제하게 아래처럼함.
+            for (var idx = h1.length - 1; idx >= 0; idx--) {
+                document.body.removeChild(h1[idx]);
+            }
+        }
+    </script>
+</head>
+<body>
+     <button onclick="remove()">h1 태그 싹 없애기</button>
+    <button onclick="append()">h1 태그 하나 추가하기</button>
+    <h1>HEADER</h1>
+    <h1>HEADER</h1>
+    <h1>HEADER</h1>
+    <h1>HEADER</h1>
+</body>
+
+6.문서 객체를 사용한 시계
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        var color = ['red', 'orange', 'yellow', 'green', 'blue', 'navy', 'violet'];
+        var cnt = 0;
+        window.onload = function () {
+            var date = document.getElementById('date');
+            var time = document.getElementById('time');
+            date.innerHTML = new Date().toLocaleDateString();
+            time.innerHTML = new Date().toLocaleTimeString();
+            setInterval(function () {
+                time.innerHTML = new Date().toLocaleTimeString();
+                time.style.color = color[cnt % 7];
+                cnt++;
+            }, 1000);
+        };
+    </script>
+</head>
+<body>
+    날짜 : <h2 id="date"></h2>
+    시간 : <h2 id="time"></h2>
+</body>
+</html>
+
+
+7. parent 창에서 넘겨오는 데이터와 현재 팝업창에서 생성된 데이터의 처리
+
+
+1)parent
+
+<style>
+    #wrap{
+        width:300px; margin: 50px auto;
+    }
+    #wrap h1{
+        width:250px; padding:20px 10px;
+        margin:30px 15px; border:1px solid red;
+        background-color: lightpink;
+        border-radius: 10px 40px;
+        text-align:center;
+        font-size:0.9em;
+        cursor:pointer;
+    }
+    #wrap input, #wrap span {
+        width:150px; height:20px;display:inline-block; 
+        border:1px solid pink;
+    }
+    #wrap p {
+        text-align:center;
+    }
+  </style>
+    <script>
+        function childOpen() {
+            var child = open('11.child.html', '', 'width=600,height=700,left=100');
+            if (!child) {
+                alert('팝업차단 해주세요.');
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="wrap">
+        <p>사원이름<input type="text" id="name" /></p>  <!--데이터 통신할때 자식이 부모껄 가져올때 id 여야함-->
+        <p>파트명칭<span id="part"></span></p>
+        <p>결제일자<input type="date" id="date" /></p>
+        <h1 id="insa" onclick="childOpen()">인사정보파트선택</h1>
+
+    </div>
+</body>
+
+
+2)child
+
+<style>
+        #wrap {
+            width:450px; margin: 0 auto;
+        }
+        #wrap h1 {
+            color:red; margin-top:50px; text-align:center;
+        }
+        #wrap h3 {
+            padding:20px; margin:10px; border:1px solid red;
+            text-align:center; border-radius: 10px;
+            font-size: .9em;
+            cursor:pointer; /* 마우스 포인터가 버튼을 인식한것처럼.*/
+        }
+        
+  </style>
+
+    <script>//parent 와 child간의 데이터 통신.
+        //parent 에서 해야할 일. child창 open() 하기
+        //child 에서 해야할 일. opener(parent)의 데이터를 받아 자신의 창에 뿌리기.
+        window.onload = function () {
+            var name = opener.document.getElementById('name').value;
+            var date = opener.document.getElementById('date').value;
+            var parentData = document.getElementById('parentData');
+            if (date == '') {
+                parentData.innerHTML = name + '날짜 선택 안함.';
+            } else {
+                parentData.innerHTML = name + '날짜 : ' + date;
+            }
+            var modifyName = document.getElementById('modifyName');
+            modifyName.value = name;
+        };
+        function sendData(part) {
+            var modifyName = document.getElementById('modifyName').value;
+            opener.document.getElementById('name').value = modifyName;
+            opener.document.getElementById('part').innerHTML = part;
+            close();
+        }
+    </script>
+</head>
+<body>
+    <div id="wrap">
+        <h1>인사 정보 시스템</h1>
+        <hr />
+            <h2 id="parentData"></h2>
+            <h2>이름 수정 가능 : <input type="text" id="modifyName" /></h2>
+        <hr />
+        <h3 onclick="sendData('인사')">인사선택 후 닫기</h3>
+        <h3 onclick="sendData('재무')">재무선택 후 닫기</h3>
+        <h3 onclick="sendData('총무')">총무선택 후 닫기</h3>
+        <h3 onclick="sendData('개발')">개발선택 후 닫기</h3>
+
+    </div>
+</body>
+
+

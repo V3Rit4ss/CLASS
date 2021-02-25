@@ -1,0 +1,314 @@
+1. 익명 함수 = 여기서 함수는 코드의 집합을 나타내는 자료형인데. 익명함수의 형태를 보자.
+	var functionVar = function() { };  이것이 익명함수의 형태이다.
+//익명 함수. 이름이 없는 함수. 함수의내용을 var 로 할당.
+
+// 브라우저에 출력.
+        document.write(functionVar + '<br>');
+        document.write(typeof (functionVar));
+
+
+※ 기존에 사용하던 함수들도 소스를 볼 수 있을까라는 생각에 실행을 해보면, 내장함수는 코드를 볼 수 없게 막아 놓았다.  
+  내장함수와 사용자가 만든 함수의 차이점은 함수의 이름이 있고 없고의 차이가 있다. 
+이렇게 이름이 있는 함수를 ‘선언적 함수’라 부르고, 함수의 이름이 없는 함수를 ‘익명함수’라 부른다.
+
+
+        //익명 함수 호출시에는 함수형 변수에 할당 후에 사용가능.
+        functionVar(); //익명함수호출은 변수의 이름에 ()을 붙여 호출.
+
+※자바스크립트에서 함수는 하나의 자료형이지만 여타 자료형과 다르게 뒤에 괄호를 열고 닫음으로써 코드를 실행한다. 이를 함수를 호출한다고 표현한다.
+
+
+2. 선언적 함수
+※ function 함수명 ( ) {
+   }
+
+== 3.js 의 내용  ==
+function fun() { //선언적 함수.  스크립트 밖에 있으면 안댐. 다른스크립트 안에 있으면 괜찮다.
+    alert('함수A');
+};
+
+<script src= "3.js" ></script> <!--외부 링크 할려면 제일 상단에.-->
+    <script> //함수를 선언한 것들이 먼저 메모리에 잡힌다.
+        fun();
+        function fun() { //선언적 함수.  스크립트 밖에 있으면 안댐. 다른스크립트 안에 있으면 괜찮다.
+            alert('함수A');
+        };
+        fun(); // 선언적 함수 호출,
+        alert(fun); // alert(alert); 를 하면, 내장객체의 함수는 내부코드를 가리기때문에 내장함수의 소스를 볼수가없다.
+                    //내장함수가 아닌 일반함수들만 소스를 볼 수 있다.
+
+
+※ 익명함수와 선언적 함수의 차이 
+
+
+2.1 익명함수의 재정의.
+<script> //익명함수의 재정의.
+    // funVar(); //익명함수가 여기에 위치하면 실행 불가. 정의전에는 사용불가.
+        var funVar = function () {  //앞 var 은 생략 가능.   //웹브라우저는 script 태그 내부의 내용을 읽기전에 선언적 함수부터 읽는다
+            alert('함수 A');
+        };
+        funVar(); //함수 A 경고창
+        var funVar = function () {
+            alert('함수 B');
+        };
+        funVar(); //함수B 경고창
+    </script>
+
+2.2 선언적 함수의 재정의.
+<script> //선언적 함수의 재정의.
+        funVar(); //선언적 함수는 정의 전에 사용가능. 단, 스크립트안에 있어야함. 외부 스크립트는 맨위에. 함수B 경고창만..
+        function funVar() {  
+            alert('함수 A');  //함수B가 함수A로 덮어쓴다.   
+        };
+        funVar(); //함수 B 경고창 // 함수를 재정의 하면 기본의 함수는 없어지고, 재정의한 함수를 따른다
+        function funVar () {
+            alert('함수 B');
+        };
+        funVar(); //함수B 경고창
+    </script>
+
+3. 리턴값
+function 함수이름(매개변수, 매개변수, 매개변수) {
+	//함수 코드
+	return 리턴값;
+}
+ex)
+
+function pow(x, y) { //x의 y승을 계산해서 리턴하는 함수.
+            var result = 1;
+            for (var cnt = 1; cnt <= y; cnt++) {  //y번 반복.  NaN 값 i가 오면 y 는 true 라서 실행이되고, y가 NaN이면 false 라서 j값이 1로만 나온다.
+                result *= x;   //= result * x;
+            }
+            return result; //하나의 리턴만 온다.
+
+        }; 
+
+
+※ 리턴값이 없는 경우 : //리턴을 안하면 결과값이 undefined 가 된다.
+
+<script>
+        var output = pow(2, 3);  
+        var output1 = alert('test');
+        document.write('pow(2,3) = ' + output +'<br>');
+        document.write('alert("test")= ' + output1);
+        function pow(i, j) {
+            var result = 1;
+            for (var cnt = 0; cnt < j; cnt++) {
+                result *= i;
+            }
+        //    return result;   //리턴을 안하면 결과값이 undefined 가 된다.
+        }
+    </script>
+
+4. 매개변수.
+
+자바 스크립트는 함수를 생성할 때 지정한 매개변수보다 많거나 적은 매개변수를 사용하는 것을 허용한다. 
+원래 함수에서 선언된 매개변수보다 많게 사용하면 일반적으로 추가된 매개변수는 무시한다. 
+원래 함수에서 선언한 매개변수보다 적게 사용하면 지정하지 않는 매개변수는 undefined로 입력된다.
+
+var i = Number(prompt('i 값은?', '0'));
+        var j = Number(prompt('j 값은?', '0'));
+        document.write('i(' + i + ')의 j (' + j + ')승은' + pow(i , j)+'<br>');
+        //pow(i) 선언된 매개변수보다 적은 매개변수 : undefined 로 할당. for문을 돌지않고 false라서 무조건 1이 리턴.
+        document.write('pow(2) = ' + pow(2)+'<br>');
+
+        //pow(i , j ,10 ,20 ,333) 는 앞에 두개만 선언했기때문에 i,j만 받고 나머지는 무시한다.
+        document.write('pow(2,3,10,20) = ' + pow(2, 3, 10, 20)+'<br>');
+        //한마디로 매개변수를 많이 선언하던 적게하던 에러가 안나고 실행은 된다.
+
+5. 배열의 성격.
+
+<script>
+        //자바스크립드 배열의 방의 갯수는 가변적이다.
+       
+        var arr1 = [2, 4, 6];  //자바의 배열은 선언 갯수에서 고정이라 선언한거 외에는 추가가 못하지만
+                                //자바스크립트는 가능.
+        document.write(arr1 + '<br>');
+        arr1.push(8); //배열방 추가 가능
+        document.write(arr1 + '<br>');
+        arr1.pop(); //마지막 배열 삭제 가능
+        document.write(arr1 + '<br>');
+    </script>
+
+6. 가변 인자 함수 : 
+매개변수를 선언된 형태와 다르게 사용했을 때, 매개변수를 모두 활용할 수 있는 함수. 
+매개변수의 개수가 변할 수 있는 함수 ex. Array()함수
+  arguments : 매개변수 배열
+=> arguments 객체는 함수에 전달된 인수에 해당하는 Array 형태의 객체입니다.
+
+* "Array 형태"란 ?  
+=> arguments가 length 속성과 더불어 0부터 인덱스 된 다른 속성을 가지고 있지만,
+Array의 forEach, map과 같은 내장 메서드를 가지고 있지 않다는 뜻입니다.
+
+//cf.가변인자함수 : 매개변수의 갯수에 따라 변할 수 있는 함수 (하는일이 다르게 한다.)
+        var arr1 = [273, 2, 3, 'Hello',]; //헬로 뒤에있는 , 는 무시된다.
+        var arr2 = Array(273, 2, 3, 'Hello');
+        var arr3 = [, , ,]; //3개의 빈방 배열 생성. 맨뒤에있는 , 는 무시.
+        var arr4 = Array(3); //3개 빈방
+        var arr5 = []; //방의 갯수가 아예없을때의 배열.
+        var arr6 = Array(); 
+
+   //     array(); // -> arguments:[] 생성해서 들어감.
+   //     array(1, 2); // -> arguments : [1, 2]
+
+
+++ )  내장함수의 소스의 구성을 보지는 못하지만, 개발자가 만든, 사용자가 만든 소스의 구성은 볼수있다.
+
+7. 내부 함수 ; 함수 내부에 선언하는 함수
+
+ function pythagoras(width, height) {
+            //내부함수 사용이유 : 충돌을 피하고자.
+            function square(x) { //내부함수 : 함수내에 선언된 함수
+                return x * x;
+            }
+            return Math.sqrt(square(width) + square(height)); // 루트로 변환시키는.
+        }
+
+※ 위의 충돌을 막기 위해 내부함수 사용하면 내부함수가 우선된다. jQuery는 대부분 선언적 함수를 내부함수로 작성하고 있다.
+
+8. 자기호출 함수.
+
+(fuction(){ … })(); 
+
+//다른 개발자의 로직에 영향을 주지 않으려고 : 내부함수, 자기호출 함수.
+ /*       var f = function () {
+            alert('자기호출 함수');
+        };
+        f();  */
+
+        //상단의 코드를 하단의 코드로 변환한것이 자기호출 함수.
+
+        (function () { alert('자기호출 함수'); })();
+
+
+9. 콜백함수 ; 자바스크립트에서는 함수도 하나의 자료형이므로 매개변수에 넣을 수 있다. 매개변수에 넣어 전달된 함수를 콜백함수라 한다.
+
+<script>
+    function callTenTime(callback) {  //10번을 하는.
+        for (var i = 0; i < 10; i++) {
+            callback(); //콜백함수 : 매개변수에 들어온 함수.
+           }
+        }
+
+        var funVar = function () {
+            document.write(new Date() + '<br>');
+        };
+        callTenTime(funVar); //10번 호출.
+
+        callTenTime(function () {
+            document.write("<h2>" + new Date() + "</h2>");
+        });
+    </script>
+
+※ 콜백함수는 익명함수로 사용하는 경우도 많다.
+<script>
+       function callTenTimes(callback) {
+            for (var i = 0; i < 10; i++) {
+                document.write(i);
+                callback();
+            }
+        }
+        callTenTimes(function () { document.write(' 함수호출<br>'); });
+    </script>
+
+#함수를 리턴하는 함수
+※함수가 자료형이므로 매개변수로도 전달할 수 있지만 함수를 리턴하는 함수도 만들 수 있다.
+특정함수를 여러 번 수행하거나 이벤트 처리를 할 때 필요. 리턴하는 함수를 쓰는 가장 큰 이유는 클러저 때문. ( A )
+
+10. 클로저 함수 + 리턴된 함수.
+ 
+<script>
+        function test(name) {
+            var msg = 'Hello, ' + name + '님 방가방가'; 
+                return function () { alert(msg); }; //클로저 함수 : retrun 된 함수. ( A )
+        }
+        var fun = test('홍길동');
+            //function(){alert('Hello, 홍길동님 방가방가');}
+        fun(); //호출했기때문에 경고창 결과가 나온다.
+
+        test('김길자')(); // 리턴받은 클로저함수를 바로 실행함.
+    </script>
+
+※ 클로저 함수로 인해 남은 지역 변수는 각각의 클로저 함수의 고유한 변수이다. 
+test1()과 test2()를 호출하면 각 함수가 고유한 지역 변수 output(홍길동, 김길동)이 있다.
+
+<script>
+        function test(name) {
+            var output = 'Hello ' + name + '님';
+            return function () {
+                alert(output);
+            };
+        }
+        var test1 = test('홍길동'); //변수 선언
+        var test2 = test('김길동');
+        test1(); // 함수를 호출
+        test2();
+  </script>
+
+# 자바 스크립트 내장 함수 #
+11. 타이머 함수
+※ setTimeout(function, millisecond) ; 일정시간 후 함수를 한번 실행
+※ setInterval(function, millisecond) ; 일정시간마다 함수를 반복해서 실행
+※ clearTimeout(id) ; setTimeout 중지
+※ clearInterval(id); setInterval 중지
+
+#자바스크립트 함수 중에 브라우저에 처리를 부탁하는 함수인 타이머 함수는 웹 브라우저가 처리하고 처리가 완료되었다는 것을 자바 스크립트에게 알려주는 방식이다.
+  이러한 함수는 현재 단위가 끝나기전에는 실행되지 않는다.
+
+<script>
+        alert(' A ');  //  순서1
+        setTimeout(function () { alert(' B '); }, 0); // 순서 3   타이머가 뒤늦게 실행된다.
+        alert(' C '); // 순서 2
+
+    </script>
+
+순서대로 출력하고싶으면 자기함수호출을 써야한다.
+
+<script>
+   	for (var i = 0; i < 3; i++) {
+            (function (closed_i) {setTimeout(function () { alert(closed_i); }, 0);})(i);
+     }
+</script>
+
+<script>
+        [0, 1, 2].forEach(function (i) {setTimeout(function () {alert(i); }, 0); });
+    </script>
+
+
+12. 인코딩과 디코딩 함수 ; 인코딩은 문자를 컴퓨터에 저장하거나 통신에 사용할 목적으로 부호화하는 방법이다.
+웹에서는 통신할 때 한글 같은 유니코드 문자가 오작동을 일으킬 수 있으므로 인코딩해야 한다.
+문자를 부호화하는 것이 인코딩, 그 반대로 돌리는 것이 디코딩이다.
+
+Google.com을 통해 검색하면 디코딩된 결과를 볼 수 있다.
+encodeURIComponent(uriConponent) ; 대부부의 문자를 모두 인코딩
+decodeURIComponent(encodedURI);   대부분의 문자를 모두 디코딩
+
+<script>
+        alert(encodeURIComponent('한국'));
+        alert(decodeURIComponent(encodeURIComponent('한국')));
+    </script>
+
+13. 코드 실행함수
+※ eval(수식이나 자바스크립코드); 자바스크립 코드를 실행
+
+<script>
+	var willEval = '';
+        willEval += 'var number = 10;';
+        willEval += 'alert(number);';
+        eval(willEval);
+        alert(number);
+</script>
+
+14. 숫자 확인 함수
+
+※ isFinite() ; number가 유한한 값인지 확인
+※ isNaN() ; number가 NaN인지 확인
+
+15. 숫자 변환 함수
+<script>
+        var won = '1000원';
+        var dollar = '1.5$';
+        alert(Number(won) + ' : ' + Number(dollar));
+        alert(parseInt(won) + ' : ' + parseFloat(dollar));
+    </script>
+

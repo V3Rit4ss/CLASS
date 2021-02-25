@@ -1,0 +1,36 @@
+[ X ] 웹문서 제작 팁 ; 웹문서 제작 시 필수는 아니지만 알고 있으면 손발이 편해지는 팁들.
+
+이렇게 html 을 제작할때 수많은 도움을 받는 사이트들이 있어서 제작할때 좀더 편하게 할수있는 장점도 있다.
+java 이클립스의 api 를 사용한것처럼 말이다.
+
+1. 편집 툴 ; visual studio, notepad++ editplus(유료), dreamweaver(유료), 이클립스 EE
+
+2. 다른 버전 브라우저 테스트 툴
+   http://www.my-debugbar.com/wiki/IETester/HomePage
+3. 많은 양의 더미 텍스가 필요한 경우( 한국어 지원 X )
+   http://lipsum.com
+4. 단위 변환(px, em, %)
+   http://pxtoem.com/
+5. 전체적인 레이아웃을 제작할때 필요한 가상의 이미지
+   http://placehold.it/ (ex. http://placehold.it/200x100)
+   "  width  " X " height  " 규격을 원하는 사이즈에 맞게 넣으면 그 규격에 맞게 더미이미지가 삽입이 된다.
+
+
+6. W3C(월드와이드웹 컨소시엄, 활동사항, 기술동향 등 정보제공)
+   http://www.w3.org/
+
+7. 다양한 디바이스 환경에 어울리는 미디어쿼리
+   http://mediaqueri.es/
+
+8. 웹 접근성 관련
+   http://www.wah.or.kr ; 웹 접근성과 관련하여 권고되는 사항들의 자료제공
+
+9. W3schools.com
+   HTML 정보 사이트로, HTML, XML, 브라우저, 서버 스크립트에 대한 정보를 제공.
+   다양한 튜토리얼 문서를 경험 할 수 있음
+
+10. 색상정보제공
+    http://www.colorpicker.com
+
+11. 그라데이션 코드 지원
+    http://www.colorzilla.com/gradient-editor/

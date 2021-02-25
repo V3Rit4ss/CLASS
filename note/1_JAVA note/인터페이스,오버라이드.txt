@@ -1,0 +1,127 @@
+[ 인터페이스 와 오버로딩, 오버라이드 ]
+
+⑴ 인터페이스란?
+	① 작업명세서(작업지시서) - "앞으로 이렇게 만들어요"라고 표현해 놓은 것
+	  - 실제 구현된 것이 전혀 없는 기본 설계도.(알맹이 없는 껍데기)
+	  - 일종의 추상클래스. 추상클래스(미완성 설계도)보다 추상화 정도가 높다.
+	  - 인스턴스를 생성할 수 없고, 클래스 작성에 도움을 줄 목적으로 사용된다
+	  - 미리 정해진 규칙에 맞게 구현하도록 표준을 제시하는 데 사용된다
+	  - 추상메서드와 상수만을 멤버로 가질 수 있다.
+	② 다형성을 가능하게 한다(하나의 객체를 다양하게 많은 type으로 만들 수 있다).
+		Class S{
+			...
+			public void method(){…}
+		}
+		Class C extends S {
+			...
+			public void method(){…}
+		}
+		S c = new C();
+		S s = new S();
+		s.method(); 
+		c.method();
+		
+ ** 다형성이란? **
+
+“여러 가지 형태를 가질 수 있는 능력” 
+ 말 그대로 객체가 다양하게 변할 수 있다고 생각하면 된다.
+“one interface, multiple implementation” 
+※ 하나의 인터페이스를 사용하여 다양한 구현 방법을 제공 
+※ 하나의 클래스나 함수가 다양하게 동작하는 것.
+
+  오버로딩(overloading) : 같은 클래스 내에서만 오버로딩이라 할 수 있다.
+   메소드 overriding(다중정의) : 같은 이름을 가진 메소드를 다른 클래스에서 재정의 하는 법
+
+	③ 객체를 부속품화 -다양한 객체를 제품의 부속품처럼 개발자 마음대로 변경 할 수 있다.
+	④ 사용법은 어렵지 않지만, 실제 개발에 적용시키기는 쉽지 않다.
+	⑤ 인터페이스를 공부하는데 가장 좋은 방법은 패턴이나 프레임워크(ex. Spring)를 통해 습득하는 것
+	⑥ 객체와 객체 간의 소통수단
+
+2. 인터페이스의 문법
+  ⑴ 'class'대신 'interface' 예약어를 사용한다는 점에서 클래스와 유사하다.
+  ⑵ 실제 구현된 기능 없이 추상메소드와 상수만이 존재
+	public interface 인터페이스이름 {
+		public static final 타입 상수이름 = 값;
+		public abstract 메서드 이름(매개변수 목록);  //구현된 메소드는 갖을 수 없다
+	}
+	☞모든 멤버변수는 public static final이어야하며 이를 생략할 수 있다.'
+	  모든 메서드는 public abstract 이어야 하며, 이를 생략할 수 있다.
+  ⑵ private는 불가  - 상수나 메소드를 만들 때 private 접근 제한자는 불가
+  ⑶ 추상화 - 메소드는 무조건 추상 메소드만 존재. 
+	(예외는 있으나 잠깐 생각하지 말자.default 메소드 자바1.8부터 지원. Static 메소드는 가능)
+  ⑷ 변수 타입 - 인터페이스는 객체를 생성할 수 없다. 다만, 변수 타입으로만 사용 됩니다.
+		(예외, 익명 구현 객체만이 가능은 하다. 안드로이드에서 주로)
+  ⑸ 구현은 Implement 되는 클래스에서 한다.
+
+
+
+1. 인터페이스와 다중상속
+Java는 다중상속이 불가능 하다. 예전의 C++에서는 다중상속이 가능하게 하여 좋은 점도 있었으나, 다중상속으로 인한 문제점도 많았기 때문이다.
+그러나 java에서도 interface를 통해서는 다중구현이 가능하여, 여러 가지 타입으로 객체를 선언할 수 있다.  정확하게 말하면  java는 다중상속이 아닌 ‘다형성(type이 다양하게 존재할 수 있다)’이 존재한다.
+인터페이스를 구현하는 것은 클래스를 상속받는 것과 비슷하다. 다만, ‘extends’ 대신 ‘implements’를 사용.
+
+ex)
+⑴ 단일상속(O)
+public class ChildClass extends ParentClass1 {
+
+} 
+⑵ 다중상속(X)
+public class ChildClass extends ParentClass1, ParentClass2, ParentClass3 {
+
+}
+⑶ 다중구현(O)
+public class ChildClass implements IFunction1, IFunction2, IFunction3 {
+
+}
+
+(4) 상속 + 다중구현.
+class className extends C implements I, I2, I3{
+
+}
+
+
+2. 인터페이스와 추상클래스
+(공통점)
+①  추상메소드를 가지고 있다 - 추상메소드를 가지고 있어 하위 클래스에서 구현해야 한다.
+②  변수 타입이 목적 - 객체생성이 목적이 아닌 변수 타입을 정의하는 것이 목적. 
+
+(차이점)
+상속, 구현 - 추상메소드는 상속을 통한 사용이고, 인터페이스는 구현을 통한 사용.
+구성요소 차이 - 추상클래스는 일반 클래스와 동일하게 변수, 메소드의 모든 기능을 사용할 수 있지만, 인터페이스는 상수와 추상메소드만이 존재한다.
+단일상속, 다중구현 - 추상클래스는 상속이므로 단일 상속만 지원하고, 인터페이스는 다중구현이 가능.
+
+
+3. default 메소드와 인터페이스의 확장
+
+기존 인터페이스의 이름과 추상 메소드의 변경 없이 디폴트 메소드만 추가할 수 있기 때문에 
+이전에 개발한 구현 클래스를 그대로 사용할 수 있으면서 새롭게 개발하는 클래스는 디폴트 메소드를 활용할 수 있다.
+
+
+// 상수, 추상메소드, default메소드, static메소드
+public interface RemoteControl {
+	public int MAX_VOLUME = 10; // 상수(final변수)
+	public int MIN_VOLUME = 10;
+	public /*abstract*/ void turnOn(); //추상메소드
+	public /*abstract*/ void turnOff();
+	public /*abstract*/ void setVolume(int volume);
+	public default void setMute(boolean mute) {//default 메소드
+		if(mute) {
+			System.out.println("무음 처리합니다");
+		}else {
+			System.out.println("무음 해제합니다");
+		}
+	}
+}
+
+
+오버라이딩과 오버로딩.
+
+ ※ 오버라이딩의 조건 : ① 선언부가 같아야 한다(이름, 매개변수, 리턴타입)
+                       ② 접근제어자를 좁은 범위로 변경할 수 없다.
+			  조상클래스 메서드가 protected라면 범위가 같거나 넓은 protected나 public으로만
+
+ ※ 오버로딩 vs. 오버라이딩
+	오버로딩(overloading) : 컴파일러 입장에서는 기존에 없는 새로운 메서드를 정의하는 것(new)
+			메소드 다중정의 (같은 class에서 동일한 메소드가 매개변수를 달리 여러 개 존재
+	오버라이딩(overriding): 상속받은 메서드의 내용을 변경하는 것(change, modify)
+			메소드 재정의 : 부모클래스와 자식클래스에 동일한 method 존재(틀만 가져와 재정의)

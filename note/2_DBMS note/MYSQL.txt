@@ -1,0 +1,141 @@
+1.MySQL의 특징
+ =SQL에 기반을 둔 관계형 DBMS 중 하나
+  Oracle, IBM, Infomix 등의 데이터베이스는 고가이지만 MySQL 은 무료(배포판)
+  리눅스, 유닉스, 윈도우 등 거의 모든 운영체제에서 사용가능
+  처리 속도가 상당히 빠르고 대용량의 데이터 처리 용이
+  설치방법이 쉽고 초보자도 익히기 쉬움.
+  보안성이 우수
+
+sql 과 mysql 모두 대소문자 구별 없이 사용 가능해서 sql 는 대문자로만 썼지만,
+mysql 은 소문자로만 쓴다.
+
+SQL 에서는 scott 계정의 DBA 가 최고 권한이었지만
+MYSQSL 에서는 계정을 만드는것 까지는 비슷하나,
+테이블을 생성하고 억세스 하는 공간을 줘야 할수있어서 100% 로 서로 똑같지는 않다.
+
+	사용자 계정 생성 및 권한 부여
+	계정 생성 create user user01 identified by ‘password’;
+	권한 부여 grant all on *.* to user01; 
+          		grant all privileges on *.* to user01; 
+          		flush privileges;
+
+	권한 박탈 revoke all on *.* from user01;
+		revoke all privileges on *.* from user01;
+
+	계정 삭제 drop user user01;
+
+
+-- 데이터베이스로 들어감.
+show databases;
+create database kimdb;  -- 새로운 kimdb 데이터베이스 생성댐.  , 있는데 또 만들면 오류남.
+show databases;
+use world; -- world 데이터베이스로 들어가는 명령어.
+use kimdb; -- kimdb 데이터베이스로 들어가는 명령어.   서로 왔다갔다 할수있음.
+select database(); -- 현재 들어와있는 데이터베이스를 알려줌.
+
+commit; sql 과 동일한 작동.
+desc (테이블 이름); sql 보다 좀더 상세한 표현을 보여준다.
+
+SQL 과 MYSQL 의 사용하는 명령어나 함수들 거의 99% 비슷해서 SQL에서 쓰던
+문법들을 써도 무방하다.
+
+그래서 MYSQL 에서의 다른점을 꼽아보자.
+
+drop table if exists emp;  = 해당 테이블이 있으면 지우고 없으면, 오류를 내지 않고, 알림 메시지만 보여준다.
+
+-- major (mCODE (pk): 시퀀스처럼 하고싶음., mNAME, mOFFICE)
+-- student (sNO, sNAME, mCODE)
+[ 1 ] : 이렇게 해당 테이블을 만들때에 유의점.
+
+create table major(
+	mCode int primary key auto_increment, -- 시퀀스처럼 할려면 이렇게 . int 를 넣어야한다.
+    mName varchar(20),
+    mOffice varchar(30)
+);
+
+create table student (
+	sNo int ,
+    sName varchar(20),
+	mCode int,   
+    primary key(sNo),
+    foreign key(mCode) references major(mCode)   -- mysql의 foreign key 는 옆에다 쓰면 안대고 아래에.
+);
+
+[ 2 ] outer join 의 차이점.
+-- 학번, 이름, 학과명, 사무실 
+select  sNo, sName,m.mCode, mName, mOffice from major m ,student s where s.mCode=m.mCode;
+		-- where s.mCode(+)=m.mCode mysql 에서는 안댐.
+
+-- left outer join
+select sNo, sName, m.mCode, mName, mOffice from student s right outer join major m
+		on s.mCode=m.mCode;  -- (+) 하고싶은 왼,오른 골라서 outer join major m 'on s.mCode=m.mCode'
+
+sql 에서는 null값때문에 가려진 값의 기준에 (+) 를 했지만,
+mysql 에서는 기준이 만약 왼쪽이면 left outer 를 쓰고 오른쪽이면 right outer 를 쓰는데
+여기서 주의점. where 대신 on 을 쓴다.
+
+[ 3 ] NVL 함수가 없는대신 ifnull(), if() 로 사용한다.
+
+ex) 8-1 사번, 이름, 상사이름(상사가 없는 사람도 출력, 상사가 없을 경우 없음 이라고 출력.) 
+select w.pno, w.pname, ifnull(m.pname, '없다') from personal w left outer join personal m on w.manager=m.pno;
+
+
+select w.pno, w.pname, if(m.pname is null, '없다', m.pname) from personal w left outer join personal m on w.manager=m.pno;
+=if() 는 자바에서의 3항 연산자 생각하고 사용하면 이해가 빠르다.
+
+
+[ 4 ] mysql 은 AND = &&  , OR = || 둘다 사용가능하나, spl의 연결 연산자였던 || 은 사용못한다.
+대신,  select concat(pname,'은 ',job,'이다') from personal;  concat()으로 사용가능하고, 추가적으로 여러번 연결 할수있다.
+
+[ 5 ] select round(356.98, 1);  -- 한행짜리는 from 생략 가능.
+
+[ 6 ] 날짜와 시간 표시.
+select year(startdate), month(startdate), pname from personal;  -- 해당 기간 추출
+select monthname(stardate) from personal;  -- 월 이름을 추출 
+select dayname(stardate) from personal;  -- 요일 추출.
+-- date_format에서 포멧글자.
+-- %y 21 (년도 2자리) %Y 2021(년도 4자리.)
+-- %m 월이름 (January, ~) %m (01월,02월~) %b 짧은 월이름.(Jan , ~) %c 월 수(1,2,3,~12)
+-- %e 일 (1,2,3,4~) %d (01,02,03~)
+-- %H 24시간,  %h 12시간, %p (오전오후) %i분 %s초
+-- now() = sysdate
+select date_format(now(), '%y"년"%c"월"%d일 %p %h시 %i분 %s초');     -- to_char 대신 date_format
+
+-- personal 이름, 입사일(1980년 1월 9일 출력)
+select pname, date_format(startdate, '%y년 %c월 %e일') from personal;
+
+-- 시스템으로부터 현재 날짜, 시간을 가져오는 명령어.
+select sysdate();
+select now();
+-- 시스템으로 부터 현재 날짜만.
+select current_date(); 
+select curdate();
+
+-- 시스템으로부터 현재시간.
+select current_time();
+select curtime(); 
+
+[ 7 ] format()
+-- 시스템으로부터 
+-- format()
+select format(pay, 1) from personal; -- 숫자가 소수점 1자리. -- 3자리마다 , 를 찍는다.
+select format(pay, 0) from personal; -- 3자리마다 , 를 찍는다.
+
+
+[ ※ 8 ※ ] TOP -N 구문의 차이점.  sql 의 top-n 구문과 문법상으로 많이 달라보이기도 해서 그렇지만,
+	top-n 구문이 제일 많이 쓰이는 문법중 하나라서 중요시 해야한다.
+
+-- top - n 구문의 다른점.
+select pname, pay from personal order by pay desc;
+-- limit n (1~n 등 까지.)
+select pname, pay from personal order by pay desc limit 5;
+
+-- limit n1, n2 (n1번째부터 n2개.) n1번째란, 처음 0번째를 뜻함.
+-- 4~6 등까지 limit 3,3
+select pname, pay from personal order by pay desc limit 3,3;
+-- 6~9 등까지 limit 5, 4
+select pname, pay from personal order by pay desc limit 5,4;
+-- 1~3등까지. limit 0, 3
+select pname, pay from personal order by pay desc limit 0,3;
+select pname, pay from personal order by pay desc limit 3;
+

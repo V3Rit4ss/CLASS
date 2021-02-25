@@ -1,0 +1,84 @@
+JOIN : 2개 이상의 테이블을 연결하여 데이터를 검색하는 방법들과 여러가지 JOIN들.
+
+1. JOIN의 필요성
+특정부서번호에 대한 부서이름은 무엇인지 dept 테이블에 있고 특정 사원에 대한 부서명을 알아내기 위해서는 부서 테이블에서 정보를 얻어와야 하는데,
+   Join을 하지 않는 경우 다음의 두 SQL문을 통해 알아내야 하는 번거로움이 있다.
+­ SELECT ENAME, DEPTNO FROM EMP ORDER BY DEPTNO;
+­ SELECT DEPTNO, DNAME FROM DEPT;
+
+2. CROSS JOIN
+CROSS JOIN은 특별한 키워드 없이 다음과 같이 FROM절에 두 개 이상의 테이블을 기술하는 것.
+
+-- CORSS JOIN (FROM 절에 테이블 2개 이상.)
+SELECT * FROM EMP,DEPT WHERE ENAME = 'SCOTT';
+
+--★EQUI JOIN (공통 필드의 DEPTNO 값이 일치되는 조건만 JOIN) 서로 다른 테이블의 찾고싶은 데이터의 같은것들만 불러오게.
+SELECT * FROM EMP, DEPT WHERE ENAME = 'SCOTT' AND EMP.DEPTNO=DEPT.DEPTNO;  
+
+SELECT * FROM EMP,DEPT WHERE EMP.DEPTNO = DEPT.DEPTNO;
+
+--모든 사원의 이름 , 부서명, 부서번호 출력. 테이블에도 별명을 선언하면 똑같이 써줘야한다.
+SELECT ENAME 이름, DNAME, E.DEPTNO FROM EMP E,DEPT D WHERE E.DEPTNO = D.DEPTNO ORDER BY ENAME;
+--가능하긴하나 생략가능  E.ENMAE D.DNAME   , 테이블 별명은 30자 넘으면 안댐.  
+SELECT E.*, DNAME,LOC FROM EMP E , DEPT D WHERE E.DEPTNO=D.DEPTNO;
+
+
+여러 JOIN들.
+­EQUIT JOIN : 동일한 컬럼을 기준으로 조인
+­NON-EQUI JOIN : 동일한 컬럼없이 다른 조건을 사용하여 조인
+­OUTER JOIN : 조인 조건에 만족하지 않는 행도 나타나는 조인
+­SELF JOIN : 한 테이블 내에서 조인.
+
+3. EQUIT JOIN :
+EQUI JOIN은 가장 많이 사용하는 조인 방법으로서 조인 대상이 되는 두 테이블에서 공통적으로 존재하는 컬럼의 값이 일치되는 행을 연결하여 결과를 생성하는 조인 방법 
+
+EQUIT JOIN 예제.
+
+--뉴욕에서 근무하는 사원의 이름과 급여를 출력하시오
+SELECT * FROM DEPT;
+SELECT ENAME , SAL FROM EMP E, DEPT D WHERE E.DEPTNO=D.DEPTNO AND LOC='NEW YORK';
+
+--ACCOUNTING 부서 소속 사원의 이름과 입사일을 출력하시오
+SELECT ENAME, HIREDATE FROM EMP E, DEPT D WHERE E.DEPTNO=D.DEPTNO AND DNAME='ACCOUNTING';
+
+--직급이 MANAGER인 사원의 이름, 부서명을 출력하시오
+SELECT ENAME, DNAME FROM EMP E, DEPT D WHERE E.DEPTNO=D.DEPTNO AND JOB='MANAGER';
+
+--Comm이 null이 아닌 사원의 이름, 급여, 부서번호, 근무지를 출력하시오.
+SELECT ENAME, SAL ,E.DEPTNO , LOC FROM EMP E, DEPT D WHERE E.DEPTNO=D.DEPTNO AND NOT COMM IS NULL;
+SELECT ENAME, SAL ,E.DEPTNO , LOC FROM EMP E, DEPT D WHERE E.DEPTNO=D.DEPTNO AND  COMM IS NOT NULL;
+
+
+4. NON-EQUI JOIN
+NON-EQUI JOIN은 조인 조건에 특정 범위 내에 있는지를 조사하기 위해서 WHERE 절에 조인 조건을 = 연산자 이외의 비교 연산자를 사용한다.
+NON-EQUI JOIN을 학습하기 전에 급여 등급 테이블(SALGRADE )을 살펴보자.
+
+­ SELECT * FROM salgrade;
+
+★ NON-EQUI JOIN
+SELECT ENAME , SAL FROM EMP WHERE ENAME = 'SCOTT';
+SELECT * FROM SALGRADE; --셀그레이드 월급의 등급.  LOSAL HISAL = SALGRADE 안에 있는 녀석들.
+SELECT ENAME , SAL, GRADE, LOSAL, HISAL FROM EMP , SALGRADE WHERE ENAME='SCOTT' AND SAL>=LOSAL AND SAL<=HISAL;
+                                                                            --AND SAL BETWEEN LOSAL AND HISAL;  
+5. SELF JOIN
+조인은 두 개 이상의 서로 다른 테이블을 서로 연결하는 것뿐만 아니라, 하나의 테이블 내에서 조인을 해야만 원하는 자료를 얻는 경우가 생긴다. 
+
+★SELF JOIN 나랑 나랑.WORKER = W , MANAGER = M
+SELECT W.EMPNO , W.ENAME , W.MGR, M.ENAME "MANAGERNAME" FROM EMP W, EMP 
+    WHERE W.ENAME = 'SMITH' AND W.MGR=M.EMPNO;
+
+SELECT WORKER.EMPNO, WORKER.ENAME, MANAGER.ENAME FROM EMP WORKER, EMP MANAGER 
+    WHERE WORKER.MGR=MANAGER.EMPNO; --EMPNO 에 NULL값이 없으므로 13명만 나옴.
+
+--스미스의 상사는 포드다. 라고 출력하기.
+SELECT W.ENAME||'의 상사는 '||M.ENAME||'다' FROM EMP W, EMP M WHERE W.MGR=M.EMPNO;
+
+-- 1.상사의 이름이 KING 인 사원들의 이름과 JOB 출력--셀프
+SELECT W.ENAME , W.JOB FROM EMP W, EMP M WHERE W.MGR=M.EMPNO AND M.ENAME='KING';
+
+--2.스콧과 동일한 부서 번호에서 근무하는 사람의 이름 출력--셀프
+SELECT E1.ENAME, E1.DEPTNO, E2.DEPTNO, E2.ENAME FROM EMP E1, EMP E2 
+    WHERE E1.ENAME='SCOTT' AND E1.DEPTNO=E2.DEPTNO AND E2.ENAME != 'SCOTT';
+                    
+SELECT E2.ENAME FROM EMP E1, EMP E2 
+    WHERE E1.ENAME='SCOTT' AND E1.DEPTNO=E2.DEPTNO AND E2.ENAME != 'SCOTT';

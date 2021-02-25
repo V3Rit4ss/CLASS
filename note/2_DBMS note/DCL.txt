@@ -1,0 +1,25 @@
+
+DCL  :  Data Control Language ; 데이터베이스 사용자의 권한 제어
+  GRANT : 데이터 베이스 객체에 권한 부여
+  REVOKE : 이미 부여된 데이터베이스 객체의 권한을 취소
+  COMMIT : 트랜잭션 확정 (TCL)
+  ROLLBACK : 트랜잭션 취소 (TCL)
+  SAVEPOINT : 복귀지점 설정 (TCL)
+
+최고 권한인 SCOTT 계정과 다른 권한을 가진 계정의 차이점
+
+--새로운 SQL 을 만들어서 계정하나를 만들고, 특정 권한들과 특정명령어를 줘서 SCOTT 계정과의 차이점을 알아보자.
+
+--SHOW USER;
+--SELECT * FROM TAB;
+--SELECT * FROM DBA_TABLES; --DBA 권한이 아니라 접근불가.
+--SELECT * FROM USER_TABLES; --내 계정이 갖고있는 테이블 정보
+--SELECT * FROM ALL_TABLES; --접근가능한 테이블 정보
+--SELECT * FROM ALL_TABLES WHERE TABLE_NAME='EMP';
+--SELECT * FROM SCOTT.EMP; --스콧계정의 EMP테이블 보기
+--EXIT;  --접속 해제.
+--SHOW USER;
+--SELECT * FROM SCOTT.EMP;  --권한 박탈 후 접근 불가.
+--SELECT * FROM ALL_TABLES WHERE TABLE_NAME='EMP';
+---EXIT;
+

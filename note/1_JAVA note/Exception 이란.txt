@@ -1,0 +1,286 @@
+Exception
+
+예외(Exception)처리 :
+
+1. 예외란?
+문제 없을 것 같은 프로그램도 외부환경요인 등에 의해서 문제가 발생하곤 하는데, 
+프로그램에서 문제가 발생될 만한 곳을 예상하여 사전에 "문제가 발생하면 이렇게 해라"라고 프로그래밍 하는 것을 ' 예외처리 '라고 한다.
+
+*예외처리는 보험이다.*
+예외가 발생 했을 때 프로세스가 죽지 않게 예외처리를 자체적으로 처리할 수도 있고(try~catch),
+내가 처리 안하고 나를 부른데서 알아서 할테니 걍 던져 버릴 수도 있다(throws)
++ throw 를 이용해 사용자의 예외상황을 예측해서 강제로 에러를 발생시킬수 있다.
+
+
+2. 예외처리의 필요성
+프로그래머는 예외 처리를 왜 해야 될까요? 이유는 간단합니다. 몇 달 동안 심혈을 기울여 만들어 놓은 프로젝트가 단순한 어떤 이유로 작동을 하지 않다면 프로그램의 프로세스가 완전 죽은 겁니다. 다시 재가동을 시키지 않으면 움직이지 않는 상태가 된 겁니다.
+ 예외의 필요성은 어느 한 부분에서 예외가 발생하더라도 계속해서 프로그램이 동작되도록 하는데 목적이 있습니다. 어떤 문제가 하나 발생되었다고 그 프로세스가 완전히 정지되어 시스템을 재가동하기 전까지는 구동을 아예 못한다고 한다면 너무 많은 손실이 클 것입니다. 그래서 사소한 문제 같은 경우에는 그 문제를 우회해서 가는 방법으로 프로세스가 죽지 않고 계속 구동하도록 프로그래밍하는 방법이 필요합니다
+
+예를 들어,
+	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("원하는 첫번째 정수 i는 ? ");
+		int i = scanner.nextInt();
+		System.out.print("원하는 두번째 정수 j는 ? ");
+		int j = scanner.nextInt();
+		System.out.println("i="+i+"\tj="+j);
+		
+		System.out.println("i*j = "+ (i*j));
+		System.out.println("i/j = "+ (i/j));
+		System.out.println("i+j = "+ (i+j));
+		System.out.println("i-j = "+ (i-j));
+		scanner.close();
+	}
+사용자한테 두 번의 숫자를 입력 받아 곱셈, 나눗셈, 덧셈, 뺄셈을 하는 프로그램이 있습니다. 사용자가 ‘10’과 ‘2’를 입력하면 결과는 다음과 같을 것입니다.
+10 * 2 = 20, 10 / 2 = 5, 10 + 2 = 12, 10 ? 2 = 10
+이 경우에는 아무런 이상이 없습니다. 하지만 사용자가 10과 0을 입력하는 순간 문제가 발생합니다.
+10 * 0 = 0, 10 / 0 = ?, 10 + 0 = 10, 10 ? 0 = 10
+0으로 나눌 수 없어 프로그램이 중단될 것입니다. 이런 경우 덧셈과 뺄셈은 이상이 없어도 사용자는 프로그램 동작이 중단되어 결과를 볼 수가 없습니다. 
+만약, 나눗셈 처리에 예외처리를 해 두었다면, 나눗셈의 결과는 못 보더라도 덧셈과 뺄셈의 결과는 볼 수 있었을 것입니다. 이것이 바로 예외처리가 필요한 이유입니다. 
+
+3. 예외처리 문법(try ~ catch)
+
+	try {
+	    try블럭 ; 익셉션이 발생할 가능성이 있는 명령문들(문제가 발생할 수 있는 로직을 기술)
+
+	}catch(익셉션타입 익셉션변수) {
+	    그 익셉션을 처리하는 명령문(try블록안에서 문제가 발생했을 때 대처방안 기술);
+
+	} finally {
+	    익셉션 발생 여부와 상관없이 맨 마지막에 실행할 명령문;
+	}
+
+	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("원하는 첫번째 정수 i는 ? ");
+		int i = scanner.nextInt();
+		System.out.print("원하는 두번째 정수 j는 ? ");
+		int j = scanner.nextInt();
+		System.out.println("i="+i+"\tj="+j);
+		
+		System.out.println("i*j = "+ (i*j));
+		try{
+			System.out.println("i/j = "+ (i/j)); //문제가 발생할 수 있는 로직을 try 처리		}catch (ArithmeticException e) {
+			System.out.println(e.getMessage());//문제가 발생할 경우 처리하는 부분
+			e.printStackTrace();//예외 메시지를 좀 더 자세히 볼 수 있다
+//문제가 발생하여도 catch로 처리하고 나머지 작업 계속 진행
+		}
+		System.out.println("i+j = "+ (i+j));
+		System.out.println("i-j = "+ (i-j));
+		scanner.close();
+	}
+
+자바는 예외를 객체로 취급. 예외가 발생하면 예외 객체가 자동 생성된다.
+Exception
+	IOException
+	ClassNotFoundException
+	….
+	RuntimeException
+	ArithmeticException
+	ClassCaseException
+	NullPointerException
+	…
+	IndexOutOfBoundsException
+
+Exception 을 상속 받는 여러 클래스들이다. 따라서 Exception 타입을 쓸때 상속받는 클래스를 써도 무관하지만,
+상위클래스인 Exception이 제일 위에있고 그 아래에 상속받는 클래스를 쓰게되면 부모클래스는 자식클래스가 안돼는 개념으로 인해서
+제대로 작동이 안된다, 그러하여 상위 상속클래스는 제일 하단에 사용해야한다.
+ex ) 인간 -> 포유류 0  ,  포유류 -> 인간 X.     포유류(부모클래스)  .  인간(자식클래스) 
+
+
+
+<catch문에 예외처리를 여러 개 할 수도 있다>
+
+	try {
+	    try블럭 ; 익셉션이 발생할 가능성이 있는 명령문들
+	}catch(ArrayIndexOutOfBoundsException a) {
+	    ArrayIndexOutOfBounds 익셉션을 처리하는 명령문
+	} catch(NumberFormatException n) {
+	    NumberFormat 익셉션을 처리하는 명령문
+	} catch(Exception e) {
+	    그 외 익셉션을 처리하는 명령문
+	} finally {
+	    익셉션 발생 여부와 상관없이 맨 마지막에 실행할 명령
+	}
+
+	<예제>
+	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+		int i=0, j=0;
+		System.out.print("원하는 첫번째 정수 i는 ? ");
+		try{
+			i = scanner.nextInt();
+		}catch (InputMismatchException e) {
+			System.out.println("숫자만 입력하셔야지 문자를 입력하시면 끝내요");
+			System.exit(-1);
+		}
+		System.out.print("원하는 두번째 정수 j는 ? ");
+		try{
+			j = scanner.nextInt();
+		}catch (InputMismatchException e) {
+			System.out.println("숫자만 입력하셔야지 문자를 입력하시면 끝내요");
+			System.exit(-1);
+		}
+		System.out.println("i="+i+"\tj="+j);
+		System.out.println("i*j = "+ (i*j));
+		try{
+			System.out.println("i/j = "+ (i/j));
+		}catch (ArithmeticException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		System.out.println("i+j = "+ (i+j));
+		System.out.println("i-j = "+ (i-j));
+		scanner.close();
+	}
+
+	public static void main(String[] args) {
+		int i=0, j=0;
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("원하는 첫번째 정수 i는 ? ");
+		try{
+			i = scanner.nextInt();
+			System.out.print("원하는 두번째 정수 j는 ? ");
+			j = scanner.nextInt();
+			System.out.println("i="+i+"\tj="+j);
+			System.out.println("i*j = "+ (i*j));
+			System.out.println("i/j = "+ (i/j));
+		}catch(InputMismatchException e){
+			System.out.println("숫자만 입력하셔야 되요. 문자입력시 종료합니다");
+			System.exit(-1);
+		}catch (ArithmeticException e) {
+			System.out.print(e.getMessage());
+			System.out.println(" 0으로 나누면 안 된다고요");
+		}catch (Exception e) {
+			System.out.println(e.getMessage()+" 뭔 에러일까?");
+		}
+		System.out.println("i+j = "+ (i+j));
+		System.out.println("i-j = "+ (i-j));
+		scanner.close();
+	}
+
+※ finally 블럭은 try와 catch문의 영향 없이 무조건 실행.
+
+	public static void main(String[] args) {
+		int[] iArr = {0,1,2};
+		try{
+		    System.out.println("****************************");
+		    System.out.println(iArr[3]);
+		    System.out.println("============================");
+		} catch(Exception e) {
+		    System.out.println(e.getMessage()); // 예외 객체가 가지고 있는 메시지를 문자열로 return
+			//e.printStackTrace(); 예외의 발생 경로를 추적내용 출력
+		} finally {
+		    System.out.println("무조건 실행합니다");
+		}
+	}
+
+4. 예외처리 문법(throws)
+try ~ catch 예외 처리 방법은 예외가 발생했을 때 자체적으로 catch문을 이용해서 해결한다.
+이번에 살펴볼 throws의 경우에는 나를 호출한(실행시키는) 쪽으로 예외를 던져버리는 방식.
+
+<예제>
+public class MainClass {
+	public static void main(String[] args) {
+		ThrowsEx ex = new ThrowsEx();
+	}
+} package com.ch.ex2throws;
+public class ThrowsEx {
+	public ThrowsEx(){
+		actionC();
+	}
+	private void actionC(){
+		System.out.println("actionC 전반부");
+		actionB();
+		System.out.println("actionC 후반부");
+	}
+	private void actionB() {
+		System.out.println("actionB 전반부");
+		try{
+			actionA();
+		}catch (IndexOutOfBoundsException e) {
+System.out.println("예외 처리는 여기서");
+			System.out.println("예외메세지 : "+e.getMessage());
+		}
+		System.out.println("actionB 후반부");
+	}
+	private void actionA() throws ArrayIndexOutOfBoundsException {
+		System.out.println("actionA 전반부");
+		int[] iArr = {0,1,2,3};
+		System.out.println("iArr[4]="+iArr[4]);
+		System.out.println("actionA 후반부");
+	}
+}
+
+☞ 실행결과 :	 actionC 전반부
+		 actionB 전반부
+		 actionA 전반부
+		 예외는 여기서 처리할께요
+		 예외메세지 : 4
+		 actionB 후반부
+		 actionC 후반부
+
+
+5. 일반적으로 많이 보게 되는 예외들
+
+예외(Exception)의 종류는 아주 , 정말 , 매우 많다.
+Exception클래스는 많은 예외들(자식클래스)를 가지고 있다. 모든 예외를 습득한다는 것은 불가능 하며, 그럴 필요도 없다.
+프로그래밍을 하다 보면, 자주 보게 되는 예외들이 있는데, 대표적인 몇 가지만 살펴보도록 하자.
+JAVA API문서를 통해서 Exception클래스가 얼마나 많은 자식 클래스를 가지고 있는지 알 수 있다.
+
+※ ArrayIndexOutOfBoundsException > 배열을 사용시 존재하지 않는 index값을 호출하면 발생.
+	int[] iArr = {0,1,2,3};
+	System.out.println(iArr[4]);
+
+※ NullPointerException > 존재하지 않는 객체를 가리킬 때 발생.   (툭하면 나오는 오류중 하나이다.)
+	String str = null;
+	char c = str.charAt(0);
+
+public class Friend {
+	private String name;
+	private String tel;
+	public Friend() {
+		// TODO Auto-generated constructor stub
+	}
+	public Friend(String name, String tel) {
+		this.name = name;
+		this.tel = tel;
+	}
+	@Override
+	public String toString() {
+		String post = tel.substring(tel.lastIndexOf("-")+1);
+		return name+"("+post+")";
+	}
+}
+	public static void main(String[] args) {
+		Friend hong = new Friend();
+		Friend hong2 = new Friend("홍2", "011-325-8888");
+		System.out.println(hong2);
+		System.out.println(hong);
+	}
+
+
+※ NumberFormatException > 숫자로 변경할 수 없는 문자열을 변경하려고 함.
+	public static void main(String[] args) {
+		String str = "aa";
+		String str1 = "10     ";
+		int i = 10;
+		int j = Integer.parseInt(str)+i;
+		j = Integer.parseInt(str1.trim())+i;
+	}
+
+※ DB 관련 Exception
+ClassNotFoundException : 드라이브 이름을 찾지 못했을 때
+SQLException : db url, id, pw가 올바르지 않을 때
+
+등등 Exception의 종류만 봐도 왜 예외가 일어났는지 직관적으로 알 수 있다.
+
+6. 강제로 예외 발생시키기(코드에서 예외 발생시키기)
+	throw new Exception(“에러메세지”);
+= Scanner 로 이용하여 사용자가 어떠한 값을 입력했을때 설정해놓은 값들중에 없는 값을 넣게되면
+에러 또는 예외 상황이 나타나는데 이러한 상황을 인지시켜서 강제로 예외를 발생, 오류메세지를 보이게하여
+사용자가 어떠한 오류가 났는지 인지시킬수있게 한다.
+
+또한 throws 와 throw 를 같은걸로 보면 안됀다.
+throws 는 자신을 호출한 상위 메소드로 Exception 을 발생시키고
+throw 는 개발자가 사용자의 예외상황을 예측해서 강제로 에러메세지를 보여주기위함으로 사용한다.

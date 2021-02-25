@@ -1,0 +1,239 @@
+1. 브라우저 객체 모델
+브라우저 객체 모델(BOM, Browser Object Model) 은 웹브라우저와 객체의 집합을 의미 한다.
+대표적인 브라우저 객체 모델은 다음과 같이 있다.
+window 객체 .
+- location 객체 : 주소와 관련된 객체  
+- navigator객체 :  웹브라우저와 관련된 객체
+- history객체 : 기록과 관련된 객체
+- screen객체 : 화면 전체와 관련된 객체
+- document객체 : HTML 문서와 관련된 객체
+
+<script>
+        var cnt = 0;
+        for (var key in window) {
+            if(key == 'onload' || key == 'cnt')
+            document.write(++cnt + '. ' + key + ':' + window[key] + '<br>');
+        }
+        window.onload = function () {
+            alert('윈도우가 로드됨');
+        };
+        function chk() { } //window 내장객체안에 들어간다.
+        document.write('<hr>');
+        for (var key in window) {
+            if (key == 'onload' || key == 'cnt')
+                document.write(++cnt + '. ' + key + ':' + window[key] + '<br>');
+        }
+    </script>
+­ 위의 예제에서 보듯 window 객체는 이렇게 많은 속성과 메서드가 있으므로 자주 사용되는 속성과 메서드만 본다.
+­ window 객체는 브라우저 기반 자바 스크립트의 최상위 객체.
+  지금까지 함수처럼 사용한 alert(), prompt()함수 모두 window객체의 메서드이다. Var 키워드로 선언한 일반 변수도 모두 window 객체의 속성이 된다.
+
+2. 새로운 window 객체 생성
+
+open(URL,name, features, replace) = 새로운 window객체를 생성한다.
+URL : 열고자 하는 HTML 페이지의 URL
+name : 윈도우 간 통신하는데 사용하는 윈도우 이름 또는 target속성
+features : 윈도우 출력 모양을 지정하는 옵션
+
+2-1. window 형태 옵션.
+
+width : 새 window창의 넓이.  
+height : 새 window창의 높이.
+location :  주소 입력창의 유,무.
+menuber : 메뉴 유,무
+resizable : 화면크기 조절 가능 유,무
+status : 상태표시줄의 유,무
+toolbar : 상태표시줄의 유,무
+
+<script>
+        var child = open('', '', 'width=450, height=500','left=100');
+        /*open (속성1, 속성2, 속성3)
+         * 속성1 : 열린 새창의 url 
+         * 속성2 : 윈도우의 이름
+         * 속성3 : width, height,left, top , location(주소창 유무1,0), ...
+         */
+        if (child) {
+            child.document.write('<h1>새창</h1>');
+        } else {
+            alert('팝업차단을 해제하셔야 새창이 열립니다.');
+        }
+    </script>
+
+※ Window의 이름은 다음과 같은 경우 사용되기도 한다 open() 메소드는 새로운 window 객체를 생성하는 메소드. 
+단지 팝업창을 여는 것에서 끝나지 않고 윈도우 객체를 리턴한다. 따라서 다음의 예제처럼 새로운 윈도 객체에 접근해 속성과 메소드를 사용할 수 있다
+    <script>
+        function openWin() {
+            var child = open('', 'childWin', 'width=300,height=200');
+            if (!child) {
+                alert('팝업 해제 하세요.');
+            }
+
+        }
+    </script>
+</head>
+<body>
+    <button onclick="openWin()">새창 열기</button>
+    <br />
+    <a href="http://www.daum.net" target="childWin">다음으로</a>
+</body>
+
+
+* 작은그림에 마우스를 올리면(mouseover) 큰그림이 새창으로 뜬다.
+// 4.big.html //
+    <script>
+        setTimeout(function () {
+            window.close();
+        }, 5000); //콜백함수 들어갔음.
+    </script>
+</head>
+<body>
+    <img src="ch09_img/large.jpg" alt="큰 그림" />
+    <button onclick="window.close()">닫기</button> <!--window.close()  윈도우창 닫기. window. 생략가능.-->
+    <h1>5초후에 큰그림을 닫습니다.</h1>
+</body>
+
+// 4-2.small.html  //
+    <script>
+        var child;
+        function openBig() {
+            child = open('4.big.html', '', 'width=500,height=600');
+            if (!child) {
+                alert('팝업차단 해제해주세요');
+            }
+        }
+        function closeBig() {
+
+        }
+    </script>
+</head>
+<body>
+    <h2>작은그림의 parent 창</h2>
+    <img src="ch09_img/small.jpg" alt="작은그림"
+         onmouseover="openBig()"
+         onmouseout="closeBig()" />
+
+    <!--  onmouseover="openBig()"  마우스를 올리면 -->
+    <!-- onmouseout="closeBig()" 마우스가 벗어나면-->
+</body>
+
+
+2-2. window 객체의 기본 메소드 ; window 객체는 자신의 형태와 위치를 변경할 수 있게 다음과 같은 메소드를 제공한다.
+OOby() 형태의 메소드는 현재 위도를 기준으로 상대적으로 속성을 변화하는 메소드며, OOTo()형태의 메소드는 절대적인 기준으로 속성을 변화해 준다.
+
+moveBy( x, y ) = window창 의 위치를 상대적으로 이동한다.
+moveTo( x, y ) = window창 의 위치를 절대적으로 이동한다.
+resizeBy( x, y ) = window창 의 크기를 상대적으로 지정한다.
+resizeTo( x, y ) = window창 의 크기를 절대적으로 지정한다.
+scrollBy( x, y ) = window창 스크롤의 위치를 상대적으로 이동한다.
+scrollBy( x, y ) = window창 스크롤의 위치를 절대적으로 이동한다.
+focus(  )	   = window창에 초점을 맞춘다.
+blur(  )	   = window창에 초점을 제거한다.
+close(  )     = window창을 닫는다.
+
+== window 창의 위치를 시간마다 바뀐다.
+
+   <script>
+        var child = open('', '', 'width=300,height=200');
+
+        child.moveTo(0, 0);
+
+        setInterval(function () { //1초에 한번씩 바뀌게
+
+            child.moveBy(10, 10);
+
+        }, 1000);
+
+    </script>
+
+
+2.3 screen 객체 
+- screen 객체는 웹 브라우저의 화면이 아니라 운영체제 화면이 속성을 가지는 객체
+
+== 해당 웹페이지를 열었을때 새창이 띄워지면서 공사중이라는걸 보여주는 예제 ==
+<script>
+        var child = open('6.1.html', '', 'width=100,height=100');
+        var w = screen.width / 2;
+        var h = screen.height / 2;
+        child.resizeTo(w, h); //크기조정.
+        child.moveTo(w / 2, h / 2);
+    </script>
+== 6.1html ==
+
+<style>
+        *{
+            background-color:aqua;
+        }
+    </style>
+</head>
+<body>
+    <h2>공지사항 : 아쿠아.</h2>
+</body>
+
+=======================================================
+
+
+2.4 location 객체
+­ 브라우저의 주소 표시줄과 관련된 객체
+
+
+ <script>
+        setTimeout(function () {
+            //   location = 'http://www.naver.com'; //페이지 위치 변경.
+        //    location.href = 'http://www.google.com'; //많이 쓰이는 기법.
+            location.href = '8.history.html';
+        //    location.assingn('http://www.daum.net');
+        }, 2000);
+    </script>
+</head>
+<body>
+    <h1>잠시후 페이지가 이동됩니다.</h1>
+</body>
+
+href        = 문서의 url 주소
+host        = 호스트 이름과 포트번호  ex)localhost:30763
+hostname = 호스트 이름 		ex)localhost
+port        =  포트번호		ex)30763
+pathname =  디렉토리 경로		ex)/Projects/Location.html
+hash        = 앵커 이름 (#~)		ex)#beta
+search     = 요청 매개변수		ex) ?param =10
+protocol  =  프로토콜 종류		ex) http:
+
+2.5 location 객체의 메소드
+
+assign( link )  = 현재 위치를 이동한다.
+reload( )     = 새로고침.
+replace( link ) = 현재 위치를 이동한다.
+
+­ location 객체는 페이지를 이동할 때 많이 사용한다.
+다음 네가지 방법으로 페이지를 이동할 수 있으나 assign() 메소드와 다르게 replace()메소드는 뒤로 가기 버튼을 사용할 수 없다.
+
+※ location객체와 history 객체
+
+======location=============
+  <script>
+    function loc7() {
+      //location = '7.html';
+      //location.href = '7.html';
+      location.assign('7.html');
+      //location.replace('7.html');
+    }
+  </script>
+</head>
+<body>
+  <button onclick="loc7()">7로 가기</button>
+</body>
+
+========location===========
+
+=======history==============
+<script>
+        function historyBack() {
+            //history.back():
+            history.go(-1);
+        }
+    </script>
+</head>
+<body>
+    <button onclick="history.Back()">뒤로가기(이전 페이지.)</button>
+</body>
+

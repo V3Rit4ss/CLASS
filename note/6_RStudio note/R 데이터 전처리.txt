@@ -1,0 +1,438 @@
+[ 1 ] 데이터 전처리
+1. 문자셋과 인코딩.
+문자셋 (charset, Character Set)
+– 하나의 언어권에서 사용하는 언어를 표현하기 위한 모든 문자(활자)의 모임
+– 우리가 얘기하는 언어를 책으로 출판할 때 필요한 문자(활자)를 모두 모은 것
+– 부호와 공백 등과 같은 특수 문자도 문자셋에 포함
+
+인코딩 (encOding)
+– 인코딩은 문자셋을 컴퓨터가 이해할 수 있는 바이트와의 매핑 규칙
+예)
+ASCII COde에서 ABC 등은 문자셋
+A는 코드 65, B는 코드 66 등 바이트 순서와 매핑한 것이 인코딩.
+따라서 문자셋을 어떻게 매핑하느냐에 따라 하나의 문자셋이 다양한 인코딩을 가질 수 있다.
+– 가장 많이 사용하는 인코딩은 "UTF-8", "KSC5601", "ISO-8859-1" 이고 WindOWs는 "CP949"를 사용
+
+문자셋과 인코딩 관련 R 명령어
+- Sys.getlOCale() : R의 인코딩 정보확인
+
+기본적인 encOding 값
+– WindOWs의 경우, "CP949"를 사용.
+– Linux의 경우, "UTF-8"을 사용.
+– WindOWs와 Linux의 문자셋(charset) 설정에 따라 encOding 값이 달라진다.
+
+(1)write.table( ) = 데이터를 파일에 저장.
+write.table(data, file = "파일명", append = FALSE, quote = TRUE, sep = "," , row.names = TRUE)
+- data : data 변수에 저장된 데이터를 저장한다.
+- file : 저장할 파일명을 입력.
+- quote : TRUE(기본값) 이면, 필드의 값을 " 로 묶는다.
+- sep : 필드의 구분자를 지정. Default 필드 구분자는 공백(blank)이다.
+- row.names : TRUE(기본값)이면, 각 향의 이름도 저장.
+
+(2)read.table( )  = 파일을 읽어 데이터프레임 형태로 저장.
+data <- read.table("파일명", header = TRUE, sep = "," , stringAsFactors = FALSE, comment.char = "#",
+		 fileEncoding = "UTF-8", encoding = "CP949")
+- header : TRUE이면 파일의 첫번째 행을 열 이름으로 지정.
+- sep : 데이터파일이 필드 구분자를 지정. 디폴트 필드구분자는 공백(blank)이다.
+- stringAsFactors : TRUE이면 문자열을, Factor형태로 저장.
+- comment.char : 주석의 시작 문자를 지정. 디폴트 는 #.
+- fileEncoding : 파일의 인코딩을 지정.
+- encoding : R 의 인코딩을 지정.
+
+
+(3) write.csv( ) 
+= csv 파일 형식으로 저장할 것이라면 write.csv( ) 함수를 이용하면 설정 할 파라미터의 수를 줄일 수 있다.
+기본적으로 행 이름 열의 이름은 없다. col.names=NA , row.names = TRUE 이면,
+ 스프레드시트에서 csv 파일을 읽는데 사용되는 규칙인 빈 열 이름이 추가 된다. 이러한 csv파일은 R 로 읽을 수 있다.
+ex>
+write.csv (data, file = "파일명")
+
+write.csv 함수와 write.csv2 함수는 csv 파일을 작성하기 위한 편리한 래퍼를 제공한다.
+append, col.names, sep, dec , qmethod 등 속성들의 수정은 경고와 함께 무시된다.
+
+
+(4) read.csv ( ) = csv 형식 파일을 조회할때 read.csv( ) 함수를 사용할수 있다.
+data <- read.csv(file = "파일명")
+
+(5)cat = 분석결과 등 을 저장 할때 cat( )을 이용할 수 있다.
+cat( ... , file = "", sep = "", fill = FALSE, labels = NULL, append = FALSE)
+cat( ) 의 주요 용도는 문자열을 이어 출력하는데 사용하지만 file 인자를 지정하면 파일에 데이터를 저장 할 수 있다.
+ex>
+irisSummary <- summary(newData)
+class(irisSummary)
+irisSummary[1,]
+
+nrow(irisSummary) #6행이 있다.
+cat('iris 요약 : ', '\n', file='outData/irisSummary.txt', Encoding='utf-8') #이거부터 실행.
+
+for(i in 1:nrow(irisSummary)){ #6 = nrow(irisSummary) 이니까 6대신 넣음.
+  cat(irisSummary[i,],'\n',file='outData/irisSummary.txt', append = T ) #영어만 있으면 인코딩 utf 뺀다.
+} 
+
+#cat('iris 요약 : ', '\n', irisSummary, file='outData/irisSummary.txt', append = TRUE, Encoding='utf-8')
+
+2. apply 계열 함수를 이용하면 반복문 사용보다 코드 최소화, 수행 속도 빠르다.
+- apply : 행렬이나 배열 차원별로 지정한 함수 적용.
+apply(x, margin, FUN, ... )
+- x : 대상 자료 객체(행렬,배열).
+- margin : 차원을 입력한다. 1이면 행별로 함수를 적용하고, 2이면 열별로 함수를 적용한다.
+	 3이면 차원(3차원 배열에서)별로 함수를 적용, c(1,2)이면 (행,열) 별로 함수를 적용한다.
+- FUN : 적용할 함수 이름.
+#6개 함수.
+apply(iris[,1:4],2, FUN=mean) #열별 평균
+apply(iris[,1:4],2, FUN=sd) #열별 표준편차
+apply(iris[,1:4],2, FUN=sum) #열별 합계
+apply(iris[,1:4],2, FUN=median) #열별 중앙값
+apply(iris[,1:4],2, FUN=min) #열별 최솟값
+apply(iris[,1:4],2, FUN=max) #열별 최댓값
+
+# == 벡터같은 행렬 스타일로 나온다.
+
+- lapply : list apply (함수를 적용한 결과를 list 로 반환)
+lapply는 list apply 이다, lapply( ) 함수는 리스트에 지정한 함수를 적용하고 함수를 적용한 결과는 리스트로 반환 한다.
+lapply(x , FUN, ...)
+- x : 함수를 적용할 벡터 또는 리스트 객체.
+- FUN : 적용할 함수 이름.
+- ... : 함수에서 사용할 인수들.
+
+- sapply : lapply 와 유사하나 결과를 리스트 대신 행렬, 벡터로 반환.
+sapply 는 simplification apply 이다. sapply( ) 함수는 lapply( ) 함수와 유사하지만 리스트 대신 행렬, 벡터등으로 결과를 반환하는 함수.
+sapply(x, FUN, ... , simplify = TRUE, use.names = TRUE)
+- x : 대상 리스트 객체.
+- FUN : 적용할 함수 이름.
+- ... : 함수에서 사용할 인수
+- simplify : TRUE(기본값) 이면, 연산 결과를 벡터, 행렬 등으로 반환 한다. FALSE 이면 연산 결과를 리스트로 반환한다.
+- use.names : TRUE(기본값) 이면, 이름속성도 반환 한다. FALSE 이면 이름 속성 없이 반환 한다.
+
+- vapply : sapply 와 유사 하나 FUN의 모든 값이 FUN.VALUE 와 호환되는지 확인.
+vapply는 values simplification apply 이다.
+vapply( ) 함수는 sapply( ) 함수와 비슷하지만, FUN 의 모든값이 FUN.VALUE와 호환되는지 확인한다.
+vapply( ) 함수는 FUN.VALUE에 의해 미리 지정된 유형의 반환 값을 가지므로 사용하는 것이 더 안전 할 수 있다.
+그래서 sapply( ) 함수에 비해 더 안전하게 사용할 수 있고, 더 빠르다.
+vapply(x, FUN, FUN.VALUE, ... , USE.NAMES = TRUE)
+- x : 대상 리스트 객체.
+- FUN : 적용할 함수 이름.
+- FUN.VALUE : 반환하는 데이터의 유형을 지정한다. FUN에서 리턴값을 위한 템플릿이다.
+length(FUN.VALUE) == 1이면, x 와 동일한 길이의 벡터가 반환되고, 그렇지 않으면 배열이 반환된다.
+FUN.VALUE 가 배열이 아니면 결과는 FUN.VALUE의 길이 행과 x 의 길이 열을 가진 행렬이다.
+그렇지 않으면 dim(a) == c(dim(FUN.VALUE), length(x)) 식에 의한 차원을 가진다.
+- ... : 함수에서 사용할 인수이다.
+
+
+- mapply : sapply 와 유사하나, 여러개 인자를 함수에 전달할 수 있다.
+mapply( ) 는 sapply( ) 와 유사하지만 다수의 인자를 함수에 넘긴다는데에서 차이가 있다.
+mapply는 가변인자(...) 를 통해 전달되는 두번째 인자, 세번째 인자 등이 첫번째 인자인 FUN함수의 인자로 적용된다.
+mapply(FUN, ..., MoreArgs = NULL, simplify = TRUE, USE.NAMES = TRUE)
+-FUN : 적용할 함수 이름
+- ... : FUN 의 인자로 전달한 값 들.
+- MoreArgs : FUN 함수에 전달할 다른 인자 목록.
+- SIMPLIFY : TRUE(기본값)이면 연산 결과를 벡터, 행렬등으로 반환. FALSE 면, 연산 결과를 리스트로 반환.
+- USE.NAMES : TRUE(기본값) 이면, 이름 속성도 반환. FALSE면, 이름 속성 없이 반환.
+
+- tapply : 그룹별 처리를 위한 apply (대상은 list)
+tapply( ) 는 그룹별 처리를 위한 apply 함수. 데이터가 주어졌을때 각 데이터가 속한 그룹별로 주어진 함수를 수행.
+tapply(x, index, FUN=NULL, ... , default = NA, simplify = TRUE)
+- x : 대상 리스트 객체.
+- index : x 와 같은 길이의 하나 이상의 범주형변수(factor)목록. as.factor( ) 함수에 의해 범주형변수 타입으로 강제 형변환.
+- FUN : 적용할 함수. NULL, + , %*% , 등의 경우 이름을 역 인용부호 (` `) 또는 인용 부호 (`) 로 묶어야 한다. FUN이 NULL이면 tapply는 벡터를 리턴한다.
+- ... : FUN의 인자로 전달한 값들.
+- default : 기본값은 NA 이며 결측값일 경우 출력될 값을 지정.
+ex>
+tapply(cust$income2,cust$job, FUN=mean) #없는 그룹은 NA. 을 다른걸로 하고싶으면
+tapply(cust$income2,cust$job, FUN=mean, default = -1) #default값은 NA 대체값.
+
+- simplify : TRUE(기본값)이면, FUN이 항상 스칼라를 반환하면 tapply는 스칼라 모드의 배열을 반환,
+	 FALSE이면, tapply는 항상 "list"모드의 배열을 리턴한다. 즉, dim속성이 있는 목록이다.
+
+
+- by : 데이터프레임 대상 tapply 함수.
+by( ) 함수는 데이터 프레임에 적용되는 tapply 를 위한 함수.
+by(data, indices, FUN, ... , simplify = TRUE)
+- data : R 객체이다, 일반적으로 데이터프레임이거나 행렬이다.
+- indices : 팩터 또는 팩터 리스트이다.
+- FUN : 데이터의 서브세트에 적용되는 함수.
+- ... : FUN의 인자로 전달할 값들.
+- simplify : TRUE(기본값) 이면, FUN이 항상 스칼라를 반환하면 by 는 스칼라 모드의 배열 을 반환한다.
+	  FALSE이면, by는 항상 "list" 모드의 배열을 리턴한다. 즉, dim 속성이 있는 목록.
+
+tapply 와 by 의 차이점.
+tapply 함수는 한번에 여러 열에 대하여 집계연산 불가, 그에 비해 by 함수는 데이터프레임의 여러 열에 함수를 적용 시킬 수 있다.
+
+
+
+3. doBy 패키지
+= doBy 패키지에는 다양한 유틸리티 기능이 포함되어 있다. 이 패키지는 원래 SAS 시스템의 PROC 요약과 같은
+ 그룹별 요약통계를 계산할 필요성에서 비롯 되었지만 현재 패키지에는 많은 유틸리티가 포함 되어있다.
+(1)doBy 패키지를 사용할려면 install.packages("doBy") 를 실행 시켜 패키지를 설치.
+(2)require(doBy) 로 패키지를 로드 한다.
+
+
+3-1. summaryBy() = 그룹별로 그룹을 특징짓는 통계적 요약 값 계산에 사용된다. 예를 들면 두 요인 A와 B의 각 조합에 대한 x와y의 평균과 분산들의 계산에 사용.
+summaryBy(formula, data = parent.frame(), id = NULL, FUN=mean, keep.names = FALSE, p2d = FALSE, order = TRUE,
+	   full.dimension = FALSE, var.names = NULL, fun.names = NULL , ... )
+-formula : 포뮬러를 지정. 포뮬러에 대한 설명은 후에 자세하게 할것이다.
+- data : 데이터프레임.
+- id : 데이터가 그룹화되지 않지만 출력에 나타나야하는 변수를 지정하는 포뮬러.
+ex>
+emp <- read.csv('Data/emp.csv',header = T, stringsAsFactors = F)
+emp
+str(emp$deptno)
+emp$deptno <-as.factor(emp$deptno)
+emp$deptno <- factor(emp$deptno, levels = seq(10,40,10))
+
+
+3-2. orderBy( ) = orderBy 는 데이터프레임의 특정 변수로 데이터프레임의 행을 정렬한다.
+이 함수는 본질적으로 order() 함수에 대한 래퍼이다. 중요한 차이점은 정렬하기 위한 변수가 모델 포뮬러에 의해 제공될 수 있다는것.
+ex>
+orderBy(~Sepal.Length, data = iris)#오름차순.  # ~Sepal.Length 기준하는곳. 
+orderBy(~-Sepal.Length, data = iris) #내림차순.
+orderBy(~Species+Sepal.Length, data = iris) # + Species, Sepal.Length 오름차순.
+orderBy(~Species-Sepal.Length, data = iris) # - 내림차순.
+
+
+3-3 sampleBy( ) = sampleBy 는 함수에 의해 데이터프레임은 포뮬러의 변수에 따라 분할 되고 각각 분할된 그룹에서 특정 비율의 샘플이 추출된다.
+ex>
+sampleBy(~Species, data = iris, frac = 0.2) #종별로.(group별) 20%씩. 표본추출(비복원 추출) #랜덤으로 임의추출.
+# 그래서 실행할때마다 다름. 대부분 비복원 추출을 많이 이용한다.
+sampleBy(~Species, data = iris, frac = 0.2, replace = T) #복원 추출. #실행할때 그 추출된것만 계속나옴.
+
+sampleBy(~Species, data = iris, frac = 0.1, systematic = T) #계층적 추출.
+
+* 계통 추출
+= Systematic : 계통추출을 사용할지 여부를 결정한다. 계통추출은 체계적 표집(systematic sampling) 이라고도 하며,
+첫 번째 요소를 선정한 후 그 샘플로부터 동일한 간격에 있는 데이터를 샘플로 추출하는 방법이다.
+기본값은 임의추출(FALSE)이다. 계통추출(TRUE)일 경우 frac = .1 이면 1/.1 즉, 처음부터 각 열 번째(1, 11, 21, 31, 41, ... ) 데이터가 추출되고,
+frac = 0.2이면 1/.2 즉, 처음부터 각 다섯번째 (1, 6, 11, 16, 21, ... ) 데이터가 추출 된다.
+계통추출법은 만약 표본이 추출되기 전 요소들의 목럭이 무작위로 되어있지 않고 주기성(periodicity) 을 띄고 있다면, 
+계통추출법을 통해 추출된 표본은 매우 어긋난 표본이 될 수 있으며 모집단을 전혀 반영하지 못하게 된다.
+
+4. 포뮬러
+= R함수, 특히 선형 회귀를 맞추기 위한 lm( )과 물류 회귀를 맞추기 위한 glm( ) 들은 formula(포뮬러) 구문을 사용하여 통계 모델의 형식을 지정한다.
+회귀분석을 위한 함수들만 아니라 많은 함수들이 포뮬러를 인수로 갖는다.
+ex>
+#formula (포뮬러) : ~ +
+ ## lm() 선형회귀식 도출 함수.(독립변수,종속변수 : 명명식과 순서식이 아닌것들만.)
+   ### 연속적 변수에서 사용.
+x <- c(1,2,3,4,5) #공부량 (독립변수)
+y <- c(20,41,59,81,99) # 정수 (종속변수) - 회귀분석 : lm()함수이용.
+y1 <- c('F','F','F','P','P') # 당락여부(종속변수) - 로지스틱 회귀. glm()함수 이용. # 'F'스트링형 <=> F 둘다 해도댐. 
+
+x <- c(2,4)
+y <- c(40,60)
+
+fit <- lm(y ~ x)  #matrix 사용안하면 lm() 으로.
+fit
+plot(x, y, col='blue')
+lines(x, x*19.8+0.6, col='red') #x축 가지고 나타낸 예측치.
+abline(fit, lty='dashed') #점선. 실제값.
+
+#독립변수가 2개 
+x1 <- c(1,2,3,4,5) #공부량.
+x2 <- c(10,20,3,4,5) #기출문제 푼 갯수
+y <- c(50,70,63,84,95) #종속변수.
+
+fit <- lm(y ~ x1+x2) #x2를 추가하겠다. x1과x2의 상관관계가 없다라는 전제하에 써야함.
+fit
+#plot 3차원 도표는 불가.
+
+*포뮬러 기호
+ + => 이 변수를 포함   : +z
+ - => 이 변수를 제외   : -z
+ :  => 이 변수들 사이의 상호 작용을 포함.  :   x : z
+ * => 이 변수들과 그것들을 조합한 모든 상호 작용들을 포함 : x*y
+ ^ => 예는 모든 상호 작용을 최대 세가지 방법으로 포함 : (x+z+w)^3
+ I(i대문자) => 수식으로 구성된 새 변수를 추가  : I(expr)
+ -1 => 절편(intercept)을 삭제.  : x - 1
+ . => 데티어에서 종속변수를 제외한 모든 변수를 독립변수로 사용. : y ~ .
+
+
+
+5. split
+split( ) 는 벡터 또는 데이터프레임 x 의 데이터를 범주형변수(팩터) f로 정의 된 그룹으로 나눈다. 대체양식은 이러한 구분에 해당하는 값을 대체 한다.
+split(x, f, drop = FALSE, ... )
+- x : 그룹으로 나눌값을 포함한 벡터 또는 데이터프레임.
+- f : 그룹화를 정의하기 위한 팩터 또는 벡터를 포함하는 리스트.
+- drop : 만일 f 가 팩터 또는 리스트일 경우 발생하는 않는 레벨을 삭제해야 하는지를 나타내는 논리값. 기본값은 FALSE.
+- ... : 함수에 전달한 인수들.
+
+6. subset
+= 조건을 만족하는 벡터, 행렬or 데이터프레임의 하위집합을 반환.
+subset(x, subset, select, drop = FALSE, ... )
+- x : subset 될 객체.
+- subset : 유지할 변수 또는 행을 나타내는 논리식. 결측값은 false로 간주.
+- select : 데이터프레임에서 선택할 열을 나타내는 표현식.
+- drop : drop 인수는 행렬 및 데이터프레임의 인덱싱 방법으로 전달 된다.
+	행렬의 기본값은 인덱싱의 기본값과 다르다. 요소는 부분집합후에 빈 레벨을 가질수 있다.
+	사용하지 않은 레벨은 자동으로 제거되지 않는다.
+- ... : 다른함수로 또는 다른 함수로부터 전달 될 추가 인수.
+
+7.데이터 합치기. 
+
+ 컬럼 합치기 cbind() = 열 단위로 데이터를 합쳐준다.
+  행 합치기   rbind() = 행 단위로 데이터를 합져준다.
+    병합      merge() = 공통된 열을 기준으로 데이터를 병합해준다.
+
+cbind ( ... , deparse.level = 1 )
+rbind ( ... , deparse.level = 1 )
+- ... : 벡터들 또는 행렬들.
+- deparse.level : 행렬이 아닌 인수의 경우 행 또는 열의 이름을 제어하는 정수,
+0 일 경우 결합할 데이터의 파라미터 이름을 이용하여 레이블을 지정하며, 
+1(기본값)은 0의 레이블지정에 추가로 파라미터 이름이 없을 경우 변수의 이름을 이용하여 레이블을 지정하고,
+2는 0과 1의 레이블 지정에 추가로 표현식을 이용하여 레이블로 추가한다.
+ 
+
+merge(x, y, by = intersect(names(x), names(y)),
+         by.x=by, by.y=by, all=FALSE, all.x=all, all.y=all,
+         sort=TRUE, suffixes= c(".x","xy"), incomparables = NULL , ... )
+- x, y : 병합할 데이터프레임 또는 객체
+- by : 병합에 사용할 기준이 되는 열을 지정. 기본값은 병합할 두 데이터의 교집합.
+- by.x , by.y : x 데이터에서 기준이 되는 열과, y 데이터에서 기준이 되는 열을 지정. 기본값은 by 인수와 같다.
+- all : TRUE 이면 기분이 되는 열에 값을 가지고 있지 않는 경우에도 행을 생성해 준다.
+즉, 모든 행이 병합에 사용된다. 기본값은 FALSE이며, 기준이 되는 열의 값이 x 와 y에 모두 있는 데이터만 병합된다.
+- all.x , all.y : all.x 는 x의 모든 행은 병합에 사용되고, all.y 는 y 의 모든 행이 병합에 사용되도록 한다. 기본값은 all 인수와 같다.
+
+
+8. 데이터 정렬. 
+sort
+sort( ) 벡터 또는 벡터 데이터를 오름차순 또는 내림차순으로 정렬한다. sort( )는 값을 정렬한 그 결과를 반환할 뿐 인자로 받은 자체를 변경하지 않습니다.
+
+sort(x , partital=NULL, decreasing=FALSE, na.last=NA, method=c("auto", "shell", "quick", "radix"), index.return=FALSE )
+- x : 정렬할 데이터.
+- partial : NULL 또느 부분정렬 한 데이터.
+- decreasing : FALSE(기본값)일 경우 오름차순으로 정렬한다. 
+- na.last : 결측값들의 처리를 제어하기 위한 것, TRUE일 경우 데이터에 누락 된 값을 마지막에 놓고 FALSE 일 경우 먼저 놓습니다. NA면 제거된다.
+- method : 사용된 알고리즘을 지정하는 문자열이다. 부분 정렬에는 사용할수 없다.
+- index.return : 정렬한 데이터의 색인이 반환되어야 하는지를 나타내는 논리값이다.
+method가 "radix" 일 때는 모든 na.last 모드와 모든 데이터타입을 지원하고, 팩터가 아닌 데이터를 전체 정렬하고 na.last = NA(기본값)일때, 다른 method가 지원한다.
+
+
+order 
+order( ) 는 주어진 인자를 정렬하기 위한 각 요소의 색인을 반환한다. 큰 수부터 정렬한 결과를 얻고 싶다면, 값에 -1을 곱한다.
+order( ... ,  na.last=NA, decreasing=FALSE, method=c("auto", "shell", "radix"))
+- ... : 정렬할 데이터.
+- na.last : 결측값들의 처리를 제어하기 위한 것, TRUE일 경우 데이터에 누락 된 값을 마지막에 놓고 FALSE 일 경우 먼저 놓습니다. NA면 제거된다.
+- decreasing : FALSE(기본값)일 경우 오름차순으로 정렬한다. TRUE일 경우 내림차순으로 정렬.
+- method : 사용된 알고리즘을 지정하는 문자열이다. 부분 정렬에는 사용할수 없다. 약어로 표시 할 수 있고, 알고리즘에 따라 실행 시간이 다를 수 있다.
+
+ex>
+#iris 데이터를 Sepal.Length(내림차순으로), Sepal.Width(오름차순으로.) 특정열 출력.
+order(-iris$Sepal.Length, iris$Sepal.Width)
+iris[order(-iris$Sepal.Length, iris$Sepal.Width), ]
+iris[order(-iris$Sepal.Length, iris$Sepal.Width),1:4] #특정열 출력.
+iris[order(-iris$Sepal.Length, iris$Sepal.Width), c(1,2,5)] #특정열 출력.
+
+
+9.with( ) , within( ) 
+
+with( )는 데이터로 구성된 로컬 환경에서 expr을 평가하는 함수이다, 환경은 호출자의 환경을 부모로 가진다.
+데이터프레임 또는 리스트의 필드를 데이터 이름없이 접근할 수 있기 때문에 모델링 함수 호출을 단순화 할때 유용하다.
+
+within( )은 expr을 평가 한 후 환경을 검사하고 데이터 복사본에 해당 수정 사항을 적용한다는점을 제외하면 with( )와 비슷하다.
+
+with(data, expr, ... )
+within(data, expr, ... )
+
+- data : 데이터.
+- expr : 평가할 표현식, 데이터프레임 또는 리스트의 data의 이름을 생략하고 필드를 이용하여 표현식을 작성 할 수 있다.
+- ... : 함수에 전달될 인수.
+
+
+ex>
+#with 절은 Sepal.Length의 결측치가 대치된 결과값을 반환
+iris.temp <- with(iris.temp,{
+  mps <- tapply(Sepal.Length, Species, median, na.rm=T)
+  Sepal.Length <- ifelse(is.na(Sepal.Length), mps[Species], Sepal.Length)  
+})
+iris.temp
+
+#within 절은 Sepal.Length의 결측치가 대치된 데이터프레임 셋이 반환.
+iris.temp <- within(iris.temp,{
+  mps <- tapply(Sepal.Length, Species, median, na.rm=T)
+  Sepal.Length <- ifelse(is.na(Sepal.Length), mps[Species], Sepal.Length)  
+})
+head(iris.temp)
+
+
+10.attach()함수 , detach()함수
+
+attach, detach 
+attach( ) 는 데이터 객체가 R 검색 경로에 첨부됩니다. 즉, 변수를 평가할때 R이 데이터를 검색하므로 객체의 필드 이름을 지정하여 엑세스 할 수 있다.
+attach( )를 이용하면 인자로 주어진 데이터프레임이나 리스트의 필드를 곧바로 접근할 수 있게 해준다.
+이를 제거하려면, detach( ) 를 사용.
+
+attach( )한 변수 값은 detach( ) 시 원래의 데이터프레임에는 반영되지 않는다.
+attach( what, names=deparse(substitute(what)), warn.conflicts = TRUE )
+
+- what : 데이터프레임 또는 리스트 등 R 객체.
+- name : 작업공간의 이름을 지정한다. what 이름을 다른 이름으로 사용할때 지정.
+- warn.conflicts : TRUE(기본값)이면, 데이터가 현재 작업공간과 attach 하는 작업공간에 같은 이름의 데이터를 포함하고 있을 경우,
+경고가 출력된다. FALSE이면, 경고가 출력되지 않는다.
+
+
+
+11. 데이터 집계
+table( ) 은 교차 분류 계수를 사용하여 각 팩터 수준의 조합마다 수의 표를 작성합니다.
+즉, 데이터를 팩터로 묶을수 있는 가능한 모든 쌍의 조합을 카운트 한 수의 표를 만든다.
+table( )함수의 결과를 이용하요 막대그래프(barplot) 또는 파이차트(pie)등을 통해 시각화 할 때 주로 사용.
+
+table( ... , exclude= if ( useNA == "no") c(NA, NaN), useNA=c("no", "ifany", "always"), dnn=list.names( ... ), deparse.level =1  ) 
+
+- ... : 팩터로 인터프리트 될 수 있는 한개 또는 그 이상의 객체이다. 리스트 또는 데이터프레임이 될 수 있다.
+- exclude : ... 에 대해 제거할 수준을 지정합니다. 만일 이 인수가 NA를 포함하지 않고 useNA 인수가 설정되지 않으면, useNA = "ifany"를 의미.
+- useNA : NA 값을 테이블에 포함할지 여부를 지정한다.
+- dnn : dimnames, names 를 의미한다. 결과의 차원에 부여 할 이름을 지정한다.
+
+ex>
+table(iris$Species)
+table(emp$ename) #factor 변수가 아니면 집계가 무의미.
+
+head(InsectSprays)
+#InsectSprays 데이터 셋에서 spray별 집계.
+table(InsectSprays$spray)
+#emp 데이터 셋에서 deptno별 집계.
+str(emp$deptno)
+emp$deptno <- factor(emp$deptno, levels = seq(10,40,10))
+table(emp$deptno)
+
+
+11.2 aggregate( )
+aggregate( ) 는 데이터를 하위집합으로 분할하고 각각에 대한 요약통계를 계산한 다음 결과를 편리한 형식으로 반환.
+
+aggregate(x, ...)
+aggregate(x, by, FUN, ... , simplify=TRUE, drop=TRUE)
+
+- x : R객체.
+- ... : 함수에사 사용할 인수.
+- by : 데이터프레임 x의 변수와 길이가 같은 그룹화 할 엘리먼트의 목록, 엘리먼트는 사용전에 팩터로 강제 변환된다.
+- FUN : 모든데이터 하위 집합에 적용 할 수 있는 요약통계를 계산하는 함수.
+- simplify : 가능한 경우 결과를 벡터 또는 행렬로 단순화할지 여부를 나타내는 논리값이다, TRUE(기본값)이면, 연산 결과를 벡터,행렬등으로 반환한다.
+FALSE 이면, 연산결과를 리스트로 반환한다.
+- drop : 그룹화 값의 사용되지 않은 조합을 삭제할지 여부를 나타내는 논리값이다.  TRUE(기본값)이 아닌경우, drop=FALSE 는 R 3.3.0부터 사용할수 있고,
+사용되지 않은 조합이 여전히 삭제되는 경우도 있다.
+
+ex>
+aggregate(iris[,1:4], by=list(iris[,5]), mean)
+
+
+
+12. 조건에 맞는 색인 찾기 : which ,which.min ,which.max
+
+which( ) 벡터 또는 배열에서 주어진 조건을 만족하는 값이 있는곳의 색인을 찾는다.
+which.min( )과 which.max( ) 는 주어진 벡터에서 최솟값 또는 최댓값이 저장된 색인을 찾는 함수이다.
+which( x, arr.ind=FALSE, useNames=TRUE  )
+which.min( x )
+which.max( x )
+- x : 논리형 벡터 또는 배열, NA값은 가능하지만 FALSE로 처리된다.
+- arr.ind : TRUE 면, x가 배열인 경우 배열 색인을 반환 한다. 기본값은 FALSE.
+- useNames : which( )의 결과가 dimnamse 를 가져야 하는지를 나타내는 논리값.
+
+ex>
+subset(iris, iris$Species=='setosa') #조건으로 데이터를 추출한 방법.
+
+which(iris$Species=='setosa') #조건으로 색인 추출출
+iris[which(iris$Species=='setosa'),] #조건을 이용하여 데이터 출력.
+
+which.max(iris$Sepal.Length)
+iris[which.max(iris$Sepal.Length), ] #Sepal.Length가 제일 큰 row를 출력.
+ 
+
