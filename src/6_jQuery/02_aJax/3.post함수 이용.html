@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(function () { //post 사용방식. jsp 파일이 없기에 작동이 불가함.
+            $('button').click(function () {
+                // $.post( 'idConfirm [파일이름만 적어준다.]' , '전달될 파라미터들을 객체로.' , '콜백함수' );
+                var mId = $('#mId').val();  //{ mId(속성):mId(속성값) }
+                $.post('idConfirm.html', { mId: id }, function (data, status) {
+                    if (status == 'success') {
+                        $('#result').html(data);
+                    } else {
+                        alert('실패');
+                    }
+                }); // post 함수
+            }); // click 콜백함수
+        }); //jQuery 부분
+    </script>
+</head>
+<body>
+    <p>
+        아이디<input type="text" name="mId" id="mId" />   <!-- I => i .대문자임-->
+        <button>중복 확인</button>
+    </p>
+    <span id="result"></span>
+</body>
+</html>

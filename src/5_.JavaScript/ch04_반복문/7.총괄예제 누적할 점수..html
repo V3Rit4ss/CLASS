@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        var cnt = 0;   // 누적한 횟수
+        var right = 0; // 점수를 제대로 입력한 횟수
+        var wrong = 0; // 점수를 잘못 입력한 횟수
+        var sum = 0;   // 누적된 점수
+        while (confirm('누적할래?') && ++cnt) {
+            scoreStr = prompt('누적할 점수?');
+            score = Number(scoreStr);
+            if (scoreStr != null && scoreStr != '' && !isNaN(score)
+                && score >= 0 && score <= 100) {
+                sum += score;
+                right++;
+            } else {
+                wrong++;
+            }
+        }
+        document.write(cnt + "번 입력<br>");
+        document.write('누적점수 : ' + sum + '<br>');
+        document.write('점수를 제대로 입력한 횟수:' + right + '<br>');
+        document.write('점수를 잘못  입력한 횟수:' + wrong + '<br>');
+    </script>
+</head>
+<body>
+    <form action="#" name="frm" onsubmit="return tot">
+
+
+
+    </form>
+</body>
+</html>

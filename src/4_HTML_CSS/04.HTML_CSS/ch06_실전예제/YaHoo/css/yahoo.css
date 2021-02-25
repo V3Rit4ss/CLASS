@@ -1,0 +1,180 @@
+﻿@font-face {
+    font-family: 'DX';
+    src: url('../font/DXSeNB-KSCpc-EUC-H.ttf');
+} 
+* {
+    font-family: 'DX','Times New Roman'; 
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+li {
+    list-style: none;
+}
+/*------------------header_nav--------------*/
+#header_nav {
+    width: 100%; 
+    min-width: 1000px;
+    height: 25px;
+    line-height: 25px;
+    background-color: #2b1152;
+    font-size: .9em;
+    overflow: hidden;
+}
+
+    #header_nav .gnb li {
+        float: left;
+        width: 60px; margin:0 0 0 15px;
+    }
+
+    #header_nav .suvivalFootball {
+        float: right;
+        padding: 0 8px 0 0;
+        margin: 0 auto;
+    }
+
+        #header_nav .suvivalFootball > a > img {
+            width: 13px;
+            height: 13px;
+            text-align: center;
+            line-height: 13px;
+        }
+
+#header_info {
+    width:1000px; margin:0 auto;
+    overflow:hidden;  
+    
+}
+
+    #header_info .logo {
+        margin: 10px;
+         float:left; 
+    }
+.search {
+   float:left; 
+}
+input[type="submit"] {
+    margin-top: 20px;
+    background: url("../image/search_btn.png");
+    background-repeat: no-repeat;
+    width: 124px; outline:0; 
+    border:0;
+    height: 37px;
+    float: left;
+    text-align: center;
+    line-height:37px;
+    color:white;
+}
+input[type="text"] {
+    float: left; /*내일 다시.*/ border:2px solid #3488d9;
+    width:400px; height:37px; margin:20px 0 0 0; outline:0;
+}
+.service {
+    float:left;
+}
+.service ul li {
+    float:right;  
+    margin: 30px 25px 30px 20px; /*밖*/ 
+}
+.service ul li a {
+   font-weight:bold;
+    font-size:.9em;
+    color:  #2b1152;
+}
+#content {
+    width:1000px; margin:10px auto 0; overflow:hidden;
+}
+#content #main_menu {
+    width:155px; float:left;
+
+}
+#content #main_menu ul li{
+    line-height:35px; padding:5px;
+}
+#content #main_menu ul li > a {
+    color: #2b1152;
+}
+#content #main{
+    width:600px; float:left;
+
+}
+#content #main div{
+    border:1px solid lightgray; margin:3px;
+
+}
+#content #main div:nth-child(1){
+    height:300px;
+
+}
+#content #main div:nth-child(2){
+    height:150px;
+
+}
+#content #main div:nth-child(3){
+    height:50px; line-height:50px;
+    background-color:#500095;
+}
+#content #main div:nth-child(3) ul{
+    overflow:hidden;
+
+}
+#content #main div:nth-child(3) ul li{
+    float:left; width:16.6%; text-align:center;
+
+}
+#content #main div:nth-child(3) ul li a{
+    color:#ffffff;
+
+}
+#content #main div:nth-child(4),#content #main div:nth-child(5),
+#content #main div:nth-child(6),#content #main div:nth-child(7){
+    height:100px;
+
+}
+#content #main_banner{
+    width:230px; float:left;
+
+}
+#content #main_banner div{
+    border:1px solid lightgray;margin:3px;
+
+}
+#content #main_banner div:nth-child(1),
+#content #main_banner div:nth-child(2){
+    height:100px;
+
+}
+#content #main_banner div:nth-child(3),
+#content #main_banner div:nth-child(4){
+    height:150px;
+
+}
+#content #main_banner div:nth-child(5){
+    height:200px;
+
+}
+footer{
+    width:1000px; height:100px; margin:0 auto; border:1px solid lightgray;
+
+}
+footer ul{
+    overflow:hidden;
+
+}
+footer ul li{
+    float:left;
+
+}
+footer ul li:first-child{
+    margin:27px 50px 27px 150px;
+
+}
+footer ul li:last-child{
+    margin:25px 0;
+
+}

@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title> 
+    <script> //공유영역을 프로토타입. 프로토타입이란, 생성자 함수로 생성된 객체가 공통으로 가지는 공간.
+        function Student(name, kor, mat, eng, sci) { //생성자 함수 .
+            this.name = name;  //공통부분x 인 것들만 이안에 넣음.
+            this.kor = kor;  //데이터 추가할 공간.
+            this.mat = mat;
+            this.eng = eng;
+            this.sci = sci;
+        }
+        //공통부분. replaceAll (함수들.) 여기다가 만들어야함.
+        Student.prototype.getSum = function () {
+            return this.kor + this.mat + this.eng + this.sci; //this.꼭 붙혀야함. 안그럼 일반 스트링으로 인식함.
+        };
+        Student.prototype.getAvg = function () {
+            return this.getSum() / 4;
+        };
+        Student.prototype.toString = function () { //toString 이름을 바꾸면 안댐.
+            var output = '';
+            for (var key in this) {
+                if (key != 'toString' && key != 'getSum' && key != 'getAvg') {
+                    output += key + ' : ' + this[key] + '<br>';
+                } else if (key == 'getSum') {
+                    output += '총점 : ' + this.getSum() + '<br>';
+                } else if (key == 'getAvg') {
+                    output += '평균 : ' + this.getAvg() + '<br>';
+                }//if
+            }//for
+            return output;
+        }; //생성자 함수와 prototype의 함수 완성.
+
+        var students = [];
+        students.push(new Student('신길동', 40, 80, 70, 60));
+        students.push(new Student('오길동', 90, 80, 50, 100));
+        students.push(new Student('박길동', 80, 60, 77, 95));
+        students.push(new Student('이길동', 90, 87, 49, 60));
+        students.push(new Student('길길동', 60, 90, 88, 38));
+        students.forEach(function (data) {
+            document.write(data + '<hr>');
+
+        });
+        students[0].kor = 0; students[0].mat = 0; students[0].eng = 0; students[0].sci = 0;   //원래 이 전체가. 캡슐화가 되지 않았다. 자바의 프라이빗처럼이 아니라는것.!
+        document.write('<h2>신길동 점수 변동 후</h2>');
+        document.write(students[0]);
+    </script>
+</head>
+<body>
+
+</body>
+</html>

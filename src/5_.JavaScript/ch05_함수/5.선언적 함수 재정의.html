@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script> //선언적 함수의 재정의.
+        funVar(); //선언적 함수는 정의 전에 사용가능. 단, 스크립트안에 있어야함. 외부 스크립트는 맨위에. 함수B 경고창만..
+        function funVar() {  
+            alert('함수 A');  //함수B가 함수A로 덮어쓴다.
+        };
+        funVar(); //함수 B 경고창
+        function funVar () {
+            alert('함수 B');
+        };
+        funVar(); //함수B 경고창
+    </script>
+</head>
+<body>
+
+</body>
+</html>

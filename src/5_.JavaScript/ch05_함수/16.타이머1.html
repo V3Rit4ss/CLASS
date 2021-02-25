@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        document.write('<h1>TEXT</h1>');  //document. 이 있어야 실행 가능.
+        //window.alert => window. 안에있는 객체는 생략 가능.
+        setTimeout(function () {
+            alert('3초 지났다.');
+        }, 3000);
+        var cnt = 0;
+        nowTime = new Date().getTime(); // 현재 밀리세컨.
+        while (new Date().getTime() < nowTime + 1000) {
+            cnt++;
+        }
+        document.write('1초 동안 ' + cnt + '번while문 반복수행');
+        
+    </script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        table#top {background-color:antiquewhite;}
+        td {background-color:white;}
+        table {border: 1px solid red;}
+
+    </style>
+</head>
+<body>
+    <form action="" method="get">
+        <table id="top">
+            <caption>입력</caption>
+            <tr>
+                <td>아이디</td>
+                <td><input type="text" name="id" size="5" />
+                    <input type="button" value="중복확인" />
+                </td>
+            </tr>
+            <tr>
+                <td>비밀번호</td>
+                <td><input type="password" name="pw" /></td>
+            </tr>
+            <tr>
+                <td>전화번호</td>
+                <td>
+                    <input type="tel" name="phone1" size="3" />-
+                    <input type="tel" name="phone2" size="3" />-
+                    <input type="tel" name="phone3" size="3" />
+                </td>
+            </tr>
+            <tr>
+                <td>경력</td>
+                <td><input type="number" name="career" min="0" max="40" /></td>
+            </tr>
+            <tr>
+                <td>이메일</td> <!--asd@naver.com  골뱅이만 감지댐 .감지는 나중에.-->
+                <td><input type="email" name="email" /></td>
+            </tr>
+            <tr>
+                <td>사진</td>
+                <td><input type="file" name="filename" /></td>
+            </tr>
+            <tr>
+                <td>성별</td><!--checked="checked" 기본 체크상태. 파라미터 변수이름 같게 해야 하나만 찍힘.-->
+                <td><input type="radio" name="gender" value="m" checked="checked" /> 남
+                    <input type="radio" name="gender" value="f" /> 여
+                <!--성별은 라디오 버튼을 넣고 파라미터 와 벨류 무조건 넣어야함.-->
+                </td>
+            </tr>
+            <tr>
+                <td>사용가능언어</td>
+                <td>
+                    <input type="checkbox" name="lang" value="kor" checked="checked" />한글
+                    <input type="checkbox" name="lang" value="eng" />영어
+                    <input type="checkbox" name="lang" value="chi" />중국어
+                    <input type="checkbox" name="lang" value="jp" />일어
+                </td>
+            </tr>
+            <tr>
+                <td>국적</td>
+                <td>
+                    <select name="nation">
+                        <option></option> <!--빈거 두면 첫칸은 빈칸.-->
+                        <option value="kor">대한민국</option>
+                        <option value="usa">미국</option>
+                        <option>중국</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>좋아하는 음식</td>
+                <td>
+                    <select name="food" multiple="multiple" size="3"> <!--사이즈를 안쓰면 4개 다나옴.-->
+                        <option>김치찌개</option><option>부대찌개</option>
+                        <option>된장찌개</option><option>섞어찌개</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>자기소개</td>
+                <td>
+                    <textarea name="intro" cols="25" rows="5"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>생일</td>
+                <td>
+                    <input type="date" name="birth" /></td>
+            </tr>
+            <tr>
+                <td>sns URL</td>
+                <td><input type="url" name="sns" /></td>
+            </tr>
+            <tr>
+                <td>좋아하는 색상<br />좋아하는 정도</td>
+                <td><input type="color" name="color" />
+                    <input type="range" name="range" min="0" max="100" step="10" />100
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="입력"/>
+                    <input type="reset" value="초기화" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

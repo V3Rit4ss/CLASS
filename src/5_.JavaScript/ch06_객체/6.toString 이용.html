@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        /*  자바에서 했던것을 자바스크립트에서 만들어보자.
+         class Person{
+            private String name;
+            private int kor;
+            public String toString(){
+             return this.name+'은'+kor;
+            }
+        }
+         Person person = new Person('홍길동',90);
+         System.out.println(person);
+         
+         */
+
+        var student = {
+            name: '홍길동', kor: 90, mat: 100, eng: 97, sci: 88,
+            toString: function () { 
+                var output = ''; //출력하는 변수
+                for (var key in this) { //안에선 this
+                    if (key != 'toString') { //key 가 투스트링이 아닐때만 출력.
+                        output += key + ' : ' + this[key] + '<br>';
+                    }
+                }
+                return output;
+            },
+        }
+
+        document.write(student); //출력해야하는 메소드 안에서만 toString 생략 가능.
+
+       /* var output = '';  toString 안에다 넣을 예정임.
+        for (var key in student) {
+            if (key != 'toString') {
+                output += key + ':' + student[key] + '<br>';
+            }
+        } 
+        document.write(output);
+        */
+
+
+
+
+
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

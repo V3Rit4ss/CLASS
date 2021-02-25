@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        var student = {
+            name: '홍길동', kor: 92, mat: 93, eng: 90, sci: 95,
+            output : '객체안에 output', // 파이썬 을 할것이라 끝에 , 를 남겨둠.
+        }
+        var output = '';  //출력하는 변수 생성.,   선언된 변수는 window객체 안의 변수로댐.
+        with (student) {//student. 을 생략해주는 예약어 with()
+            window.output += '이름은' + name + '<br>'; //student.name 을 생략해줌.
+            window.output += '국어 점수 : ' + kor + '<br>';
+            window.output += '수학 점수 : ' + mat + '<br>';
+            window.output += '영어 점수 : ' + eng + '<br>';
+            window.output += '과학 점수 : ' + sci + '<br>';  // 상단의 student 안에 output 이 있어서.  window. 를 붙힘
+        }
+        document.write(output);
+        document.write('name in student : ' + ('name' in student)); //student 안에(in) name 이있냐? for-in 문을 이렇게도 쓸수있음.
+    </script>
+</head>
+<body>
+
+</body>
+</html>

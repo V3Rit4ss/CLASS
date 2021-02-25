@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>//Object 내장객체.
+        Object.prototype.test = function () {
+            alert(this);
+        };
+        var num = 273; //  => var num = new Number(273);
+        num.test();
+        var str = 'Hello, JS'; //var str = new String('Hello,Js');
+        str.test();
+        var obj = {
+            name: '홍길동', age: 25,//obj에 toString 을 안만들어서 object object 라 나옴, 근데 toString 을 만듬.
+            toString: function () {  //toString 이라는 기본적인것이 나오기때문에 이름 바꾸면 안댐.
+                return this.name + '은 ' + this.age;  
+            },
+        };   
+        obj.test();
+    </script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        * {
+            padding:0; margin:0;
+        }
+        div {
+            border:1px solid gray; margin: 5px; padding: 5px;
+            text-align:center;
+        }
+        #all {
+            width:800px; margin:10px auto; border: 2px solid gray;
+            position:relative; 
+        }
+        #header {
+            width:780px; height:90px; background-color:yellow;
+            line-height:90px; opacity:.6;
+        }
+        #contentAll {
+           width:780px; height:200px; overflow:hidden;
+           
+            
+        }
+        #nav {
+            width:780px; height:100px;  padding-top:10px;
+            /*서브 메뉴가 활성화 될때 클릭 가능하게.*/
+            position:relative;   z-index:99999;
+        }
+        #nav > ul {
+             width:720px;
+             margin:10px auto;
+             overflow:hidden;
+        }
+        #nav > ul > li {
+            list-style: none;
+            border: 1px solid black; opacity:.6;
+            float:left; margin:2px;
+            background-color:cornsilk;
+        }
+        #nav  ul  li  a {
+            text-decoration:none; color:purple;
+            font-weight:bold;
+            display:block;
+            width:130px; height: 50px;
+            line-height: 50px;
+        }
+        #nav > ul > li:first-child{
+            border-radius: 20px 0 0 20px;
+        }
+        #nav > ul > li:last-child{
+            border-radius: 0 20px 20px 0;
+        }
+        #content {
+            height:180px; width:535px;
+            background-color:aliceblue; float:left;
+            opacity:.6;
+        }
+        #banner {
+            height:180px; width:200px;
+            background-color:aliceblue; float:left;
+            opacity:.6;
+        }
+        #footer {
+            width:780px; height:90px;
+            background-color:yellow; opacity:.6;
+            text-align:center; line-height:90px;
+        }
+    #background_image { 
+        margin: 0; padding: 0; 
+        width: 100%; height: 100%; 
+        background-image: url('https://news.imaeil.com/inc/photos/2018/12/12/2018121219112341883_l.jpg'); 
+        position: absolute; top: 0; left: 0; 
+        background-size: 100%; opacity: .5; z-index: -999999;
+
+    }
+    /* 서 브 메 뉴 CSS 처 리 부 분 */
+    .subMenu li {
+        list-style:none;
+    }
+    .subMenu {
+        display:none;
+        background-color:white;
+    }
+    
+    #nav > ul > li:hover .subMenu{  /*ul:hover .subMenu  = 전체 메뉴가 다 나타난다.*/
+        display:block;
+    }
+    </style>
+</head>
+<body>
+    <div id="all">
+       <!-- div img 를 하나 주고 포지션을 잡고 부모단에 릴리티브. 16번.참고. -->
+        <div id="header">
+            <p>HEADER</p>
+        </div>
+        <div id="nav">
+            <p>NAVIGATION</p>
+            <ul>
+                <li><a href="#menu1">menu1</a>
+                    <ul class="subMenu">
+                        <li><a href="#submenu1-1">submenu1-1</a></li>
+                        <li><a href="#submenu1-2">submenu1-2</a></li>
+                        <li><a href="#submenu1-3">submenu1-3</a></li>
+                        <li><a href="#submenu1-4">submenu1-4</a></li>
+                        <li><a href="#submenu1-5">submenu1-5</a></li>
+                    </ul>
+                </li>
+                <li><a href="#menu2">menu2</a>
+                    <ul class="subMenu">
+                        <li><a href="#submenu2-1">submenu2-1</a></li>
+                        <li><a href="#submenu2-2">submenu2-2</a></li>
+                        <li><a href="#submenu2-3">submenu2-3</a></li>
+                        <li><a href="#submenu2-4">submenu2-4</a></li>
+                        <li><a href="#submenu2-5">submenu2-5</a></li>
+                    </ul>
+                </li>
+                <li><a href="#menu3">menu3</a>
+                    <ul class="subMenu">
+                        <li><a href="#submenu3-1">submenu3-1</a></li>
+                        <li><a href="#submenu3-2">submenu3-2</a></li>
+                        <li><a href="#submenu3-3">submenu3-3</a></li>
+                        <li><a href="#submenu3-4">submenu3-4</a></li>
+                        <li><a href="#submenu3-5">submenu3-5</a></li>
+                    </ul>
+                </li>
+                <li><a href="#menu4">menu4</a>
+                    <ul class="subMenu">
+                        <li><a href="#submenu4-1">submenu4-1</a></li>
+                        <li><a href="#submenu4-2">submenu4-2</a></li>
+                        <li><a href="#submenu4-3">submenu4-3</a></li>
+                        <li><a href="#submenu4-4">submenu4-4</a></li>
+                        <li><a href="#submenu4-5">submenu4-5</a></li>
+                    </ul>
+                </li>
+                <li><a href="#menu5">menu5</a>
+                    <ul class="subMenu">
+                        <li><a href="#submenu5-1">submenu5-1</a></li>
+                        <li><a href="#submenu5-2">submenu5-2</a></li>
+                        <li><a href="#submenu5-3">submenu5-3</a></li>
+                        <li><a href="#submenu5-4">submenu5-4</a></li>
+                        <li><a href="#submenu5-5">submenu5-5</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div id="contentAll">
+            <div id="content">
+                <p>CONTENT</p>
+            </div>
+            <div id="banner">
+                <p>BANNER</p>
+            </div>
+        </div>
+        <div id="footer">
+            <p>FOOTER</p>
+        </div>
+        <div id="background_image"></div>
+        <!-- <div id="background_image"></div> -->
+
+    </div>
+</body>
+</html>

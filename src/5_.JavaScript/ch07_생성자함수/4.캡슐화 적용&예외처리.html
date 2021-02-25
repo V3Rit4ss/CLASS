@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>  <!-- 캡슐화. + 예외처리.-->
+    <script>
+        function Rectangle(w, h) {
+            if (w < 0) { //음수 값일때
+                throw '음수는 들어갈 수 없습니다.'; //예외 발생. 자바의 예외처리 생각 ㄱㄱ
+            } else { //음수 값이 아닐때.
+                var width = w;
+            }
+            if (h < 0) {
+                throw '음수는 들어갈 수 없다고 했습니다.';  //예외발생  예외도 각자의 타입이 다 있다. 궁금하면 자바 ㄱㄱ
+            } else {
+                var height = h;
+            }
+            this.getWidth = function () {
+                return width;
+            }
+            this.getHeight = function () {
+                return height;
+            }
+            this.setWidth = function (w) {
+                if (w < 0) {
+                    throw '음수값으로 수정 할 수 없습니다.';
+                } else {
+                    width = w;
+                }//음수 if -else 예외
+                
+            } //this.setWidth
+            this.setHeight = function (h) {
+                if (h < 0) {
+                    throw '음수 값으로 수정 할 수 없습니다.';
+                } else {
+                    height = h;
+                } //음수 if-else 예외
+                
+            } //this.setHeight
+        }
+        Rectangle.prototype.getArea = function () {
+            return this.getWidth() * this.getHeight();
+        };  //생성자 함수와 프로토타입 완성.
+
+        try {
+            var rect = new Rectangle(5, 7);
+        } catch (e) {  //Exception 이라는 타입이 없으니 변수 e 만 적는다.
+            location.href = '(4)공사중.html';
+        }
+        document.write('rect 의 가로 길이 : ' + rect.getWidth() + '<br>');
+        document.write('rect 의 세로 길이 : ' + rect.getHeight() + '<br>');
+        document.write('rect 의 넓이 : ' + rect.getArea() + '<br>');
+        try {
+            rect.setWidth(1); rect.setHeight(-7); //음수를 넣었을때. 음수일때 이밑의 결과는 안나온다. 즉, 멈춤. f12 눌렀을때 thow 절로 가르킬텐데 그쪽을 고치면 안됀다.
+        } catch (e) {
+            document.write('<h6>' + e + ' 수정안됨.</h6>'); //특정한 것을 넣고싶으면 넣어서 보여줄수있다.
+        } 
+        
+
+        document.write('<h2>수정후</h2>');
+        document.write('rect 의 가로 길이 : ' + rect.getWidth() + '<br>');
+        document.write('rect 의 세로 길이 : ' + rect.getHeight() + '<br>');
+        document.write('rect 의 넓이 : ' + rect.getArea() + '<br>');
+    </script>
+</head>
+<body>
+
+</body>
+</html>

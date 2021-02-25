@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        form {
+            width: 500px ; height:200px;
+            line-height:200px; text-align:center;
+
+        }
+        table {
+            border:2px solid red;
+        }
+    </style>
+    <script>
+        do {
+            nameStr = prompt('이름을 입력해 주세요');
+            name = string(nameStr);
+            if (nameStr != null && nameStr != '' && !isNaN(name)) {
+                break;
+            }
+        } while (true);
+        do {
+            ageStr = prompt('나이를 입력해 주세요');
+            age = Number(ageStr);
+            if (ageStr != null && ageStr != '' && !isNaN(age) && age > 0 && age >= 120 ) {
+                break;
+            }
+        } while (true);
+        do { //false 로 인식 되는 값들 = '', 0, null , NaN , undefined 
+            addStr = prompt('주소를 입력해 주세요');
+            address = string(addStr);
+            if (addStr != null && addStr != '' && !isNaN(address)) {
+                break;
+            }
+        } while (true);
+    </script>
+</head>
+<body>
+    <form>
+        <table>
+            <tr>
+                <td>
+                    <label for="name">이름</label>
+                </td>
+                <td>
+                    <input type="text" name="name" id="name" size="20" autofocus="autofocus"
+                           placeholder="이름은 2글자 이상." />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="age">나이</label>
+                </td>
+                <td>
+                    <input type="text" name="age" id="age" size="20" autofocus="autofocus"
+                           placeholder="나이는 0~120세까지" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="address">주소</label>
+                           
+                </td>
+                <td>
+                    <input type="text" name="address" id="address" size="20" autofocus="autofocus"
+                           placeholder="주소는 입력만." />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="입력" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

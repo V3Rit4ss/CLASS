@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        var output = 'abcd@abcd@abcd';
+        var splitOutput = output.split('@'); //abcd 와 abc 로 나뉨
+        //  document.write(output.replace('@', 'XX')); //원하던 결과가 아님.
+        document.write(splitOutput + '분리된 횟수 : ' + splitOutput.length + '<br>');
+        var sumSplitOutput = splitOutput.join('XX');
+        document.write(sumSplitOutput);
+    </script>
+</head>
+<body>
+
+</body>
+</html>

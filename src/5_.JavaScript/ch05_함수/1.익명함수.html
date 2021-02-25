@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+    //    var i = 'Hello';
+    //    alert(i); 출력자를 맨위에 선언하면. 아무것도 없는 (undefined) 로 나온다.
+        var functionVar = function () { alert('test') }; //익명 함수. 이름이 없는 함수. 함수의내용을 var 로 할당.
+ //       alert(functionVar); //브라우저에서는 alert 가 먼저.
+  //      alert(typeof (functionVar));
+
+    // 브라우저에 출력.
+        document.write(functionVar + '<br>');
+        document.write(typeof (functionVar));
+
+        //익명 함수 호출시에는 함수형 변수에 할당 후에 사용가능.
+        functionVAr(); //익명함수호출은 변수의 이름에 ()을 붙여 호출.
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

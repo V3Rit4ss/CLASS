@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        function chk() {
+            if (!frm.id.value) {
+                alert('ID를 입력하세요'); /*"" '' 두개 같음.*/
+                frm.id.focus();
+                return false;
+            } else if (!frm.pw.value) {
+                alert('비밀번호를 입력하세요');
+                frm.pw.focus();
+                return false;
+            } else if (frm.pw.value != frm.pwChk.value) {
+                alert("비밀번호를 확인하세요.");
+                frm.pw.value = "";
+                frm.pwChk.value = '';
+                frm.pw.focus();
+                /*frm.pwChk.focus();*/
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <form name="frm" onsubmit="return chk()"> <!--액션,메소드 안쓰면 기본인 빈스트링과, 겟 방식으로.-->
+        <table>
+            <tr>
+                <th>아이디</th>
+                <td><input type="text" name="id"  /></td>
+            </tr>
+            <tr>
+                <th>비밀번호</th>
+                <td><input type="password" name="pw" /></td>
+            </tr>
+            <tr>
+                <th>비밀번호 체크</th>
+                <td><input type="password" name="pwChk" /></td>
+            </tr>
+            <tr>
+                <th colspan="2">
+                    <input type="submit" value="전송" />
+                </th>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

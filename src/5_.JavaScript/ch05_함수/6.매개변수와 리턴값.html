@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        var i = Number(prompt('i 값은?', '0'));
+        var j = Number(prompt('j 값은?', '0'));
+        document.write('i(' + i + ')의 j (' + j + ')승은' + pow(i , j)+'<br>');
+        //pow(i) 선언된 매개변수보다 적은 매개변수 : undefined 로 할당. for문을 돌지않고 false라서 무조건 1이 리턴.
+        document.write('pow(2) = ' + pow(2)+'<br>');
+
+        //pow(i , j ,10 ,20 ,333) 는 앞에 두개만 선언했기때문에 i,j만 받고 나머지는 무시한다.
+        document.write('pow(2,3,10,20) = ' + pow(2, 3, 10, 20)+'<br>');
+        //한마디로 매개변수를 많이 선언하던 적게하던 에러가 안나고 실행은 된다.
+
+        function pow(x, y) { //x의 y승을 계산해서 리턴하는 함수.
+            var result = 1;
+            for (var cnt = 1; cnt <= y; cnt++) {  //y번 반복.  NaN 값 i가 오면 y 는 true 라서 실행이되고, y가 NaN이면 false 라서 j값이 1로만 나온다.
+                result *= x;   //= result * x;
+            }
+            return result; //하나의 리턴만 온다.
+
+        }; 
+    </script>
+</head>
+<body>
+
+</body>
+</html>

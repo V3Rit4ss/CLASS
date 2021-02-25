@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>  <!-- 캡슐화.-->
+    <script>
+        function Rectangle(w, h) {
+            var width = w;
+            var height = h;  //외부에서 억세스 불가.
+            this.getWidth = function () {
+                return width;
+            }
+            this.getHeight = function () {
+                return height;
+            }
+            this.setWidth = function (w) {
+                width = w;
+            }
+            this.setHeight = function (h) {
+                height = h;
+            }
+        }
+        Rectangle.prototype.getArea = function () {
+            return this.getWidth() * this.getHeight();
+        };
+
+        var rect = new Rectangle(5, 7);
+        document.write('rect 의 가로 길이 : ' + rect.getWidth() + '<br>');
+        document.write('rect 의 세로 길이 : ' + rect.getHeight() + '<br>');
+        document.write('rect 의 넓이 : ' + rect.getArea() + '<br>');
+
+        rect.setWidth(1); rect.setHeight(-7); //음수를 넣었을때.
+
+        document.write('<h2>수정후</h2>');
+        document.write('rect 의 가로 길이 : ' + rect.getWidth() + '<br>');
+        document.write('rect 의 세로 길이 : ' + rect.getHeight() + '<br>');
+        document.write('rect 의 넓이 : ' + rect.getArea() + '<br>');
+    </script>
+</head>
+<body>
+
+</body>
+</html>

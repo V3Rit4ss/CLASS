@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        var arr =  [10, 20, 30,]; //남은 , 는 무시.
+        var product = {
+            'name': 'Micorsoft Visual Studio', 'price': 0, 'language': '한국어',
+            'supportOS': 'win 32/64', 'method': function () { alert('method'); },  //혹시 모를 데이터 추가할까봐 , 를 남겨둠.
+        };
+        for (var key in product) {
+            if (key != 'method') { //key 가 method 빼고.
+                document.write(key + " : " + product[key] + '<br>');
+            }
+        }
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

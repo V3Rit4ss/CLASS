@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        var sum = 0;
+        for (var i = 0; i <= 10; i++) {
+            sum += i;
+            console.log('0부터 i까지 누적합은' + sum);
+           //i--; 할려면 아래처럼. 그이유는 i 가 11까지 된 상태에서 나오기 때문에 그러는데 우리가 원하는값은.
+                                                // 10까지의 라는 결과를 원한다. 그리하여 아래처럼 추가함.
+        }
+        i = i - 1; //추가한 내용.
+        console.log('DONE');
+        document.write('<h1>0부터 ' + i + "까지 누적된 값은 " + sum + '</h1>');
+    </script>
+</head>
+<body>
+
+</body>
+</html>

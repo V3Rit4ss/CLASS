@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        #contain{
+            width:700px; margin: 0 auto; border: 1px solid #cccccc;
+        }
+        #header{
+            height:50px; background-color:#cccccc;
+        }
+        #wrap {
+            height:200px; position:relative; /* < ---- 안쪽에 absolute 가 들어가있으면 부모단에 */
+        }
+        #wrap #content1{
+            height:180px; width:420px;
+            background-color:red; position:absolute;
+            top:10px; left:10px;
+            z-index:99999; /*z-index 가 큰값이면, 2d 면에서 봐서 노란색의 위로.*/
+        }
+        #wrap #content2{
+            height:180px; width:300px;
+            background-color:yellow; position:absolute;
+            top:12px; right:10px;
+            z-index: -9999999; /*z-index의 값을 둘중하나만 설정해놓으면 된다.*/
+        }
+        #footer {
+            height: 50px;
+            background-color: #cccccc;
+        }
+    </style>
+</head>
+<body>
+    <div id="contain">
+        <div id="header">header</div>
+        <div id="wrap">
+            <div id="content1">CONTENT1(빨간색 왼쪽부분)</div>
+            <div id="content2">CONTENT2(노란색 오른쪽부분)</div>
+        </div>
+        <div id="footer">footer</div>
+    </div>
+</body>
+</html>

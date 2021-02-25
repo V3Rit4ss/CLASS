@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>/*위에서부터 아래로 차례적으로 적용이 된다.*/
+        header, footer {
+            color: blue; /*글씨색.*/ border: 1px solid gray; }
+        h1 {border : 1px dashed red; margin:0;}
+        li , p {color:red; background-color: pink; font-weight:bold; /* <-글씨를 두껍게.*/}
+        p {color:chocolate;} /*p 태그의 결론은 마지막으로.*/
+    </style>
+</head>
+<body>
+    <header>
+        <h1>00 주식회사</h1> <!-- 기본적으로 밖여백(margin)이 있다.-->
+    </header>
+    <nav>
+        <ul>
+            <li>회사소개</li><li>서비스소개</li><li>고객센터</li><li>공지사항</li>
+        </ul>
+    </nav>
+    <section>
+        <p>신규확진 513명, 나흘째 500명대 유지…오늘 거리두기 막판 조정(종합) </p>
+    </section>
+    <footer>
+        <p>서울시 마포구 신촌로 94 그랜드빌딩 704호</p>
+    </footer>
+</body>
+</html>

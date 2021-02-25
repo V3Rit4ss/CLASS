@@ -1,0 +1,226 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head> 
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0 ,
+          maximum-scale=2.0, minimum-scale=0.7" />
+    <title></title>
+    <style>
+        body{ /*투명사진을 확인하기위함.*/
+             /* background-color:#ea8f00; */
+        }
+        /* 페이지 초기화 */
+        *{
+            padding:0 ; margin:0; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif /*폰트 초기화 1.없으면 2, 2.가 없으면 3.*/
+        }
+        li {
+            list-style:none;
+        }
+        a {
+            text-decoration:none;
+        }
+        /*       header         */
+        header {
+            height: 100px; background-color:#ea8f00;
+        }
+        /*         header의 #logowrap         */
+        header #logo_warp {
+            height:50px; line-height:50px; text-align:center;
+           /* position:relative;  어차피 맨위라 안쳐도 무방. */
+        }
+        header #logo_warp a {
+            color:#ffffff;
+        }
+        header #logo_warp img.menu{
+            position:absolute; top:0; left:10px;
+        }
+        header #logo_warp img.myinfo{
+            position:absolute; top:0; right:10px;
+        }
+        /*      header 의 #search         */
+        header #search {
+            height:50px; position:relative; /* 포지션 => 돋보기 이미지를 search안에 넣기 위함.*/
+        }
+        /*name=쿼리 가능*/
+        header #search input[type='text'] {
+            width:100%; height:50px; border:3px solid #ea8f00;
+            outline: 3px solid #ea8f00; box-sizing:border-box;
+            padding:5px 55px 5px 5px; font-size:1.3em;
+        }
+        header #search input[type='submit'] {
+            background:url('0120_imgEx2/search.png'); /*크기를 딱맞춰서 하려고 no-repeat 안함.*/
+            width:50px; height:50px; border:0; outline:0;
+            position:absolute; top:0; right:0;
+        }
+        /* lnb  */
+        #lnb ul {
+            overflow:hidden; margin:7px 0; /*위아래 여백 7px로 */
+        }
+        #lnb ul li {  /* a 을 인라인블록으로 해서 뻥튀기 가능한데 이때 여백을 좀 줘야 서로간의 클릭안하게 해줘야한다 */
+            float:left; width:16.6666%; border-right:1px solid #ea8f00;
+            box-sizing:border-box; text-align:center;
+        }
+        #lnb ul li:last-child{
+            border:0;
+        }
+        /*        section의 #section1             */
+        #section1 .row1, #section1 .row2, #section1 .row3 {
+            overflow:hidden;
+        }
+        .row1 div, .row2 div, .row3 div {
+            float:left; width:50%; height:135px;
+            border:2px solid white; box-sizing:border-box;
+        }
+        #section1 img {
+            width:100%; height:100%;
+        }
+        /*         section의 #section2        */
+        section #section2 {
+            margin: 7px 0; /*위아래만.*/
+        }
+        section #section2 ul li {
+            padding:8px; border:1px solid lightgray;
+            /* 말줄임 태그(ellipsis) */
+            white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+        }
+        /*        section의 #section3             */
+        section #section3 ul li {
+            border:1px solid lightgray; height:120px; padding:10px; margin:7px;
+            position:relative;
+        }
+        section #section3 ul li p.img {
+            position:absolute; top:10px; left:10px;
+            width:100px; height:100px;  
+        }
+        section #section3 ul li p.txt {
+            width:100%-20px; /*100% 에서 뺴기 20px 계산 가능하네*/
+            padding:10px 20px 10px 120px;
+        }
+        section #section3 ul li p.txt span:first-child{
+            display:block;  font-size:1.2em; font-weight:bold;
+            color:darkblue;
+            /* 말줄임 태그 3개 다 고정으로 들어와야함.  */ 
+            white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+        }
+        footer{
+            background-color:#ea8f00; text-align:center;
+
+        }
+        footer p:last-child{
+            margin:5px; padding:10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+    
+        <div id="logo_warp">
+            <img src="0120_imgEx2/menu.png" class="menu" alt="메뉴아이콘" />
+            <a href="ex2.html" class="logo" > mobile logo </a>
+            <img src="0120_imgEx2/myinfo.png" class="myinfo" alt="내정보"/>
+        </div>
+        <div id="search">
+            <form action="">
+                <input type="text" name="query_word" />
+                <input type="submit" value="" /> <!--빈스트링으로 사진나오게끔.-->
+            </form>
+        </div>
+    </header>
+    <div id="lnb" >
+        <ul>
+            <li><a href="#">lnb1</a></li>
+            <li><a href="#">lnb2</a></li>
+            <li><a href="#">lnb3</a></li>
+            <li><a href="#">lnb4</a></li>
+            <li><a href="#">lnb5</a></li>
+            <li><a href="#">lnb6</a></li>
+        </ul>
+    </div>
+    <section> <!-- placehold.it/100x100 더미사진 만들어주는 사이트. -->
+        <div id="section1">
+            <div class="row1">
+                <div>
+                <a href="https://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=105&oid=015&aid=0004486721">
+                    <img src="http://placehold.it/100x100" alt="1행1열" />
+                </a>
+                </div>
+                <div>
+                    <a href="https://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=105&oid=015&aid=0004486721">
+                        <img src="http://placehold.it/100x100" alt="1행2열" />
+                    </a>
+                </div>
+            </div>
+            <div class="row2">
+                <div>
+                    <a href="https://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=105&oid=015&aid=0004486721">
+                        <img src="http://placehold.it/200x200" alt="2행1열" />
+                    </a>
+                </div>
+                <div>
+                    <a href="https://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=105&oid=015&aid=0004486721">
+                        <img src="http://placehold.it/200x200" alt="2행2열" />
+                    </a>
+                </div>
+            </div>
+            <div class="row3">
+                <div>
+                    <a href="https://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=105&oid=015&aid=0004486721">
+                        <img src="http://placehold.it/300x300" alt="3행1열" />
+                    </a>
+                </div>
+                <div>
+                    <a href="https://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=105&oid=015&aid=0004486721">
+                        <img src="http://placehold.it/300x300" alt="3행2열" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="section2">
+            <ul>
+                <li>
+                    <a href="https://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=101&oid=008&aid=0004531592">
+                        마스크·병동·백신까지"…1년 내내 방역에 팔걷은 기업들
+                    </a>
+                </li>
+                <li>
+                    <a href="https://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=101&oid=008&aid=0004531592">
+                        20일 문재인 대통령이 방문해 2000만 명 분의 백신 확보 가능성이 열렸다고 밝힌 SK바이오사이언스는 SK케미칼에서 물적분할한 회사다. 세포배양 방식의 백신을 전문으로 만드는 기업으로 자체 개발 백신만으로 연 1000억원대 매출을 올리고 있다.
+                    </a>
+                </li>
+                <li>
+                    <a href="https://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=101&oid=008&aid=0004531592">
+                        정부가 설 명절을 앞두고 중소기업과 소상공인을 위해 92조원 규모의 특별금융지원에 나선다.올해 코로나19(신종 코로나바이러스 감염증) 피해와 한국판 뉴딜 지원을 위해 500조원 규모의 정책금융도 투입하기로 했다.
+                    </a>
+                </li>
+                <li>
+                    <a href="https://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=101&oid=008&aid=0004531592">
+                        마윈은 연설에서 의미 심장한 이야기를 했다. 그는 “요즘 동료들과 함께 배우고 생각하고 있다”며 “우리는 그 어느때보다 교육과 자선에 전념하고 있다”고 말했다. 이어 “농촌 활성화와 공동 번영이라는 국가 비전에 봉사하는 것은 우리 세대 사업가들의 책임”이라고 강조했다. 중국 정부 방침에 적극 협조하는 태도를 보인 것이다. 마윈은 “코로나19 팬데믹이 끝나면 다시 만나자”고 덧붙였다.
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div id="section3">
+            <ul>
+                <li>
+                    <p class="img"><img src="http://placehold.it/100x100" /></p>
+                    <p class="txt">
+                        <span>첫번째 span은 말줄임을 할 예정입니다.첫번째 span은 말줄임을 할 예정입니다.첫번째 span은 말줄임을 할 예정입니다.첫번째 span은 말줄임을 할 예정입니다.</span>
+                        <span>두번째 span은 말줄임을 안 할 예정입니다.두번째 span은 말줄임을 안 할 예정입니다.두번째 span은 말줄임을 안 할 예정입니다.</span>
+                    </p>
+                </li>
+                <li>
+                    <p class="img"><img src="http://placehold.it/100x100" /></p>
+                    <p class="txt">
+                        <span>첫번째 span은 말줄임을 할 예정입니다.첫번째 span은 말줄임을 할 예정입니다.첫번째 span은 말줄임을 할 예정입니다.첫번째 span은 말줄임을 할 예정입니다.</span>
+                        <span>두번째 span은 말줄임을 안 할 예정입니다.두번째 span은 말줄임을 안 할 예정입니다.두번째 span은 말줄임을 안 할 예정입니다.</span>
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <footer>
+        <p><img src="0120_imgEx2/logo.png" alt="회사로고" /></p>
+        <p>서울시 마포구 노고산동 xx빌딩 704호</p>
+    </footer>
+</body>
+</html>

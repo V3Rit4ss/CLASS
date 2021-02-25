@@ -1,0 +1,497 @@
+--[VII] DDL, DML, DCL   DML은 취소 가능하지만 나머지는 취소가 불가함. DML도 취소 못하게 하고싶으면 COMMIT.
+--SQL = DDL(테이블 생성, 삭제 , 테이블 구조 변경, 테이블의 데이터제거.) 
+    -- + DML(SELECT , INSERT, UPDATE, DELETE)
+    -- + DCL(사용자 계정 생성, 사용자에게 권한 부여, 권한박탈, 트랜젝션명령어.)
+    
+--$$$ DDL  
+--1. 테이블 생성.(CREATE TABLE)
+SELECT * FROM EMP;
+--예약어는 테이블 이름에 쓸수없다. 테이블 이름 30자 내외
+CREATE TABLE BOOK(
+    BOOKID NUMBER(4),--도서번호 --넘버하고 아무것도 안하면 30~40자로 자동으로 잡힌다.
+    BOOKNAME VARCHAR2(20),--도서이름
+    PUBLISHER VARCHAR2(20),--출판사
+    RDATE DATE, --출판일
+    PRICE NUMBER(8),  --도서 가격
+    PRIMARY KEY(BOOKID) --테이블내 주키(PRIMARY KEY) = 유일한 코드, 유일한 값 ,중복X,NULL 값 불가.  --제약조건 중 하나인 프라이머리 키.
+    
+);
+
+DROP TABLE BOOK; --BOOK 테이블 삭제.
+CREATE TABLE BOOK(
+    BOOKID NUMBER(4) PRIMARY KEY,   --제약조건을 밑에다 위에다 해도 댐.
+    BOOKNAME VARCHAR2(20),       --제약조건을 필드 오른쪽에 해도 됌.  오라클에서는.
+    PUBLISHER VARCHAR2(20),
+    RDATE DATE,
+    PRICE NUMBER(8)
+
+
+);
+--바차2 는 2000바이트 까지인데, LOB 를 쓰면 2GB 까지 쓸수있다.
+SELECT * FROM BOOK;
+
+--EMP 와 유사한 EMP01 테이블 : EMPNO(NUMBER 4), ENAME(VARCHAR:20) , SAL(NUMBER 7 ,2[소수점 표기])
+CREATE TABLE EMP01 (
+    EMPNO NUMBER (4),
+    ENAME VARCHAR (20),
+    SAL NUMBER (7, 2)
+
+
+
+
+);
+
+SELECT * FROM EMP01;
+DESC EMP01; --내가 만든 테이블 구조확인.
+
+--DEPT01 : DEPTNO(NUMBER 2), DNAME(VARCHAR2 14) ,LOC(VARCHAR2 13)
+CREATE TABLE DEPT01 (
+    DEPTNO NUMBER (2),
+    DNAME VARCHAR2(14),
+    LOC VARCHAR2 (13)
+
+
+
+);
+SELECT * FROM DEPT01;
+DESC DEPT01;   -- 생성 확인.
+
+--서브쿼리를 이용한 테이블 생성.
+CREATE TABLE EMP02    --테스트형 으로 만들때 ..
+    AS
+    SELECT * FROM EMP;  --서브쿼리 결과만 옴, EMP02(제약조건은 미포함)   테이블내 서브쿼리는 가로 안넣어도댐.
+
+SELECT * FROM EMP02;
+INSERT INTO EMP02 (EMPNO, ENAME, DEPTNO) VALUES (7369, 'HONG', 90);   --제약조건이 없어서 중복된것도 들어간다.
+
+-- EMP03 : EMP 테이블에서의 EMPNO, ENAME, DEPTNO 만 추출.
+CREATE TABLE EMP03
+    AS
+    SELECT EMPNO, ENAME, DEPTNO FROM EMP;  --전체 테이블중에서 일정부분만 테스트 하고싶을때.
+
+SELECT * FROM EMP03;
+
+
+--EMP04 : EMP 테이블에서의 10번 부서만 추출.
+CREATE TABLE EMP04
+    AS
+    SELECT * FROM EMP WHERE DEPTNO=10;
+
+SELECT * FROM EMP04;
+
+--EMP05 : EMP 테이블에서 구조만 추출.
+CREATE TABLE EMP05
+    AS                             --[WHERE 1=0 ] 무조건 거짓이라 데이터는 빠지고 구조만 나온다.
+    SELECT * FROM EMP WHERE 1=0 ; --[ WHERE 1=1 ] 무조건 참이라 EMP 의 모든걸 가져옴
+    
+
+SELECT * FROM EMP05;
+
+
+-- (2) 테이블 구조 변경. (ALTER TABLE)
+--ALTER TABLE 테이블 명
+--ADD || MODIFY || DROP ~ 3개중에 하나가 들어온다.
+
+-- 1. 필드 추가 (ADD)  : 여러개 , 하나씩 가능.
+SELECT * FROM EMP03;
+ALTER TABLE EMP03 ADD (JOB VARCHAR2(10), SAL NUMBER(7, 2)); --여러개 
+SELECT * FROM EMP03;  -- 널값이 들어간다.
+ALTER TABLE EMP03 ADD (MGR NUMBER(4)); -- 한개.
+SELECT * FROM EMP03;
+
+-- 2. 필드 타입 수정 (MODIFY)
+ALTER TABLE EMP03 MODIFY (EMPNO VARCHAR2(5));  --숫자 테이터가 들어가있는 상태 그래서 바꿀수가 없음.
+ALTER TABLE EMP03 MODIFY (JOB VARCHAR2(5)); --데이터가 없어서 변경 가능. NULL 만 있어서.
+ALTER TABLE EMP03 MODIFY (ENAME VARCHAR2(200)); --늘리는건 가능.
+ALTER TABLE EMP03 MODIFY (ENAME VARCHAR2 (5)); -- 이미 있는 데이터 크기보다 더 작게는 불가능하다. ENAME = 6바이트로 들어가있기 때문.
+
+-- 3. 필드 삭제(제거) (DROP)
+SELECT * FROM EMP03;
+ALTER TABLE EMP03 DROP COLUMN JOB;    --드롭다음 가로 안씀 NULL 값이라 지워도 가능하지만. 데이터가 있는 상태에서 하면 데이터값도 통째로 날리는데
+ALTER TABLE EMP03 DROP COLUMN EMPNO;                                            --복구가 불가능 하다.
+SELECT * FROM EMP03;
+--논리적으로 특정 필드를 접근 못하도록 하는.(낮)
+ALTER TABLE EMP03 SET UNUSED (SAL);
+SELECT * FROM EMP03;  --SAL 이 안보이지만 잠깐 숨겨둔다.
+
+--논리적으로 접근 불가했던 필드를 삭제 (새벽)
+ALTER TABLE EMP03 DROP UNUSED COLUMNS; -- 물리적으로 삭제시 테이블 억세스 불가.
+
+
+--(3) 테이블 삭제 (DROP TABLE)
+SELECT * FROM EMP01; --있는지 없는지 확인 하고.
+DROP TABLE EMP01;  
+DROP TABLE DEPT;   -- 다른 테이블에서 참조하는 데이터가 있을 경우 DROP 불가
+                    --DEPT는 부모클래스 EMP 는 자식클래스  DEPT 를 지울라면 참조하는 클래스를 없애야 사라짐.
+
+-- (4) 테이블 내에 데이터 싹다 제거. (TRUNCATE TABLE) 복구 불가.
+SELECT * FROM EMP02;
+TRUNCATE TABLE EMP02; -- DDL 명령어는 취소 불가.
+
+
+-- (5) 테이블 이름 변경. (RENAME)
+SELECT * FROM EMP03;  --변경 전.
+RENAME EMP03 TO EMP3; -- EMP03 을 EMP3  으로  테이블 이름 변경.
+SELECT * FROM EMP3;  --변경 후.
+
+
+--6. 데이터 딕셔너리(접근불가)-> 데이터 딕셔너리뷰 (사용자 접근용) DBA 최고 권한.  일반 계정의 권한이 보는거랑 최고권한이 보는거랑 차이가 있다.
+    --DBA_TABLES , DBA_INDEXES, DBA_CONSTRAINTS, DBA_VIEWS;
+    --USER_TABLES , USER_INDEXES, USER_CONSTRAINTS, USER_VIEWS;
+    --ALL_TABLES , ALL_INDEXES, ALL_CONSTRAINTS, ALL_VIEWS;
+
+--USER_ XXX : [SCOTT ]이 소유한 객체 정보. [들어온 계정의]
+SHOW USER;  -- 계정이 뭔지 보여주는.
+SELECT TABLE_NAME FROM USER_TABLES; --내가 만든 것들의 누적.
+SELECT * FROM USER_TABLES;
+SELECT * FROM USER_INDEXES; --데이터 빨리찾기 하기 위한.  인덱스는 시스템에서 자동적으로 만들어지기는 하나 내가 만든 인덱스면 이름이 다를것이다.
+SELECT * FROM USER_CONSTRAINTS;
+
+SELECT * FROM USER_VIEWS;  -- 뷰를 만든게 없어서 하나도 나오질 않는다.
+
+CREATE TABLE BOOK2(
+    BOOKID NUMBER(4) CONSTRAINT BP PRIMARY KEY,  -- CONSTRAINT "BP" : 프라이머리 키 의 이름을 설정할수있음.
+    BOOKNAME VARCHAR2(120),       
+    PUBLISHER VARCHAR2(120),
+    RDATE DATE,
+    PRICE NUMBER(8)
+
+
+);
+--DDL 을 쓸때 마다 데이터 사전도 바로바로 바뀐다.
+
+--DBA_XXX : DBA 권한을 가진 사용자만 접근 가능한 객체 정보.
+SELECT * FROM DBA_TABLES;
+SELECT TABLE_NAME, OWNER FROM DBA_TABLES;
+SELECT * FROM DBA_INDEXES;
+SELECT * FROM DBA_CONSTRAINTS;
+SELECT * FROM DBA_VIEWS;
+
+--ALL_XXX : SCOTT 이 소유한 객체나 권한이 부여된 객체
+SELECT * FROM ALL_TABLES;
+SELECT * FROM ALL_CONSTRAINTS;
+SELECT * FROM ALL_INDEXES;
+SELECT * FROM ALL_VIEWS;
+
+
+--###### DML ######
+--7.DML : SELECT , INSERT , UPDATE, DELETE
+--(1) INSERT INTO 테이블이름 (필드명1 , 필드명2, ~~~~)   값1 -> 필드명1 , 값2 -> 필드명2 , 값3 -> 필드명3 ~~~~~
+       --            VALUES (값1, 값2 , ~~~~~);
+       
+--    INSERT INTO 테이블 이름 VALUES (값1, 값2, ~~~); 
+SELECT * FROM DEPT01;
+INSERT INTO DEPT01 (DEPTNO, DNAME, LOC) VALUES (10, 'ACCOUNTING', 'NEW YORK');  --필드명은 셀렉절에 있는 순서대로 안해도 댐.
+INSERT INTO DEPT01 (DNAME, LOC, DEPTNO) VALUES ('SALES','BOSTON',20);
+INSERT INTO DEPT01 (DEPTNO, DNAME, LOC) VALUES ( 30, 'IT', NULL); --대놓고 NULL 입력
+INSERT INTO DEPT01 (DEPTNO, DNAME) VALUES (40, 'OPERATION'); -- 값을 안 넣으면 자동으로 NULL 들어감
+--필드명을 생략 할때 반드시 DEPT01 의 필드값이 다 와야한다.
+INSERT INTO DEPT01 VALUES (50, '설계','마포');    -- DML 이라 취소 가능.
+SELECT * FROM DEPT01;
+DESC DEPT01;  --PK(프라이머리 키) 없는 DEPT01 
+--DEPT01 테이블에 DEPT테입르 10~30번 부서까지 내용을 INSERT
+INSERT INTO DEPT01 SELECT * FROM DEPT WHERE DEPTNO<40;   --SELECT * FROM DEPT WHERE DEPTNO<40 서브쿼리 먼저 실행해서 되는지 보고.
+SELECT * FROM DEPT01;  --프라이머리 키가 없어서 똑같은것들도 들어간 상태이다.
+
+--BOOK 테이블에 11번, '스포츠의학', 한솔출판, 출판일 오늘, 가격은 90000
+SELECT * FROM BOOK;
+INSERT INTO BOOK (BOOKID, BOOKNAME, PUBLISHER, RDATE, PRICE)
+    VALUES (11, '스포츠의학', '한솔출판',SYSDATE, 90000);
+--필드명 생략.
+--INSERT INTO BOOK [필드명 생략.] VALUES (11, '스포츠의학', '한솔출판',SYSDATE, 90000);
+
+-- COMMIT; --DML 명령어 에서만 가능.  DML 명령어는 트랜젝션 단위로 진행. 현 트랜젝션의 작업을 반영.
+-- ROLLBACK; --트랜젝션 안에 있는 DML 명령어를 취소
+
+
+--테이블 예제1.
+CREATE TABLE SAM01  (
+
+     EMPNO NUMBER(4)CONSTRAINT C_SAM PRIMARY KEY, 
+     ENAME VARCHAR2(10),
+     JOB VARCHAR2(9),
+     SAL NUMBER(7, 2)
+    
+);
+SELECT * FROM USER_CONSTRAINTS;
+DROP TABLE SAM01;
+CREATE TABLE SAM01(
+    EMPNO NUMBER(4) PRIMARY KEY,
+    ENAME VARCHAR2(10),
+    JOB VARCHAR2(9),
+    SAL NUMBER(7,2));
+SELECT * FROM USER_CONSTRAINTS;
+DROP TABLE SAM01;
+CREATE TABLE SAM01(
+    EMPNO NUMBER(4),
+    ENAME VARCHAR2(10),
+    JOB VARCHAR2(9),
+    SAL NUMBER(7,2),
+    PRIMARY KEY(EMPNO));
+INSERT INTO SAM01 (EMPNO , ENAME, JOB, SAL) VALUES (1000, 'APPLE', 'POLICE',10000);
+INSERT INTO SAM01 VALUES (1010, 'BANANA','NURSE',15000);
+INSERT INTO SAM01 VALUES (1020,'ORANGE','DOCTOR',25000);
+INSERT INTO SAM01 (EMPNO, ENAME, SAL) VALUES (1030,'VERY',25000);
+INSERT INTO SAM01 VALUES (1040,'CAT',NULL,2000);
+INSERT INTO SAM01 SELECT EMPNO, ENAME, JOB, SAL FROM EMP WHERE DEPTNO=10;
+SELECT * FROM SAM01;
+
+--DROP TABLE SAM01;
+--SELECT * FROM SAM01;
+
+
+
+-- (2) UPDATE 테이블이름 SET 필드명1= 값1, 필드명2 = 값2 ~~~~ WHERE (바꿀 행의 조건);  
+-- 취소 가능.
+--SELECT * FROM EMP01; 추가하기전에 있는지 없는지 확인.
+--
+DROP TABLE EMP01; --있다면 지우고.
+CREATE TABLE EMP01 
+    AS SELECT * FROM EMP;
+    
+SELECT * FROM EMP01;
+--부서번호는 30으로 수정.
+UPDATE EMP01 SET DEPTNO = 30;  --WHERE 절이없으면 모든걸 바꿈.
+SELECT * FROM EMP01; -- 바로 상위 문장이 활성이 되었는지 확인.
+
+--모든 직원의 급여를 10% 인상 하시오.
+UPDATE EMP01 SET SAL = SAL*1.1;  
+SELECT * FROM EMP01;
+COMMIT;
+
+-- 특정 행의 데이터만 수정하고자 할때는 WHERE 절 추가.
+-- 10번 부서 직원의 입사일을 오늘로 바꾸고 , 30번 부서로 바꿔라.
+UPDATE EMP01 SET HIREDATE = SYSDATE, DEPTNO=30 WHERE DEPTNO=10;
+
+SELECT * FROM EMP01;
+
+--SAL이 3000이상 사원만 급여를 10% 인상하시오.
+UPDATE EMP01 SET SAL = SAL*1.1 WHERE SAL>=3000;
+
+-- DALLAS 에 근무하는 직원들의 급여를 1000인상.
+UPDATE EMP01 SET SAL= SAL+1000 WHERE DEPTNO = (SELECT DEPTNO FROM DEPT WHERE LOC='DALLAS');
+
+
+--SCOTT 사원의 부서번호는 20으로 JOB 은 MANAGER 로 수정.
+UPDATE EMP01 SET DEPTNO = 20, JOB= 'MANAGER' WHERE ENAME = 'SCOTT';
+--SET DEPTNO = 20, JOB= MANAGER 순서를 바꿔도 상관은 없음.
+SELECT * FROM EMP01 WHERE ENAME = 'SCOTT';
+
+--SCOTT 사원의 입사일을 오늘로, 급여는 50 , COMM 은 400 수정
+UPDATE EMP01 SET HIREDATE = SYSDATE , SAL =50 , COMM = 400 WHERE ENAME='SCOTT';
+SELECT * FROM EMP01 WHERE ENAME = 'SCOTT';
+
+--서브쿼리를 이용한 UPDATE 문
+--EMP01에서 20부터의 지역명을 40번 부서의 지역명을 변경.
+SELECT * FROM DEPT01;
+UPDATE DEPT01 SET LOC='마포' WHERE DEPTNO=40;
+
+--DEPT01 에서 20번부서의 지역명을 40번 부서의 부서명, 지역명으로 변경. 다중행 서브쿼리.
+UPDATE DEPT01 SET (DNAME,LOC) = (SELECT DNAME, LOC FROM DEPT01 WHERE DEPTNO = 40)  WHERE DEPTNO = 20;
+SELECT * FROM DEPT01 WHERE DEPTNO IN (20,40);
+
+--EMP01 테이블의 모든 사원의 급여와 입사일을 'KING' 의  급여와 입사일로 수정
+SELECT * FROM EMP01;
+UPDATE EMP01 SET (SAL,HIREDATE) = (SELECT SAL,HIREDATE FROM EMP01 WHERE ENAME = 'KING') ; 
+SELECT * FROM EMP01;
+
+
+--(3) DELETE FROM 테이블명 WHERE 조건; DELETE 는 모두 삭제함.
+COMMIT;
+SELECT * FROM EMP01;
+DELETE FROM EMP01;
+ROLLBACK;
+
+--EMP01 테이블에서 30번 부서만 삭제해라.
+DELETE FROM EMP01 WHERE DEPTNO=30;
+SELECT * FROM EMP01;
+
+--SAM01 테이블에서 JOB이 정해지지않은 사원을 삭제
+SELECT * FROM SAM01;
+DELETE FROM SAM01 WHERE JOB IS NULL;
+
+--EMP01 테이블에서 부서명이 SALES인 사원을 삭제.
+DELETE FROM EMP01 WHERE DEPTNO = (SELECT DEPTNO FROM DEPT WHERE DNAME='SALES');
+
+--EMP01 테이블에서 RESEARCH 부서 소속인 사원 삭제
+DELETE FROM EMP01 WHERE DEPTNO = (SELECT DEPTNO FROM DEPT WHERE DNAME='RESEARCH');
+SELECT * FROM EMP01;
+
+--예제2 
+
+-- 1. ================
+CREATE TABLE MY_DATA (
+
+    ID NUMBER(4)  PRIMARY KEY,
+    NAME VARCHAR2(10),
+    USERID VARCHAR2(30),
+    SALARY NUMBER(10, 2)
+
+);
+-- =======================
+SELECT * FROM MY_DATA;
+
+-- 2. =============================
+INSERT INTO MY_DATA (ID , NAME, USERID, SALARY) VALUES (1, INITCAP('SCOTT'), 'SSCOTT', 10000.00);
+INSERT INTO MY_DATA (ID , NAME, USERID, SALARY) VALUES (2, 'Ford', 'fford', 13000.00);
+INSERT INTO MY_DATA (ID , NAME, USERID, SALARY) VALUES (3, 'Patel', 'ppatel', TO_NUMBER('33,000.00', '999,999.99'));
+INSERT INTO MY_DATA (ID , NAME, USERID, SALARY) VALUES (4, 'Report', 'rreport', TO_NUMBER('23,500.00', '999,999.99'));
+INSERT INTO MY_DATA (ID , NAME, USERID, SALARY) VALUES (5, 'Good', 'ggood', TO_NUMBER('44,450.00', '999,999.99'));
+--ROLLBACK;
+-- ====================================
+
+--3.
+SELECT * FROM MY_DATA;
+SELECT ID,NAME,USERID, TO_CHAR(SALARY,'999,999.99')SALARY FROM MY_DATA;
+--=======================
+
+--4.
+COMMIT;
+--=========================
+--6. UPDATE EMP01 SET SAL = SAL*1.1 WHERE SAL>=3000;
+UPDATE MY_DATA SET SALARY = 65000.00 WHERE ID = 3;  --또는.
+UPDATE MY_DATA SET SALARY = TO_NUMBER('65,000.00', '999,999.99') WHERE ID = 3;
+SELECT * FROM MY_DATA;
+COMMIT;
+--ROLLBACK;
+-- ========================
+
+--7. DELETE FROM EMP01 WHERE DEPTNO = (SELECT DEPTNO FROM DEPT WHERE DNAME='SALES');
+DELETE FROM MY_DATA WHERE ID = 3;
+DELETE FROM MY_DATA WHERE NAME ='Ford';
+DELETE FROM MY_DATA WHERE INITCAP(NAME)='Ford';
+SELECT * FROM MY_DATA;
+COMMIT;
+ROLLBACK;
+--DELETE FROM MY_DATA WHERE ID = (SELECT NAME, USERID, SALARY FROM MY_DATA WHERE ID = 3)
+
+--8 ===========================
+UPDATE MY_DATA SET SALARY = 15000 WHERE SALARY <= 15000;
+SELECT * FROM MY_DATA;
+--===================================
+
+--9.  DROP TABLE EMP01 ===========================
+DROP TABLE MY_DATA;
+SELECT * FROM MY_DATA;
+
+
+-- ERD : 구조화된 데이터를 저장하기 위해 DB를 사용하는데, DB의 구조와 제약조건등 다양한 기법을 설계하는 툴.
+
+CREATE TABLE DEPT1 (
+    DEPTNO NUMBER(2), 
+    DNAME VARCHAR2(14),
+    LOC VARCHAR2(13),
+
+
+    PRIMARY KEY(DEPTNO)
+);
+SELECT * FROM DEPT1;
+
+CREATE TABLE EMP1 (
+    EMPNO NUMBER(4) PRIMARY KEY, -- 제약조건1. PRIMARY KEY   : 부적합한 데이터 삽입 방지 수단. 
+    ENAME VARCHAR2(10) UNIQUE ,   --제약조건2. UNIQUE
+    JOB VARCHAR2(9) NOT NULL ,  --낫널만 밑에 못씀.   --제약조건3. NOT NULL
+    MGR NUMBER(4),
+    HIREADTE DATE DEFAULT SYSDATE,  -- 제약조건4. DEFAULT
+    SAL NUMBER(7, 2) CHECK (SAL >0),  --제약조건 5. CHECK
+    COMM NUMBER(7, 2),
+    DEPTNO NUMBER(2) REFERENCES DEPT1(DEPTNO)  --제약조건 6. FOREIGN 키.
+    
+);
+SELECT * FROM EMP1;
+--데이터 넣는 순서는 부모클래스 데이터먼저.
+INSERT INTO DEPT1 VALUES (10, '회계', '신촌');
+INSERT INTO DEPT1 VALUES (20, '설계', '마포');
+INSERT INTO DEPT1 VALUES (30, '영업', '이대');
+INSERT INTO DEPT1 VALUES (40, '전산', '공덕'); --롤백 가능. DML 이기때문.
+
+--EMP1 입력     --밑에 인설트 구절에 하이어데이트 아무것도 안넣으면 널인데 조건을 현재로 줬기에 현재로 들어감.
+INSERT INTO EMP1 (EMPNO, ENAME, JOB, MGR,SAL, DEPTNO) VALUES (1111,'홍가','회장',NULL,9000,40); 
+INSERT INTO EMP1 (EMPNO, ENAME, JOB, MGR,SAL, DEPTNO) VALUES (1112,'홍군','전무',1111,1000,30); 
+        --JOB 에 낫널 조건이라 안댐. + 이름에도 유니크하다고 조건을 걸어서 동명이인 안댐.
+SELECT * FROM EMP1;
+INSERT INTO EMP1 VALUES (1113,'김군','몰라',1112,TO_DATE('20201230','YYYYMMDD'), 8000,200,40);
+COMMIT; --을 하던가 파일을 저장하고 끌때 커밋할꺼냐, 롤백할꺼냐 라는 팝업창이 뜨는데 거기서 커밋 해도 댐.
+
+
+--EX.학생관리
+--SELECT * FROM STUDENT;
+--DELETE TABLE STUDENT;
+CREATE TABLE MAJOR (
+    MAJOR_CODE NUMBER(2) PRIMARY KEY,
+    MAJOR_NAME VARCHAR2(100) NOT NULL,
+    MAJOR_OFFICE_LOC VARCHAR2(255) NOT NULL
+
+);
+SELECT * FROM MAJOR;
+
+CREATE TABLE STUDENT (
+    STUDENT_CODE VARCHAR2(10) PRIMARY KEY,
+    STUDENT_NAME VARCHAR2(30),
+    SCORE VARCHAR(3),
+    MAJOR_CODE NUMBER(2) REFERENCES MAJOR(MAJOR_CODE)
+    --PRIMARY KEY(STUDENT_CODE), 아래에 프라이머리 키를 주었을때, 아래에 FOREIGN KEY ~~ 넣어야함.
+    --FOREIGN KEY(MAJOR_CODE) REFERENCES MAJOR(MAJOR_CODE) 
+);
+SELECT * FROM STUDENT;
+
+--MAJOR 데이터 삽입.
+INSERT INTO MAJOR VALUES (1,'경영정보','3층 인문실');
+INSERT INTO MAJOR VALUES (2, '소프트웨어공학', '3층 인문실');
+INSERT INTO MAJOR VALUES (3, '디자인', '4층 과학실');
+INSERT INTO MAJOR VALUES (4, '경제','4층 과학실');
+
+--STUDENT 데이터 삽입.
+INSERT INTO STUDENT VALUES ('A01','김길동',100,1);
+INSERT INTO STUDENT VALUES ('A02','문길동',90,2);
+INSERT INTO STUDENT VALUES ('A03','홍길동',95,1);
+
+
+
+--BOOK TABLE 'S
+
+CREATE TABLE BOOKCATEGORY (
+    CATEGORY_CODE NUMBER(4) PRIMARY KEY,
+    CATEGORY_NAME VARCHAR2(255),
+    OFFICE_LOC VARCHAR2(255)
+
+
+);
+SELECT * FROM BOOKCATEGORY;
+DROP TABLE BOOK;
+CREATE TABLE BOOK(
+    CATEGORY_CODE NUMBER(4) REFERENCES BOOKCATEGORY (CATEGORY_CODE),
+    BOOKNO VARCHAR2(10) PRIMARY KEY ,
+    BOOKNAME VARCHAR2(255),
+    PUBLISHER VARCHAR2(30),
+    PUBYERA NUMBER(4)  DEFAULT TO_CHAR(SYSDATE,'YYYY')
+    
+);
+SELECT * FROM BOOK;
+INSERT INTO BOOKCATEGORY VALUES (100,'철학','3층 인문실');
+INSERT INTO BOOKCATEGORY VALUES (200,'인문','3층 인문실');
+INSERT INTO BOOKCATEGORY VALUES (300,'자연과학','4층 과학실');
+INSERT INTO BOOKCATEGORY VALUES (400,'IT','4층 과학실');
+
+
+INSERT INTO BOOK VALUES (100,'100A01','철학자의 삶','더존출판',2017);
+INSERT INTO BOOK VALUES (400,'400A01','이것이 DB이다','더존출판',2018);
+
+
+
+--##############[    DCL    ]###############
+  --계정 추가 
+CREATE USER KIM IDENTIFIED BY tiger; --KIM 계정, 비번이 tiger 생성.
+--권한 부여.
+GRANT CREATE SESSION, CREATE TABLE TO kim;
+GRANT SELECT ON EMP TO kim;
+SHOW USER;
+
+--권한 박탈.
+REVOKE SELECT ON EMP FROM KIM;
+DROP USER KIM cascade;
+
+  
+  
+  
+  

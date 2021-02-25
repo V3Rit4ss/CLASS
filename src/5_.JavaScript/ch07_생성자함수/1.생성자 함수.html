@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        function Student(name, kor, mat, eng, sci) {  //초기화해준 변수들.
+            this.name = name;
+            this.kor = kor;
+            this.mat = mat;
+            this.eng = eng;
+            this.sci = sci;
+            this.getSum = function () {
+                return this.kor + this.mat + this.eng + this.sci;
+            };
+            this.getAvg = function () {
+                return this.getSum() / 4;
+            };
+            this.toString = function () {
+                var output = '';
+                for (var key in this) {
+                    if (key != 'toString' && key != 'getSum' && key != 'getAvg') {
+                        output += key + ' : ' + this[key] + '<br>';
+                    } else if (key == 'getSum') {
+                        output += '총점 : ' + this.getSum() + '<br>';
+                    } else if (key == 'getAvg') {
+                        output += '평균 : ' + this.getAvg() + '<br>';
+                    }//if
+                }//for
+                return output;
+            }// toString
+        }//생성자 함수(Student)
+
+        student = [new Student('홍길동', 80, 65, 77, 90 ),
+            new Student('신길동', 40, 80, 70, 60 ),
+            new Student('박길동', 80, 60, 80, 30 ),
+            new Student('지워줘', 30, 50, 44, 20 )
+        ];
+        student.pop(); //  pop().  지워줘 가 삭제댐. 제일 마지막의 데이터값이 삭제댐.
+        student.forEach(function (data, idx) {
+            document.write(idx + '번 째<br>' + data + '<br>');
+        });
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

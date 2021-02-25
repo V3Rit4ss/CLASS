@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<!--작은 그림이 있는 parent-->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        var child;
+        function openBig() {
+            child = open('4.big.html', '', 'width=500,height=600');
+            if (!child) {
+                alert('팝업차단 해제해주세요');
+            }
+        }
+        function closeBig() {
+
+        }
+    </script>
+</head>
+<body>
+    <h2>작은그림의 parent 창</h2>
+    <img src="ch09_img/small.jpg" alt="작은그림"
+         onmouseover="openBig()"
+         onmouseout="closeBig()" />
+
+    <!--  onmouseover="openBig()"  마우스를 올리면 -->
+    <!-- onmouseout="closeBig()" 마우스가 벗어나면-->
+</body>
+</html>

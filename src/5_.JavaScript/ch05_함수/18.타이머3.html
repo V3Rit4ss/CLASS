@@ -1,0 +1,17 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        alert(' A ');  //  순서1
+        setTimeout(function () { alert(' B '); }, 0); // 순서 3   타이머가 뒤늦게 실행된다.
+        alert(' C '); // 순서 2
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

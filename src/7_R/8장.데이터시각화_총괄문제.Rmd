@@ -1,0 +1,202 @@
+---
+author: "Won"
+date: '2021 03 08 '
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## *데이터 분석 보고서.* ##
+
+
+### Speed에 대한 Dist의 산점도와 적합도(신뢰그래프).
+
+```{r}
+library(ggplot2)
+
+ggplot(cars, aes(x = speed, y= dist)) +
+  geom_point() +
+  geom_smooth(method = 'lm') +
+  coord_cartesian(xlim = c(5, 20), ylim = c(0,100))
+
+
+
+```
+
+
+
+### 대륙별 1인 국내총생산에 대한 기대수명의 산점도.
+
+
+```{r}
+# 대륙별 서로 다른 색상으로 표시.
+library("gapminder")
+
+ggplot(gapminder, aes(x= gdpPercap, y= lifeExp, color=continent))+
+  geom_point()
+
+```
+
+### 기대수명이 70을 초과하는 데이터에 대한 대륙별 데이터 갯수.
+
+
+```{r}
+library(dplyr)
+
+gapminder %>%
+  filter(gapminder$lifeExp > 70) %>% 
+  group_by(continent) %>% 
+  summarise(Frequency = n()) %>% 
+  ggplot(aes(x= continent, fill= continent,  y=Frequency))+
+  geom_bar(stat = "identity")+
+  labs(x= '대륙',
+       y= '빈도',
+       title= '기대수명이 70을 초과하는 데이터 빈도(대륙별)')
+
+
+```
+
+### 기대수명이 70을 초과하는 데이터에 대한 대륙별 나라갯수.
+
+
+```{r}
+gapminder %>%
+  filter(gapminder$lifeExp > 70) %>% 
+  group_by(continent) %>% 
+  summarise(n = n_distinct(country)) %>% 
+  ggplot(aes(x= continent, fill= continent,  y=n))+
+  geom_bar(stat = "identity")+
+  labs(y= '나라 빈도',
+       title= '기대수명이 70을 초과하는 대륙별 나라 빈도')
+
+
+```
+
+
+### 대륙별 기대수명의 사분위수 시각화.
+
+
+```{r}
+
+ggplot(gapminder, aes(x= continent, y=lifeExp, color = continent)) +
+  geom_boxplot()+
+  labs(title = '대륙별 기대수명의 사분위수')
+
+```
+
+
+### 년도별로 GDP와 기대수명과의 관계를 산점도로 표시.
+
+```{r}
+#대륙별 점의 색상을 달리하여 시각화를 표현했습니다.
+
+ggplot(gapminder,aes(x=gdpPercap, y= lifeExp, color=continent))+
+  geom_point(position = 'jitter')+
+  coord_cartesian(xlim = c(0, 30000))+
+  facet_wrap(~year)+
+  labs(title = 'GDP 와 기대수명과의 관계')
+
+
+```
+
+
+### 북한과 한국의 년도별 GDP변화.
+
+
+
+```{r}
+#산점도로 시각화 하였습니다.
+
+gapminder %>% 
+  filter(country %in% c('Korea, Dem. Rep.', 'Korea, Rep.')) %>% 
+  ggplot(aes(x= year, y=gdpPercap, fill = country)) +
+  geom_point(aes(shape=country),col='red',size=2)+
+  scale_shape_manual(values = c(21, 3))+
+  scale_fill_manual(values = c('blue',NA))+
+  theme(legend.position = c(0.2,0.8))+
+  labs(title = 'GDP의 변화(한국과 북한)')
+
+
+```
+
+
+### 대한민국, 북한, 중국, 일본 . 4개 국별 GDP 변화. 
+
+
+
+```{r}
+#산점도와 추세선으로 시각화 하였습니다.
+
+gapminder %>% 
+  filter(country %in% c('Korea, Rep.','Japan','Korea, Dem. Rep.','China')) %>% 
+  ggplot(aes(x= year, y=gdpPercap, color = country)) +
+  geom_point()+
+  geom_line() +
+  labs(title = '한중일 4개국의 GDP변화의 산점도와 추세선')
+
+
+```
+
+
+### 대한민국, 북한, 중국, 일본 . 4개국별 인구 변화.
+
+
+
+
+```{r}
+# 산점도와 추세선으로 시각화 하였습니다.
+
+
+gapminder %>% 
+  filter(country %in% c('Korea, Rep.','Japan','Korea, Dem. Rep.','China')) %>% 
+  ggplot(aes(x = year, y= pop, color=country))+
+  scale_y_continuous(labels = scales::comma)+
+  geom_point()+
+  geom_line()+
+  labs(title = '한중일 4개국의 인구 변화의 산점도와 추세선')
+
+```
+
+
+
+### 시간에 따른 개인저축률의 변화.
+
+**개인저축률(psavert)**
+
+```{r}
+# 시계열 그래프와 추세선으로 시각화 하였습니다.
+
+
+ggplot(economics, aes(x= date, y=psavert))+
+  geom_line(col="red",size=2)+
+  geom_smooth(col='red')+
+  labs(title = '개인저축률 시계열 그래프')
+
+
+```
+
+
+### 시간에 따른 개인 저축률과 실업률의 변화.
+
+
+```{r}
+# 시간에 따른 개인 저축률과 실업률의 변화를 한 그래프에중첩하여 시각화하시오
+
+#  x=date, y=psavert 시계열그래프+추세선(적합도선) 
+#              x=date, y=unemploy
+economics[1:5, c('date','psavert','unemploy')]
+
+ggplot(data=economics) +
+  geom_line(aes(x=date, y=psavert), col='#FF0000', size=2) +
+  geom_smooth(aes(x=date, y=psavert), col='pink') +
+  geom_line(aes(x=date, y=unemploy*0.001)) +
+  geom_smooth(aes(x=date, y=unemploy*0.001), col='dimgray') +
+  scale_y_continuous(sec.axis = sec_axis(~.*1000, name="unemploy"))
+
+
+
+```

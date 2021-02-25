@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style> /*   *   <=  header, h1, nav, ul, li, section, p, footer ~~  */ /*margin : 밖여백. padding : 안여백*/
+        * {margin:0; padding:0; color:saddlebrown;} /*페이지 초기화 용도 , 전체 페이지 디자인 초기화*/
+        header, nav, section, footer {width: 500px; /*가로 사이즈 500px*/
+                margin: 20px auto; /* 상 우 하 좌  , auto 자동적으로 브라우저에 맞게 자리잡아줌. 같은 값으면 생략 가능.(20 50 [20 생략 50])*/
+                border: 1px solid gray;
+        }
+        nav ul {overflow:hidden; /*수평으로 하고 픈 태그 부모단에.*/}
+        nav ul  li{list-style:none; /* 앞에있는 목록표시 모양을 없앰. */
+                   float:left; /*블록 타입 태그를 수평으로.*/
+                   padding : 10px 20px ; /*상 우 하 좌 중복패턴이면 생략가능.(10 20 10 20)  */
+        }
+        section {
+            clear: both; /*overflow:hidden 을 다했으면 생략하기도 함.*/
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>00 주식회사</h1> <!-- 기본적으로 밖여백(margin)이 있다.-->
+    </header>
+    <nav>
+        <ul>
+            <li>회사소개</li>
+            <li>서비스소개</li>
+            <li>고객센터</li>
+            <li>공지사항</li>
+        </ul>
+    </nav>
+    <section>
+        <p>신규확진 513명, 나흘째 500명대 유지…오늘 거리두기 막판 조정(종합) </p>
+    </section>
+    <footer>
+        <p>서울시 마포구 신촌로 94 그랜드빌딩 704호</p>
+    </footer>
+</body>
+</html>

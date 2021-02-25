@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <style>
+        .red {
+            color:red;
+        }
+        .blue{
+            color:blue;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            var h1Cnt = 0; 
+
+            $('#h1').click(function () { //'<font color="red">♥</font>' 스타일시트에서 조정.
+                h1Cnt++;
+                if (h1Cnt < 6) { //6이 되는순간.
+                    $(this).prepend('♥').css('color', 'red');   //<span>하트</span> 해서 상단 스타일에서 해도 댐.
+                    $(this).append('<span class="blue">♥</span>');
+                } else {
+                    $('#h1').off(); //this = '#h1' 가능. 클릭한 횟수가 6회가 되면 이벤트 제거.
+                }
+            });
+            $('#h2').click(function () {
+                $(this).prepend('<span class="red">＆</span>');   
+                $(this).append('<span class="blue">＆</span>');
+
+            });
+            setInterval(function () {
+                $('#h1').trigger('click'); //3초마다 강제 클릭 이벤트 발생.
+
+            }, 3000);
+        });
+    </script>
+</head>
+<body>
+    <h1 id="h1">start1 : </h1>
+    <h1 id="h2">start2 : </h1>
+</body>
+</html>

@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+
+        //replace 재정의.
+        String.prototype.replaceA = function (oldStr, newStr) { //this 가 String  //reaplaceA 가 실행될 시점이 먼저 되기에. 위에다.
+            /* var s1 = this.split(oldStr); //'abcd, 'abcd','abcd'
+             var s2 = s1.join(newStr);
+             return s2; */
+            return this.split(oldStr).join(newStr);
+        };
+
+
+
+
+
+
+        var str = 'abcd@abcd@ABCD'; // == var str = new String('abcd@abcd@abcd');
+        document.write('글씨길이 : ' + str.length + '<br>');
+        document.write('글씨 더하기 : ' + str.concat('123') + '<br>'); //str 의 변화는 없고 리턴할때 + 해서 들어감.
+        document.write('글씨 추출 : ' + str.substring(3, 5) + '<br>'); //3번째부터 5번째앞까지 추출. 0부터 시작함.
+        //substring(a, b) = a번째 부터 b앞까지 추출,  substr(a, b) a번째 부터 b글자 추출.
+        document.write('글씨 추출2 : ' + str.substr(3, 5) + '<br>'); //3번째 부터 5글자 추출.
+        document.write('앞부터 일치하는 위치 : ' + str.indexOf('@') + '<br>');  //제일 앞에있는 @ 하나만 나옴.
+        document.write('뒤부터 일치하는 위치 : ' + str.lastIndexOf('@') + '<br>'); //제일 뒤에 있는 @ 하나.
+        document.write('@을 " 스페이스바 "로 바꾸기 : ' + str.replace('@', ' ') + '<br>'); //제일 앞에있는것만 바꿔짐.
+        document.write('@을 " 스페이스바 "로 바꾸기 : ' + str.replaceA('@', ' ') + '<br>'); //replaceA 를 새로히 추가함.
+        document.write('"yi "를 좌우 스페이스바 없애기 : ' + ' yi'.trim() + '<br>');
+        document.write('대문자로 변환 : ' + str.toUpperCase() + '<br>');
+        document.write('소문자로 변환 : ' + str.toLowerCase() + '<br>');
+       
+        
+    </script>
+</head>
+<body>
+
+</body>
+</html>

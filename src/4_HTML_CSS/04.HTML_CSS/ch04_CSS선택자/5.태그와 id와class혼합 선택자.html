@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        div {border: 1px solid lightgray;}
+        #header {width: 600px ; margin: 0 auto;  /*가로 600.*/
+                 background-color:yellow;
+                 text-align:center; 
+        }
+        #wrap {width:600px ; margin:0 auto;
+              background-color:aqua;
+              overflow:hidden; /*부모단에 오버플로우 : 히든.*/
+        }
+        #wrap #content{ /*#content 하나만 써도 가능.*/
+                width:350px; /*#centent 영역 = 가로(350px)+테두리(2px)=352px */
+                 float:left;
+                 height:300px;
+                 text-align:center; /*글씨나 이미지도 가운데 정렬가능.*/
+        }
+        #wrap #content ul li.menu1, .menu2, .menu3 {font-size: 1.5em;} /*글씨크기를 원래 크기의 1.5배 (em = 배.) */ /*class = . || id = # */
+        #wrap #content ol li.menu2
+        #wrap #content ol li.menu3 {font-weight:bold;} /*글씨 진하게.*/
+
+
+        #wrap #side_banner img {width: 246px; /* #side_banner 영역 = (가로 246px) +(테두리 2px) = 248px*/
+                     float:left;
+                     height:300px;
+                     text-align:center;
+        }
+        img{width: 200px; }
+        #footer{clear:both; /*float 속성을 제거 역할.*/
+                width:600px; margin:0 auto; background-color:yellow;
+                text-align:center;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>HEADER</h1>
+
+
+    </div>
+    <div id="wrap">
+        <div id="content">
+            <h2>CONTENT</h2>
+            <ul>
+                <li class="menu1">menu1</li> <!--id = 유일한. | class 는 중복 가능.-->
+                <li class="menu2">menu2</li>
+                <li class="menu3">menu3</li>
+            </ul>
+            <ol>
+                <li class="menu1">menu1</li> 
+                <li class="menu2">menu2</li>
+                <li class="menu3">menu3</li>
+            </ol>
+        </div>
+    <div id="side_banner">
+        <h2>BANNER</h2>
+        <a href="http://www.daum.net" target="_blank">
+            <img src="https://t1.daumcdn.net/daumtop_chanel/op/20200723055344399.png" alt="다음아이콘" /> <!-- CSS 나 여기서 사이즈 조정가능.-->
+        </a> 
+    </div>
+    </div>
+    <div id="footer">
+        <h2>FOOTER</h2>
+    </div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" /> 
+    <title></title> <!--id 는 'Element'   class 같은 여러개들은 'Elements' -->
+    <script>
+        window.onload = function () {  // getElementsByClassName 의 리턴은 배열.
+            var clock1 = document.getElementsByClassName('clock1');//[0];
+            clock1[0].innerHTML = '날짜 : ' + new Date().toLocaleDateString();
+            var clock2 = document.getElementsByClassName('clock2');
+            clock2[0].value = '시간 : ' + new Date().toLocaleTimeString(); //input만 value로 넣는다
+        };
+
+    </script>
+</head>
+<body>
+    <h1 class="clock1"></h1> <!--class 이름이 두개 같아도 상관없음.-->
+    <input type="text" class="clock2" />
+</body>
+</html>

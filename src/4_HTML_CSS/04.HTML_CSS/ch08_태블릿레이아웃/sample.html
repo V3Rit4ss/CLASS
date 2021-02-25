@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" name="viewport"/>
+    <title></title>
+    <style>
+        * {
+            margin:0 ; padding:0;
+        }
+        #section{
+            overflow:hidden; background-color:aquamarine; /* width:1000px; margin:0 auto;  */
+        }
+        #section #nav {
+            float:left; width:200px;
+        }
+        #section #content_wrap{
+            float:left; width:100%; margin-right:-200px; /*마진이 -값이면 화면밖으로 빠짐*/
+            background-color:blueviolet;    /* padding: 10px 210px 10px 10px; /*공간이 더 필요해서 안들어감. 여기다가 패딩을 하면 안댐.*/
+        }
+        #section #content_wrap #content {
+           padding: 10px 210px 10px 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="section">
+        <div id="nav">
+            <ul>
+                <li><a href="">메뉴1</a></li>
+                <li><a href="">메뉴2</a></li>
+            </ul>
+        </div>
+        <div id="content_wrap">
+            <div id="content">
+                <img src="0121_imgTab/img.jpg" />
+                <p>
+                    Why do we use it?
+                    It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

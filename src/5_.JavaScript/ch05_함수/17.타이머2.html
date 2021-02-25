@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        var id = setInterval(function () {  //setInterval() : 일정시간마다 콜백함수 실행.
+            document.write(new Date() + '<br>');
+
+        }, 1000);  //멈추라는 메소드가 없어서 1초마다 브라우저에서 나온다.
+
+        setTimeout(function () { //10초 후 중지.
+            clearInterval(id);
+            document.write('DONE');
+        }, 10000); //setTimeout() : 일정시간 후 한번 콜백함수 실행.
+    </script>
+</head>
+<body>
+
+</body>
+</html>

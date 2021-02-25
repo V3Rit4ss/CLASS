@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script> 
+        // 1. prompt 함수를 이용해서 국어,영어 점수(0~100) 입력받음.
+        // 2. 평균출력
+     /*   do {
+            kor = Number(prompt('국어점수?', '0~100'));
+            if (!isNaN(kor) && kor >= 0 && kor <= 100) { //숫자를 제대로 입력했을때
+                break;
+
+            }
+        } while (true);
+        document.write('끝.');   */
+         // -------------------------상단의 예제는 빈스트링때문에 이렇게 하면 안됀다.--------------------------
+
+        do {
+            korStr = prompt('국어점수?', '0~100');
+            kor = Number(korStr);
+            if (korStr != null && korStr != '' && !isNaN(kor) && kor >= 0 && kor <= 100) { //숫자를 제대로 입력했을때
+                break;
+
+            }
+        } while (true);
+        do {
+            engStr = prompt('영어점수?');
+            eng = Number(engStr);
+            if (engStr != null && engStr != '' && !isNaN(eng) && eng >= 0 && eng <= 100) {
+                break;
+            }
+        } while (true);
+        document.write('평균 : ' + (kor + eng) / 2);
+    </script>
+</head>
+<body>
+
+</body>
+</html>

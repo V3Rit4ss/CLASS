@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        var patternKor = /[가-힣]/;
+        var patternNum = /[0-9]/;
+        var patternEng = /[a-zA-Z]/;
+        var patternSpe = /[~!@#$%^&*]/;
+        
+        
+        function chk() {
+            if (!frm.name.value || patternSpe.test(frm.name.value) || patternNum.test(frm.name.value)) {
+                alert('이름을 입력하세요.');
+                frm.name.value = '';
+                frm.name.focus();
+                return false;
+
+            } else if (!frm.email.value || frm.email.value.indexOf('@') == -1
+                || frm.email.value.indexOf('@') == 0
+                || frm.email.value.lastIndexOf('@') == frm.email.value.length - 1
+                || frm.email.value.indexOf('@') != frm.email.value.lastIndexOf('@')) {
+                alert('이메일을 입력하세요.');
+                frm.email.focus();
+                return false;
+
+            } else if (!frm.pw.value || frm.pw.value.length < 4 || !patternEng.test(frm.pw.value)
+                || !patternSpe.test(frm.pw.value)) {
+                alert('형식에 맞는 비밀번호를 입력하세요.');
+                frm.pw.focus();
+                return false;
+            }else if (frm.pw.value != frm.pwChk.value) {
+                alert('비밀번호를 확인하세요.');
+                frm.pw.value = '';
+                frm.pwChk.value = '';
+                frm.pw.focus();
+                return false;
+            }
+            return true;
+
+
+        }
+    </script>
+    <style>
+        table {
+            margin: 0 auto;
+            padding: 3px 15px;
+            border: 2px solid #385d81;
+        }
+
+        td, th {
+            padding: 5px 10px;
+            text-align: center;
+        }
+
+        input[type="submit"], input[type="reset"], input[type="button"] {
+            border: 1px solid #red;
+            outline: 0;
+            background-color: #385d81;
+            color: white;
+            border-radius: 3px;
+            padding: 10px 20px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <form action="#" name="frm" onsubmit="return chk()">
+        <table>
+            <tr>
+                <td>
+                    이름
+                </td>
+                <td>
+                    <input type="text" name="name" id="name" size="23" 
+                           placeholder="특수문자, 숫자 기입은 불가능."/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    메일
+                </td>
+                <td>
+                    <input type="text" name="email" id="email" size="23"
+                           placeholder="아이디@domain.com 또는 co.kr" />
+                        
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    비밀번호
+                </td>
+                <td>
+                    <input type="password" name="pw" id="pw" size="23"
+                           placeholder="특수문자,문자,숫자 포함하여 4자 이상" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    비밀번호 확인
+                </td>
+                <td>
+                    <input type="password" name="pwChk" id="pwChk" size="23" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="회원가입" />
+                    <input type="reset" value="취소" />
+                    <input type="button" value="로그인" onclick="chk()" />
+                </td>
+                
+
+            </tr>
+
+
+
+
+
+
+
+
+
+
+        </table>
+
+    </form>
+
+</body>
+</html>

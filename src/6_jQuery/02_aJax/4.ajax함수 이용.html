@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(function () {
+            $('button').click(function () {
+                $.ajax({ //객체는  단 하나만 들어감.
+                    //url : 요청경로.
+                    // type : get/post  = 디폴트값이 get. (안쓰면.)
+                    // data : 요청 파라미터 값.
+                    // dataType : 요청 결과의 타입 (html, json, ... ) 디폴트값은 html 로 댐.
+                    //success : 요청성공시 수행할 콜백함수.
+                    // error : 요청실패시 수행할 콜백 함수.
+                    url: 'idConfirm.html',  //내 파일을 적어도, 웹사이트 경로를 적어도 가능.
+                    type: 'get',
+                    data: 'mId=' + mId,
+                    dataType: 'html',
+                    success: function (data) {
+                        $('#result').html(data);
+                    }, error: function () {
+                        alert(code.status + code.statusText);
+                    }
+                }); 
+            }); // click 콜백함수
+        }); //jQuery 부분
+    </script>
+</head>
+<body>
+    <p>
+        아이디<input type="text" name="mId" id="mId" />   <!-- I => i .대문자임    id="mId" : "mId" -> 파라미터.   -->
+        <button>중복 확인</button>
+    </p>
+    <span id="result"></span>
+</body>
+</html>

@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script> //인자가 0인 빈배열 .. 
+              //인자가 1개 : 방의 갯수가 인자인 배열[배열의 갯수]
+                //인자가 2개 이상 : 인자 자체가 배열.
+
+        var arr1 = array(); // [] 빈방1
+        var arr2 = array(3); // [,,,] 빈방 3 -> arguments[3].
+        var arr3 = array(273, 2, 'hello'); // [273, 2, 'hello'] 값이 들어간 방3개. -> arguments[273, 2, 'hello']
+        document.write(arr1 + '의 방 갯수 : ' + arr1.length + '<br>');
+        document.write(arr2 + '의 방 갯수 : ' + arr2.length + '<br>');
+        document.write(arr3 + '의 방 갯수 : ' + arr3.length + '<br>');
+   //     array(); // -> arguments:[] 생성해서 들어감.
+   //     array(1, 2); // -> arguments : [1, 2]
+        function array() { //arguments : 함수내 매개변수 배열로 기본적으로 내재되어있음.  (예약어.) 
+            var result = [];  //빈방일때. 
+            if (arguments.length == 1) {
+                //인자 1개일때 명령어.
+                
+                for (var cnt = 1; cnt <= arguments[0]; cnt++) {
+                    result.push(''); //빈방이니까 빈스트링.
+                }
+               
+
+            } else if (arguments.length >= 2) {
+                //인자가 2개이상일때 명령어.
+              /*  for (var idx = 0; idx < arguments.length; idx++) { //cnt 대신 idx 로 해도 무방. 변수선언은 마음대로
+                    result.push(arguments[idx]);
+                } */
+
+                //for - in 문은 0방부터 끝방까지 뭔가를 하고싶을때 쓰인다.
+                for (var idx in arguments) {
+                    result.push(arguments[idx]); //0방부터 끝방까지 push 함.
+                } 
+
+
+
+          /*      arguments.forEach(function (data) {  forEach 는 내가만든 배열에 쓰일수 있으나 
+           *        result.push(data);                 arguments 에서는 쓰이지 못한다.
+                  
+                }); */
+          /*      arguments.forEach(function (data, idx) {
+                    result.push(arguments[idx]);
+
+                });  */
+
+            }
+            return result;
+        }
+
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

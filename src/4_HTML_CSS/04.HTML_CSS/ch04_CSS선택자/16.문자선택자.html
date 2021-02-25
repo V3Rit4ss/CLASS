@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        #wrap {width: 800px; margin:0 auto;}
+        #header {text-align:center; /*글씨 가운데 정렬*/
+                 border-bottom:1px solid #cccccc;
+        }
+        #content p:nth-child(2)::first-line, /* :: 은 하나던 두개던 상관x*/
+        #content p:nth-child(3)::first-line{ /*문자 선택자*/
+            color:blue; font-weight:bold; /*글씨 굵게.*/
+            font-size:20px;
+        }
+        #content p:nth-child(2)::first-letter{
+            font-size:2em; /*글씨 크기를 원래 사이즈의 2배로.*/
+        }
+        #content p:last-child span { /*문자 선택자를 모를경우.*/
+            font-size:2em;  /*  span을 추가해줘야하니 조금 귀찮거나 복잡해진다.*/
+        }
+        #content p:nth-child(2)::selection{ /*텍스트를 드래그해서 선택했을시.*/
+            background-color:violet; /*기본인 파랑바탕 색상을 바꿈.*/
+            color:yellow; /*드래그 했을시에 텍스트 색상을 바꿈.*/
+        }
+        /*블럭 태그를 수평으로 하는.*/
+        #footer ul{
+            overflow:hidden;
+            border-top:1px solid #cccccc;
+        }
+        #footer ul li{
+            float:left;
+            list-style:none;
+            padding: 10px;
+            margin: 5px 20px 5px 20px; /*밖여백 : 상 우 하 좌 중복값은 생략가능.  */
+        }
+        #footer ul li:first-child {
+            /*   padding: 10px 0 0 0; /*안여백 : 상 우 하 좌 0을 주고싶으면 생략 x */
+            padding : 10px
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap"> <!-- 한번에 CSS 주기위해 감쌈.-->
+        <div id="header">
+            <h1>제목이나 회사명.</h1>
+        </div>
+        <div id="content">
+            <p>벌써 올해의 마지막 달이 왔어요!</p>
+            <p>
+                연말은 그동안 못 만났던 사람들을 만나면서 북적거리며 설레는 달인데
+                올핸 코로나가 있어 아쉽게도 그러지 못할 거 같아요.
+                최대한 외출을 자제하고 있지만, 답답함에 한적한 곳으로 안전한 여행을 찾는 분들이 많은데요.
+                그래서 캠핑 장비에 대한 수요도 전년 대비 2배 이상 늘었습니다.
+                캠핑은 보통 봄,가을에 많이들 떠난다고 생각하지만
+                이에 못지않게 겨울 캠핑도 인기가 많답니다!
+                겨울 캠핑을 아무래도 준비할 것이 조금 더 많은데요,
+                캠핑을 처음 준비하시는 분들을 위해 겨울 캠핑에 필요한 몇 가지 소개해드립니다.
+
+                우선, 가장 중요한 건 추위에 대비하는 일이예요.
+                전기장판이나 온수매트를 이용해 바닥을 따뜻하게 해주고
+                따뜻한 잠자리를 위해 침낭을 준비해야합니다.
+                난로를 사용하신다면 환기는 필수입니다~!!
+            </p>
+            <p>
+                <span>난</span>방이 모두 준비됐다면 뭐니뭐니 해도 가장 중요한 건 먹는 게 아닐까 싶어요.
+                보통 캠핑을 할 땐 조리가 복잡한 음식보다는 조리 방법이 간단한 음식들을 선호하고,
+                양념이 필요한 음식들은 양념까지 모두 준비해가는 게 일반적이에요.
+                아무래도 집에서 준비하는 것보다 환경이 열악하기 때문에 준비할 수 있는 건
+                미리 집에서 다 준비하고 캠핑장에선 바로 조리해서 먹는 거죠!
+            </p>
+        </div>
+        <div id="footer">
+            <ul>
+                <li><img src="0115/logo.png" alt="회사로고 이미지" /></li>
+                <li><img src="0115/address.png" alt="회사 주소" /></li>
+                
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

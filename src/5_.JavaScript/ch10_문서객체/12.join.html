@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        p{
+            margin:0 auto;
+            text-align:center;
+        }
+    </style>
+    <script>
+        function confirmOpen() {
+            var confirm = open('12.confirm.html', '', 'width=500,height=350,top=250');
+            if (!confirm) {
+                alert('팝업 허용 부탁드립니다.');
+            }
+        }
+    </script>
+</head>
+<body>
+    <form>
+        <p>
+            아이디<input type="text" name="id"  id="id" />
+            <input  type="button" value="중복확인" onclick="confirmOpen()" />
+        </p>
+    </form>
+</body>
+</html>

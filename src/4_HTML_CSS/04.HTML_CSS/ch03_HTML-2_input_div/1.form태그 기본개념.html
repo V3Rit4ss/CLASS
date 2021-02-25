@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        td{text-align:center;}
+    </style>
+</head>
+<body>
+    <!--아이디와 비번을 입력받아 파라미터 변수명은 id, pw 로 서버 프로그램쪽으로 넘기는 역할.(get 방식) 대소문자 구문x-->
+    <form action="http://www.naver.com" method="get"> <!--지금 입력받는걸 해당파일로 보내는기능.-->
+        <!--  get방식은 글자수 제한이있다.   post방식도 있음. -->
+        <table>
+            <caption> <h2>로그인</h2> </caption>
+            <tr>
+                <td>아이디 <input type="text" name="id" /> <br /></td>  <!--파라미터 꼭 넣어야함.-->
+            </tr>
+            <tr>
+                <td>
+                    비밀번호
+                    <input type="password" name="pw" />  <!--파라미터 꼭 넣어야함.-->
+                    <br />
+
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="로그인" /></td>
+
+            </tr>
+
+            
+            
+
+        </table>
+    </form>
+        
+
+</body>
+</html>

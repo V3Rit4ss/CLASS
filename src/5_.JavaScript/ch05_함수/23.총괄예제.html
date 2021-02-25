@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+       
+       
+
+        var col = ['red', 'blue', 'green'];
+        var img = ['url(0125_img/img01.png', 'url(0125_img/img02.png', 'url(0125_img/img03.png'];
+        var s = 0;
+        setInterval(function () {
+            document.write(new Date());
+            document.body.style.color = col[s % 3];
+            //   document.body.style.backgroundImage = 'url(0125_img/img0'+(s%3 + 1)+'.png)';
+            document.body.style.backgroundImage = img[s % 3];
+            document.body.style.backgroundRepeat = 'no-repeat';
+            document.body.style.backgroundSize = '100%';
+            document.body.style.fontWeight = 'bold';
+            s++;
+
+        }, 1000);
+
+        setTimeout(function () {
+            clearInterval(id);
+
+        }, 10000);
+       
+        
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script> //자기호출함수나 배열들을 이용해서 0~2 경고창 뜨게 해보자.
+        for (var i = 0; i < 3; i++) {
+            setTimeout(function () { alert(i); }, 0);
+        }
+        // ===============================//
+        for (var i = 0; i < 3; i++) {
+            (function(j) {
+                setTimeout(function () {
+                    alert(j);
+                }, 0);
+            }) (i);
+        }
+        // 배열 forEach() 함수를 이용하여 수정
+        // 바꿀 경고창 순서 : 0 - 1 - 2
+        [0, 1, 2].forEach(function (data, idx) {
+            setTimeout(function () { alert(data); }, 0);
+        });
+    </script>
+</head>
+<body>
+
+</body>
+</html>

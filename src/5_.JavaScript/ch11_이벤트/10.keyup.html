@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script> //onkeyup 눌렀다가 땠을때. keyCode 대소문자 구문함. 조심.
+        window.onkeyup = function () {
+            var p = document.getElementsByTagName('p')[0];
+            if (event.keyCode >= 48 && event.keyCode <= 57) {
+                p.innerHTML += '상단 숫자 키보드  : ' + (event.keyCode - 48) + '의 아스키코드 : ' + event.keyCode
+                    + '<br>';
+            } else if (event.keyCode >= 96 && event.keyCode <= 105) //넘버패드 숫자.
+                p.innerHTML += ' 넘버패드 입력한 수 : ' + (event.keyCode - 96) + '의 아스키코드 : ' + event.keyCode
+                    + '<br>';
+             //   p.innerHTML += '입력한 키의 아스키코드 : ' + event.keyCode + '<br>';
+        };
+    </script>
+</head>
+<body>
+    <p></p>
+</body>
+</html>

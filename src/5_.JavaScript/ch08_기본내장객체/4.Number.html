@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        var num = 273.5590332; //지수형 : 2.735590332*10의 2승.  var num = new Number(273.5590332);
+                                //2.735590332E+2
+        // num = 0.00000000000000000000000273; //2.73E-24
+        //Number 는 객체는 아니지만 객체처럼 사용할수있다.
+        document.write(num + '<br>');
+        document.write('지수형 표현 : ' + num.toExponential(5) + '<br>'); //5자리까지 표현. 
+        document.write('소수점 1자리 : ' + num.toFixed(1) + '<br>');
+        document.write('소수점 1자리: ' + Math.round(num * 10) / 10 + '<br>');  //(num * 10) / 10  2735.55~에서 / 10.
+        //document.write('1자리 : '+ Math.round(num,1) + '<br>'); round 로 매개변수 하나만 인식하기에 뒤는 무시댐,     
+        document.write('숫자5개만 : ' + num.toPrecision(5) + '<br>');
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

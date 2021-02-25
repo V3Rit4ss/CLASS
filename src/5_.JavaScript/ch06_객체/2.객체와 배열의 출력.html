@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        var arr = [1, 2, 3]; //출력 = 일반for, for-in, forEach()
+        for (var idx in arr) { // idx 라는 변수는 아무거나 해도 댐. ex)xxx 라던지 hole 이라던지
+            document.write(idx + '번 째 : ' + arr[idx] + '<br>');
+        }
+
+
+        var obj = { name: '홍길동', age: 25 }; // 출력 = for-in 문 만 사용. 'name' '' 생략 가능.   name: '홍길동' = 프로퍼티 라 한다.
+        for (var key in obj) {
+            document.write(key + ':' + obj[key] + '<br>');
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>

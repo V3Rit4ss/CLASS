@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        function Rectangle(w, h) {
+            if (w < 0) { //음수 값일때
+                throw '음수는 들어갈 수 없습니다.'; //예외 발생. 자바의 예외처리 생각 ㄱㄱ
+            } else { //음수 값이 아닐때.
+                var width = w;
+            }
+
+            var height = h;
+
+            this.getWidth = function () {
+                return width;
+            }
+            this.getHeight = function () {
+                return height;
+            }
+            this.setWidth = function (w) {
+                if (w < 0) {
+                    throw '음수값으로 수정 할 수 없습니다.';
+                } else {
+                    width = w;
+                }//음수 if -else 예외
+
+            } //this.setWidth
+
+            this.setHeight = function (h) {
+                    height = h;
+            } //this.setHeight
+
+        }
+        Rectangle.prototype.getArea = function () {
+            return this.getWidth() * this.getHeight();
+        };  //생성자 함수와 프로토타입 완성
+        function Square(lenght) {
+            this.base = Rectangle; // Rectangle 의 하던짓을 얘가 다 한다.
+            this.base(lenght, lenght);
+        }
+        Square.prototype = Rectangle.prototype; //랙탱글의 프로토타입도 다 가져온다.
+
+        var rect = new Rectangle(6, 10);
+        document.write('rect의 넓이 : ' + rect.getArea() + '<br>');
+        var square = new Square(10);
+        document.write('Square의 넓이 : ' + square.getArea() + '<br>');  //상속이 없지만 상속같이 만들 수 있다.
+        
+    </script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        p, h1 {
+            text-align: center;
+        }
+
+        button {
+            padding: 10px;
+            margin: 10px 40px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+
+        $(function () {
+            $('input[name="n1"]').val(Math.trunc(Math.random() * 10)) // 0~9.
+            $('input[name="n2"]').val(parseInt(Math.random() * 10)); // 0~9.
+            $('#cal').click(function () { //정답 계산.
+                var n1 = Number($('input[name="n1"]').val());
+                var n2 = Number($('input[name="n2"]').val());
+                var answer = n1 + n2;
+
+                if ($('input[name="answer"]').val() != '' && $('input[name="answer"]').val() == answer) {
+                    $('.result').html('정답입니다.').css('color', 'blue');
+                } else {
+                    $('.result').html('틀렸습니다.').css('color', 'red');
+                }
+
+            });
+
+            $('#reset').click(function () {
+                $('input[name="n1"]').val(parseInt(Math.random() * 10));
+                $('input[name="n2"]').val(parseInt(Math.random() * 10));
+                $('input[name="answer"]').val('');
+                $('.result').html('');
+
+            });
+
+        });
+    </script>
+    <style>
+        p, h1 {
+            text-align: center;
+        }
+
+        button {
+            padding: 10px;
+            margin: 10px 40px;
+        }
+    </style>
+</head>
+<body>
+    <p>
+        1번 :
+        <input type="text" name="n1" size="5" readonly="readonly">
+        +
+        <input type="text" name="n2" size="5" readonly="readonly"> =
+        <input type="text" name="answer" size="5" placeholder="답">
+    </p>
+    <hr />
+    <p>
+        <button id="reset">Retry ?</button>
+        <button id="cal">Result.</button>
+    </p>
+    <h1 class="result"></h1>
+</body>
+</html>

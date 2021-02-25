@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script> //위에만들던 아래에 만들던 따로 빼던 상관무. 단, 따로뺀 파일의 링크를 맨위에 해야함.
+
+        function makeStudent( name, kor, mat, eng, sci ) {
+            var resultObj = {
+                name : name,  //속성값 = name(key)
+                kor : kor,
+                mat : mat,
+                eng : eng,
+                sci : sci,
+                getSum : function () {
+                    return this.kor + this.mat + this.eng + this.sci;
+                },
+                getAvg: function () {
+                    return this.getSum() / 4;
+                },
+                toString: function () {
+                    var output = '';
+                    for (var key in this) {
+                        if (key != 'toString' && key != 'getSum' && key != 'getAvg') {
+                            output += key + ' : ' + this[key] + '\t';
+                        } else if (key == 'getSum' || key == 'getAvg') {
+                            output += key.substring(3) + ' : ' + this[key]() + '\n'; // this[key]() 호출.
+                        }//if else
+                    }//for
+                    return output;
+                }, // toString
+            }; // resultObj
+            return resultObj;
+        } //makeStudent 함수 끝
+       
+        var students = [makeStudent('홍', 100, 90, 80, 70),
+            makeStudent('김', 10, 60, 80, 70),
+            makeStudent('박', 100, 67, 80, 70),
+        ];
+        students.push(makeStudent('이', 90, 80, 60, 70, 90));
+        students.push(makeStudent('최', 30, 40, 60));
+        students.forEach(function (value, idx) { //변수선언은 내맘대로. data => value
+            document.write(idx + '번 째 : <br>' + value + '<br>');
+
+        })
+
+        /*
+         makeStudents('홍', 100, 90, 80, 70) 의 결과
+         = {name:'홍', kor:100 , mat:90 , eng:80 , sci:70}
+         */
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

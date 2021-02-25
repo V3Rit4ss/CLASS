@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        var id, openerId;
+
+        window.onload = function () {
+            openerId = opener.document.getElementById('id');
+            id = document.getElementsByName('name')[0];
+            id.value = openerId.value;
+        };
+
+        function confirmOK() {
+            openerId.value = id.value;
+            close();
+        }
+
+
+
+    </script>
+</head>
+<body>
+    <p>
+        ID <input type="text" name="name" />
+        <button>체크</button>
+    </p>
+    <p><button onclick="confirmOK()">아이디 사용</button></p>
+</body>
+</html>

@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!--  <script src="js/jquery-3.5.1.min.js"></script>  -->
+    <script>
+
+        //파일을 직접적으로 링크 안하고 js파일의 웹경로를 넣어도 가능. 이것을 CDN 이라함.
+
+    /*    window.onload = function () {
+            var p = document.getElementById('p1');
+            p.onclick = function () {
+                p.innerHTML = '<b>내용바꿔</b>';
+            };
+        };       JavaScript 방법.          */
+        
+        $(document).ready(function () {
+            //jQuery 문법을 여기에 넣어야만 한다.
+            $('#p1').click(function () {
+                // $('#p1').html('<b>내용바꿔</b>'); 태그를 적용시킬려면 이렇게.
+                $('#p1').text('<b>내용바꿔</b>');  //태그가 안먹고 그냥 나온다.
+            });
+        });
+        $(function () {
+             //jQuery 문법을 여기에 넣어야만 한다.
+
+        });
+
+        //둘다 이용가능.
+    </script>
+</head>
+<body>
+    <p id="p1">p태그 하나.</p>
+</body>
+</html>

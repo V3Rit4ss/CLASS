@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        /* A가 만든 부분 */
+        function pythagoras(width, height) {
+            //내부함수 사용이유 : 충돌을 피하고자.
+            function square(x) { //내부함수 : 함수내에 선언된 함수
+                return x * x;
+            }
+            return Math.sqrt(square(width) + square(height)); // 루트로 변환시키는.
+        }
+    </script> <!--링크를 걸었다 하고 그 내용을 안에다 적음.-->
+    <script>  // 링크를 했을때 같은 선언이있으면 상단의 선언을 덮어씌워진다.
+        /* B가 만든 부분 */ // (밑변, 높이, 빗변 을 받아 직각삼각형 여부)
+        function square(width, height, hypotenuse) {
+            if (width * width + height * height == hypotenuse * hypotenuse) {
+                return true;
+            } else {
+                return false;
+            }
+        } 
+    </script>
+    <script>
+        alert(pythagoras(3, 4));
+        alert(square(3,4, 5));
+    </script>
+</head>
+<body>
+
+</body>
+</html>

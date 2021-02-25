@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script> //var 변수 선언함.
+       // int i = 20 과 비슷한 선언문.;
+        // al_pha = 20;  이거 가능.
+        console.log(1)     //alert(1); 알터는 알림창으로 콘솔로그는 f12로 봤을때 콘솔창에서 나온다.
+        var al_pha = 20; // 숫자형 변수로 만들어짐.
+        //  var al_pha;  // int i ;
+        alert(2);
+        alert('al_pha 값은' + al - pha);      //오류가 나면 오류가 난 곳 전까지만 적용된다. 
+        alert(3);                                   //20만 되고 alert 들은 안돼고 다음 스크립트에서 20을 가지고 다시 시작.
+        al_pha = 'Hello'; //문자형으로 바뀜. 변수가 고정형이지가 않음.
+        alert(4);
+        alert('al_pha값은' + al_pha);
+        alert(5);  //자바에서 한 println 을 하나씩 넣어서 찾는방법과 동일.
+    </script>
+    <script> // 블럭에서 나온 변수가 사라지지않고 스크립트 끝까지 적용된다.
+        document.write('바뀐 al_pha값은' + al_pha + '<br>');
+        al_pha = 40;
+    </script>
+</head>
+<body>
+    <script>
+        document.writeln('최종 al_pha값은' + al_pha + '<br>DONE');
+    </script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0 "/>
+    <title></title>
+    <style>
+        * { /*페이지 초기화*/
+            margin:0 ; padding:0; font-family:'Times New Roman', Times, serif;
+        }
+        body{
+            min-width:980px; /*최소한의 width 크기.*/
+        }
+        a {
+            text-decoration:none;
+        }
+        li {
+            list-style:none;
+        }
+        /*     #header         */
+        #header {
+            height:100px; line-height:100px;
+            background-color:purple;  color:white;
+            font-size:200%;  font-weight:bold;
+        }
+        /*        #header      */
+
+        /*        #gnb : gnb1~5 좌측 // gnb6~7 우측 float함.        */
+        #gnb{
+            overflow:hidden; background-color:#222222;
+            height:80px; line-height:80px;
+        }
+        #gnb ul:first-child{
+            float:left;
+        }
+        #gnb ul:last-child{
+            float:right;
+        }
+        #gnb ul li {
+            float:left; width:140px; border-right:1px solid gray;
+            box-sizing:border-box; 
+        }
+        #gnb ul li a{
+            color:white; font-size:1.5em;
+            text-align:center; display:block;  /*a 태그의 공간 확장 display:block; = ul li 의 width 의 140을 다쓴다. */
+        }
+        #gnb ul:last-child li:first-child{
+            border-left:1px solid gray; /*gnb6 메뉴의 왼쪽 보더 를 줌.*/
+        }
+        /*        #gnb         */
+
+        /*       #section            */
+        #section {
+            overflow:hidden; background-color:#e1e262;
+        }
+        #section #lnb {
+            float:left; width:200px; 
+        }
+        #section #lnb ul li a { /*a 는 라인형태그라 좌우만 먹음.*/
+            padding:20px; display:block; /* a(앵커태그) 공간 확장 */
+            font-size:1.5em; text-align:center; font-weight:bold;
+            color:saddlebrown; border-bottom: 1px dashed brown;
+        }
+        #section #content_wrap {
+            float:left; width:100%; margin-right: -200px; /*lnb의 width 와 같아야함.*/
+            background-color:#fcffce;
+        }
+        #section #content_wrap #content { /*안에 있는, 짤린 컨텐트에 패딩을 줘야함.*/
+            padding:20px 220px 20px 20px;
+        }
+        #section #content_wrap #content div {
+            margin-bottom:30px; overflow:hidden;
+        }
+        #section #content_wrap #content div img {
+            border-radius:10px; margin:10px;
+        }
+        #section #content_wrap #content div:nth-child(1) img {
+            float: left;
+            margin-right: 20px;
+        }
+        #section #content_wrap #content div:nth-child(2) img {
+            float: right; margin-left: 20px;
+        }
+        #section #content_wrap #content div p::first-line{
+            font-size:1.5em; color:orange;
+        }
+        #section #content_wrap #content div p::first-letter{
+            font-size:1.5em; 
+        }
+        #section #content_wrap #content div:nth-child(4){
+            border-top: 1px dashed gray; padding-top:10px;
+        }
+        #section #content_wrap #content div:nth-child(4) img{
+            float:left; 
+        }
+        #section #content_wrap #content div:nth-child(4) img:nth-child(3){
+            margin-right:20px;
+        }
+        /*          #section          */
+        
+        /*          #footer          */
+        #footer {
+            background-color:lightgray; 
+            height:100px; text-align:center;
+        }
+        #footer p:first-child{
+            font-size:1.3em; font-weight:bold;
+            padding:25px 0 10px;  /*20 0 10 0*/
+        }
+
+
+        /*         #footer          */    
+    </style>
+</head>
+<body>
+    <div id="header">
+
+        <p>Web site for Table-PC</p>
+    </div>
+    <div id="gnb">
+        <ul>
+            <li><a href="#">Gnb1</a></li>
+            <li><a href="#">Gnb2</a></li>
+            <li><a href="#">Gnb3</a></li>
+            <li><a href="#">Gnb4</a></li>
+            <li><a href="#">Gnb5</a></li>
+            
+        </ul>
+        <ul>
+            <li><a href="#">Gnb6</a></li>
+            <li><a href="#">Gnb7</a></li>
+        </ul>
+    </div>
+    <div id="section">
+        <div id="lnb">
+            <ul>
+                <li><a href="#">Btn1</a></li>
+                <li><a href="#">Btn2</a></li>
+                <li><a href="#">Btn3</a></li>
+                <li><a href="#">Btn4</a></li>
+                <li><a href="#">Btn5</a></li>
+                <li><a href="#">Btn6</a></li>
+                <li><a href="#">Btn7</a></li>
+                <li><a href="#">Btn8</a></li>
+                <li><a href="#">Btn9</a></li>
+            </ul>
+        </div>
+        <div id="content_wrap">
+            <div id="content">
+                <div>
+                    <h1>Where can I get some?</h1>
+                    <img src="0121_imgTab/img.jpg" alt="삽화" />
+                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</p>
+                </div>
+                <div>
+                    <h1>Where can I get some?</h1>
+                    <img src="0121_imgTab/img.jpg" alt="삽화" />
+                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</p>
+                </div>
+                <div>
+                    <h1>Where can I get some?</h1>
+                    <img src="0121_imgTab/img.jpg" alt="삽화" />
+                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</p>
+                </div>
+                <div>
+                    <img src="0121_imgTab/100.jpg" alt="부를 부르는 이미지" />
+                    <img src="http://placehold.it/150x150" alt="더미 이미지" />
+                    <img src="0121_imgTab/150.jpg" alt="부를 부르는 이미지" />
+                    <p>
+                        Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+                        The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer">
+        <p>홍길동 주식회사</p>
+        <p>copyright ⓒ tjoeun Co., All rights reserved.</p>
+    </div>
+</body>
+</html>

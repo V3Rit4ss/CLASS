@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title> <!--style 옆에 type="text/css" 넣는거 가능.-->
+    <style>
+        * {padding:0; /*페이지 초기화*/}
+        #wrap{width:600px; margin:20px auto;
+              border: 1px solid lightgray;
+              padding: 10px;
+        }
+        #content1 p:nth-child(2n){background-color: lightyellow;}
+        #content2 p:nth-child(2n){background-color: orange;}
+        #content1 p:nth-child(1){
+            font-size:1.0em; /*원 크기의 1.0배  */
+        }
+        #content1 p:nth-child(2) {
+            font-size: 16px; 
+        }
+        #content1 p:nth-child(3) {
+            font-size: 100%; 
+        }
+        #content1 p:nth-child(4) {
+            font-size: 12px; /* http://pxtoem.com 가보면 사이즈별로 단위들이 나온다. */
+        }
+        #content2 p:nth-child(1) { /* 단위: px , em % */
+            font-size: 2em; 
+        }
+        #content2 p:nth-child(2) {
+            font-size: 1.5em; 
+        }
+        #content2 p:nth-child(3) {
+            font-size: .9em; 
+        }
+        #content2 p:nth-child(4) {
+            font-size: 75%; 
+        }
+        #wrap p span{
+            display:block; /*블록형 태그 속성으로 바꿈.*/
+
+            color:blue; /*CSS 꾸밈.*/
+            font-size: .5em;
+            font-weight:bold;
+            font-style:italic;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <div id="content1">
+            <p>
+                입주 안한 신혼집에 '관리소장'이 살고 있었다...무단 거주 처벌은?
+                <span>2021년 01월18일 홍길동 기자.</span>
+            </p>
+            <p>
+                입주 안한 신혼집에 '관리소장'이 살고 있었다...무단 거주 처벌은?
+                <span>2021년 01월18일 홍길동 기자.</span>
+            </p>
+            <p>
+                입주 안한 신혼집에 '관리소장'이 살고 있었다...무단 거주 처벌은?
+                <span>2021년 01월18일 홍길동 기자.</span>
+            </p>
+            <p>
+                입주 안한 신혼집에 '관리소장'이 살고 있었다...무단 거주 처벌은?
+                <span>2021년 01월18일 홍길동 기자.</span>
+            </p>
+        </div>
+        <div id="content2">
+            <p>
+                입주 안한 신혼집에 '관리소장'이 살고 있었다...무단 거주 처벌은?
+                <span>2021년 01월18일 홍길동 기자.</span>
+            </p>
+            <p>
+                입주 안한 신혼집에 '관리소장'이 살고 있었다...무단 거주 처벌은?
+                <span>2021년 01월18일 홍길동 기자.</span>
+            </p>
+            <p>
+                입주 안한 신혼집에 '관리소장'이 살고 있었다...무단 거주 처벌은?
+                <span>2021년 01월18일 홍길동 기자.</span>
+            </p>
+            <p>
+                입주 안한 신혼집에 '관리소장'이 살고 있었다...무단 거주 처벌은?
+                <span>2021년 01월18일 홍길동 기자.</span>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

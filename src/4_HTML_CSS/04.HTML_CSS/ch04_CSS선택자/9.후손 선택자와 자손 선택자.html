@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        #header, #wrap, #footer {
+            width : 600px; margin:0 auto; border: 1px solid gray;
+
+        }
+        #header{
+            overflow:hidden;
+        }
+        #header .loop{ /*후손 선택자*/
+            float:left; padding: 10px 30px 10px 100px;  /* 상 우 하 좌*/
+        }
+        #header > .copy{ /*자손 선택자*/
+            float:left; padding: 17px 100px 10px 30px; 
+        }
+        div p { /*후손 선택자= 자손(자식)선택자 포함*/
+                font-size:25px;
+        }
+        div > p { /*자손 선택자*/
+                  color:red;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <div class="loop">
+            <h1>LOGO</h1>
+        </div>
+        <div class="copy">
+            <h2>00주식회사</h2>
+        </div>
+    </div>
+    <div id="wrap"> <!--자손 = 바로 아래. 자식은 후손에 포함.-->
+        <p>(서울=뉴스1) 장은지 기자,구교운 기자 = 이낙연 더불어민주당 대표가 신년 벽두부터 심상치 않은 지지율 하락에 직면했다. 새해 첫날 밝힌 이명박·박근혜 두 전직 대통령 '사면 건의' 발언이 지지층으로부터 외면받은 후, 차기 대선주자 선호도 조사에서도 10%로 두 자릿수에 턱걸이했다. 지난해 8월 이재명 경기도지사에게 처음으로 역전당하며 1위를 내줬던 이 대표는 지지율 하락세를 좀처럼 반전시키지 못하고 있다.</p>
+        <ul> <!--p, ul 형제사이 서로 같이있는.-->
+            <li><p>장은지 기자</p></li>
+            <li><p>장은지 기자</p></li>
+            <li><p>장은지 기자</p></li>
+        </ul>
+    </div>
+    <div id="footer">
+        <p>서울시 마포구</p>
+    </div>
+</body>
+</html>

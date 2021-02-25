@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        var f = function () { };
+        var i = 10;
+        var arr = [273, 3, 'Hello'];
+        var person = {
+            name: '홍길동', age: 25, eat: function (food) { //eat 은 메소드  name, age 는 데이터
+                alert(this.age + '살' + this.name + '은 ' + food + '를 먹는다.');
+            },
+        }
+        person.eat('덮밥');
+        document.write('person : ' + person + '<br>'); // 값을 안보여주고  person : [object Object] 라 나옴.
+        document.write('arr : ' + arr + '<br>'); //값을 뿌려준다.
+    </script>
+</head>
+<body>
+
+</body>
+</html>

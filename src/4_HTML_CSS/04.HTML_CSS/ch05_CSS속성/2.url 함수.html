@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style> /*url();  = 폰트를 가져오거나 background-image 를 가져올때.*/
+        @font-face { /*스타일 맨위에 써야함.*/
+            font-family:'DXSeNB-KSCpc-EUC-H.ttf'; /*url 함수를 이용해서 새로운 폰트 정의*/
+            src: url('font/DXSeNB-KSCpc-EUC-H.ttf');
+        }
+    * { font-family: 'DXSeNB-KSCpc-EUC-H.ttf'; /*전체 초기화*/ }
+    #wrap{ width:600px; margin:10px auto;
+           height:400px;
+           border:1px solid gray;
+    }
+    #content {
+        width:80%; margin:0 auto; height:100%;
+        background-image:url(image/sulhyun.jpg);
+        background-repeat:no-repeat; /*백그라운드 이미지 반복x */
+      /*  background:url('sulhyun.jpg') no-repeat; */
+       /*   background:url(웹경로); */
+    }
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <div id="content">설현도 추운겨울 보내겠죠.</div>
+    </div>
+
+</body>
+</html>

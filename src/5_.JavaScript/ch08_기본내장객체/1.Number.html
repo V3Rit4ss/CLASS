@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        /*
+         자바.
+         int i = 170;
+         i.toString() 불가.
+
+         Integer ii = 170;   <= new Integer(170);
+         ii.toString()  가능.
+         */
+        //var priNumber = 273;
+     //   var primitiveNumber = 273; //타입 : Number
+    //    var objNumber = new Number(273);
+       
+   //     document.write('primitiveNumber의 타입은 ' + typeof (primitiveNumber) + '<br>');
+    //    document.write('objNumber의 타입은 ' + typeof (objNumber) + '<br>');
+
+        var primitiveNumber = 273.21  //  => primitiveNumber = new Number(273.21) 처럼 된거같다.  
+        var objNumber = new Number(273.21);
+
+        document.write('primitiveNumber.toFixed(1)의 타입은 : ' + primitiveNumber.toFixed(1)+'<br>');  
+        document.write('objNumber.toFixed(1)의 타입은 : ' + objNumber.toFixed(1) + '<br>');
+
+        //타입은 다르나 내부적으로 데이터에 잡힐때 서로 객체로 나온다.
+        document.write('primitiveNumber을 생성시 생성자 함수 : ' + primitiveNumber.constructor + '<br>');
+        document.write('objNumber을 생성시 생성자 함수 : ' + objNumber.constructor + '<br>'); //생성자 함수를 불러올때  .constructor 
+        if (primitiveNumber.constructor == objNumber.constructor) {
+            document.write('primitiveNumber 과 objNumber의 저장된 타입은 같다.');
+        } else {
+            document.write('primitiveNumber 과 objNumber의 저장된 타입은 다르다.');
+        }
+        //내장 객체 Number에 메소드 추가를 할것임.
+        Number.prototype.method1 = function () {
+            alert('Number타입은 다 쓴다')
+
+        };
+        primitiveNumber.method1();
+        objNumber.method1();
+
+        //objNumber 에 메소드 추가.
+        objNumber.method2 = function () {
+            alert('objNumber만 써');
+        }
+     //   primitiveNumber.method2(); =>  objNUmber에만 쓸수있다.
+        objNumber.method2();
+
+        //primitiveNumber 에 메소드 추가. 하고싶은데 메소드 추가가 안된다.
+        primitiveNumber.method3 = function () {
+            alert('되자보자');
+        }
+        primitiveNumber.method3();
+
+
+        //따라서 primitiveNumber과    objNumber 는 사용법이 같지만, primitiveNumber 에는 메소드 추가를 못한다.
+        //      (기초데이터 타입.) (내장된 object 타입.)
+        // 기초데이터 타입 = number , string , boolean.
+    </script>
+</head>
+<body>
+
+</body>
+</html>

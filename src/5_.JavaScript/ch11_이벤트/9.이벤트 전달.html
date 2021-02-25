@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>  /*  이벤트 전달. */
+        #a {
+            border:1px solid red;
+        }
+        #b {
+            border:1px solid blue;
+        }
+        #c {
+            border:1px solid green;
+        }
+    </style>
+</head>
+<body>
+    <div id="a" onclick="alert('a영역')" >
+        a 영역
+        <div id="b" onclick="alert('b영역')">
+            b영역  <!-- b 경고창 나오고 a 경고창 나옴-->
+            <div id="c" onclick="alert('c영역')">
+                c영역 <!--c, b, a 경고창 하나씩 나옴-->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

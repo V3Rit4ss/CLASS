@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        var students = [
+            { name: '홍길동', kor: 100, mat: 80, eng: 90, sci: 89 }
+        ];
+            students.push({ name: '박길동', kor: 90, mat: 86, eng: 90, sci: 70 })
+            students.push({ name: '김길동', kor: 80, mat: 59, eng: 90, sci: 83 })
+            students.push({ name: '이길동', kor: 66, mat: 90, eng: 90, sci: 90 })
+            students.push({ name: '최길동', kor: 48, mat: 100, eng: 90, sci: 60 })
+
+        for (var idx in students) {
+            students[idx].getSum = function () {
+                return this.kor + this.mat + this.eng + this.sci;
+            };
+            students[idx].getAvg = function () {
+                return this.getSum() / 4; //소수점 인식해서 유지댐. 자바는 짤렸음.
+            };
+            students[idx].toString = function () {
+                var output = '';
+                for (var key in this) {
+                    if (key != 'toString' && key != 'getSum' && key != 'getAvg') {
+                        output += key + ':' + this[key] + '\n';
+                    } else if (key == 'getSum' || key == 'getAvg') {
+                        output += key.substring(3) + ':' + this[key]() + '\n'; // function내용이나오니 ()
+                    }
+                }
+                return output;
+
+            };
+        }
+        // 일반 for문.
+        var output = '';
+        for (var idx = 0; idx < students.length; idx++) {
+            output += idx + '번 째\n';
+            output += students[idx];
+        }
+        alert(output); //alert 는 br 이 안댐.
+        //document.write(output.replace('\n','<br>'));
+        document.write(replaceAll(output, '\n', '<br>')); //첫번째 아이만 적용댐. 그래서 맨아래 처럼 전체적용시킴.
+
+
+        //for - in
+        document.write('<h2>2. for-in 문 이용</h2>');
+        for (idx in students) {
+            document.write(students[idx] + '<br>');
+
+        }
+
+
+        //forEach()
+        document.write('<h2>3. forEach() 문 이용</h2>'); //data , idx 에서 idx 만 생략가능
+        students.forEach(function (data, idx) {
+            document.write(idx + '번 째 : ');
+            document.write(data + '<br>');
+
+        });
+
+
+
+
+
+
+        // replaceAll : output에서 oldStr을 newStr로 모두 교체
+        function replaceAll(str, oldStr, newStr){
+            //join , split
+            return output.split(oldStr).join(newStr);
+        }
+       
+    </script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src= "3.js" ></script> <!--외부 링크 할려면 제일 상단에.-->
+    <script> //함수를 선언한 것들이 먼저 메모리에 잡힌다.
+        fun();
+        function fun() { //선언적 함수.  스크립트 밖에 있으면 안댐. 다른스크립트 안에 있으면 괜찮다.
+            alert('함수A');
+        };
+        fun(); // 선언적 함수 호출,
+        alert(fun); // alert(alert); 를 하면, 내장객체의 함수는 내부코드를 가리기때문에 내장함수의 소스를 볼수가없다.
+                    //내장함수가 아닌 일반함수들만 소스를 볼 수 있다.
+    </script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        div#nav{width:200px; margin:0 auto;}
+        #nav ul li {
+            list-style:none;
+            border: 1px solid gray;
+            padding:10px; margin:2px;
+            text-align:center; /* a 한테 글씨색과 밑줄 같은거를 수정시켜야 적용댐.*/
+            font-weight: bold;
+            font-size:20px;
+            
+            }
+        ul li a {
+            color:black; text-decoration:none; 
+        }
+        ul li:nth-child(2n+1) { /*ul밑에있는 li중에 홀수번째 li만 선택. 구조선택자.  */
+            background-color:orange;
+        }
+        ul li:nth-child(2n) { /*ul밑에 li 중 짝수번째*/
+            background-color:yellow;
+        }
+        ul li:first-child{ /*첫번째 li만*/
+            border-radius: 20px 20px 0 0 /*좌상 우상 우하 좌하*/
+        }
+        ul li:last-child{
+            border-radius: 0 0 20px 20px
+        }
+    </style>
+</head>
+<body>
+    <div id="nav">
+        <ul>
+            <li><a href="#1">menu1</a></li>
+            <li><a href="#2">menu2</a></li>
+            <li><a href="#3">menu3</a></li>
+            <li><a href="#4">menu4</a></li>
+            <li><a href="#5">menu5</a></li>
+            <li><a href="#6">menu6</a></li>
+            <li><a href="#7">menu7</a></li>
+            <li><a href="#8">menu8</a></li>
+        </ul>
+
+
+
+    </div>
+</body>
+</html>
