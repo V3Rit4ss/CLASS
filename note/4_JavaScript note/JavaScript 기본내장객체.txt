@@ -1,0 +1,405 @@
+# 기본 내장객체.
+
+- Number : 숫자 객체
+- String : 문자열을 다루기 위한 객체
+- Array : 배열을 만들어 주는 객체
+- Date : 날짜와 시간을 처리하기 위한 객체
+- Math : 수학 계산을 위한 객체
+
+- 참고 하면 좋은 사이트.
+w3schools(https://www.w3schools.com/jsref) 자바스크립트의 기본 내장객체의 속성과 메소드
+devdocs.io(http://devdocs.io/javascript ) 각각의 속성, 메소드에 대한 자세한 정보 제공
+
+1. 기본 자료형과 객체의 차이점
+­ 기본 자료형은 여섯 가지 자료형 중 숫자, 문자열, 불린
+
+ <script>
+        /*
+=======         자바  =================
+         int i = 170;
+         i.toString() 불가.
+
+         Integer ii = 170;   <= new Integer(170);
+         ii.toString()  가능.
+         */
+        //var priNumber = 273;
+     //   var primitiveNumber = 273; //타입 : Number
+    //    var objNumber = new Number(273);
+       
+   //     document.write('primitiveNumber의 타입은 ' + typeof (primitiveNumber) + '<br>');
+    //    document.write('objNumber의 타입은 ' + typeof (objNumber) + '<br>');
+
+==========================================
+        var primitiveNumber = 273.21  //  => primitiveNumber = new Number(273.21) 처럼 된거같다.  
+        var objNumber = new Number(273.21);
+
+        document.write('primitiveNumber.toFixed(1)의 타입은 : ' + primitiveNumber.toFixed(1)+'<br>');  
+        document.write('objNumber.toFixed(1)의 타입은 : ' + objNumber.toFixed(1) + '<br>');
+
+        //타입은 다르나 내부적으로 데이터에 잡힐때 서로 객체로 나온다.
+        document.write('primitiveNumber을 생성시 생성자 함수 : ' + primitiveNumber.constructor + '<br>');
+        document.write('objNumber을 생성시 생성자 함수 : ' + objNumber.constructor + '<br>'); //생성자 함수를 불러올때  .constructor 
+        if (primitiveNumber.constructor == objNumber.constructor) {
+            document.write('primitiveNumber 과 objNumber의 저장된 타입은 같다.');
+        } else {
+            document.write('primitiveNumber 과 objNumber의 저장된 타입은 다르다.');
+        }
+        //내장 객체 Number에 메소드 추가를 할것임.
+        Number.prototype.method1 = function () {
+            alert('Number타입은 다 쓴다')
+
+        };
+        primitiveNumber.method1();
+        objNumber.method1();
+
+        //objNumber 에 메소드 추가.
+        objNumber.method2 = function () {
+            alert('objNumber만 써');
+        }
+     //   primitiveNumber.method2(); =>  objNUmber에만 쓸수있다.
+        objNumber.method2();
+
+        //primitiveNumber 에 메소드 추가. 하고싶은데 메소드 추가가 안된다.
+        primitiveNumber.method3 = function () {
+            alert('되자보자');
+        }
+        primitiveNumber.method3();
+
+
+        //따라서 primitiveNumber과    objNumber 는 사용법이 같지만, primitiveNumber 에는 메소드 추가를 못한다.
+        //      (기초데이터 타입.) (내장된 object 타입.)
+        // 기초데이터 타입 = number , string , boolean.
+    </script>
+
+­ 기본 자료형과 객체는 자료형이 분명 다르지만 두가지 모두 값을 출력한다. 각자의 속성과 메소드도 있다. 속성과 메소드는 객체만이 가질 수 있지만,
+  기본 자료형에도 속성과 메서드가 있다. 
+  기본 자료형의 속성이나 메소드를 사용하면 기본 자료형이 자동으로 객체로 변환된다.
+  이번 장에서 Number 객체라 부르면 객체와 기본 자료형 모두를 의미한다고 생각하자.
+  굳이 차이점을 찾자면 기본 자료형은 객체가 아니므로 속성과 메서드를 추가할 수 없다. 
+  기본 자료형에 메소드를 추가하고자 한다면 Number객체의 프로토타입에 메서드를 추가하면 기본 자료형에게도 새로운 메서드가 생성된다.
+
+
+2. Object 객체 ; 자바 스크립트의 최상위 객체
+2.1 생성
+
+var object = {};
+var object = new Object();
+
+2.2 Object 객체의 속성과 메소드
+
+constructor()  = 객체의 생성자 함수를 나타낸다.
+hasOwnProperty(name)  = 객체가 name 속성이 있는지 확인한다.
+propertylsEnumerable(name) = 반복문으로 열거할 수 있는지 확인한다.
+toLocaleString() = 객체를 문자열로 바꾼다.
+toString() = 객체를 문자열로 바꿉니다.
+valueOff() = 객체의 값을 나타낸다.
+
+2.3 자료형을 검사할때 의 주의점.
+  <script>
+        var numLiteral = 273;
+        var numObject = new Number(273);
+        if (typeof (numLiteral) == 'number') {
+            document.write('numLiteral은 number이다<br>');
+        } else {
+            document.write('numLiteral은 number가 아니다<br>');
+        }
+        if (typeof (numObject) == 'number') {
+            document.write('numObject은 number이다<br>');
+        } else {
+            document.write('numObject은 number가 아니다<br>');
+        }
+★        // typeof 로 타입을 보면 다르다고 나온다.
+
+
+★        //constructor 로 보면 둘다 같다고 나온다.
+        if (numLiteral.constructor == Number) {
+            document.write('numLiteral은 Number 다 <br>');
+        }
+        if (numObject.constructor == Number) {
+            document.write('numObject은 Number 다 <br>');
+        }
+
+        var obj = { property: 273, name: 'hong' }; //오브젝트 오브젝트 나오는 이유는 자동적으로 toString 을 쓰기때문.
+        var output = '';
+        output += "hasOwnProperty('name') : " + obj.hasOwnProperty('name') +'<br>';
+        output += "반복문으로 열거할 수 있는지 ('name') : " + obj.propertyIsEnumerable('name') + '<br>'; // IsEnumerable (이즈.)
+        output += obj.toString();
+        document.write('<hr>' + output);
+        for (var key in obj) {
+            document.write(key + ':' + obj[key]);  //key가 'name'
+         //   document.write(key + ':' + obj.key); //obj.'name'
+        }
+    </script>
+
++) 모든 객체에 메서드 추가
+­ Object 객체는 모든 자바 스크립트 객체의 최상위 객체이므로 Object 객체의 프로토타입에 속성 또는 메서드를 추가하면 모든 객체에서 활용할 수 있다.
+
+
+3. Number 객체
+
+toExponential() = 숫자를 지수 표시로 나타낸 문자열을 리턴한다.
+toFixed() = 숫자를 고정 소수점 표시로 나타낸 문자열을 리턴한다.
+toPrecision()  = 숫자를 길이에 따라 지수 표시 또는 고정 소수점 표시로 나타낸 문자열을 리턴.
+
+ <script>
+        var num = 273.5590332; //지수형 : 2.735590332*10의 2승.  var num = new Number(273.5590332);
+                                //2.735590332E+2
+        // num = 0.00000000000000000000000273; //2.73E-24
+        //Number 는 객체는 아니지만 객체처럼 사용할수있다.
+        document.write(num + '<br>');
+        document.write('지수형 표현 : ' + num.toExponential(5) + '<br>'); //5자리까지 표현. 
+        document.write('소수점 1자리 : ' + num.toFixed(1) + '<br>');
+        document.write('소수점 1자리: ' + Math.round(num * 10) / 10 + '<br>');  //(num * 10) / 10  2735.55~에서 / 10.
+        //document.write('1자리 : '+ Math.round(num,1) + '<br>'); round 로 매개변수 하나만 인식하기에 뒤는 무시댐,     
+        document.write('숫자5개만 : ' + num.toPrecision(5) + '<br>');
+
+    </script>
+
++)  1.7976931348623157e+308까지 수를 나타낼 수 있고 그 이상은 무한한 수(POSITIVE_INFINITY 혹은NEGATIVE_INFINITY)로 인식한다.
+
+4.String 객체.
+
+String  객체의 속성 : lenght => 문자열의 길이를 나타낸다.
+
+4-2. String 객체의 메소드.
+
+charAt( )       =  position 에 위치하는 문자를 리턴.
+charCodeAt( ) = position 에 위치하는 문자의 유니코드 번호를 리턴.
+concat( )       = 매개변수로 입력한 문자열을 이어서 리턴.
+indexOf( )      = 앞에서부터 일치하는 문자열의 위치를 리턴.
+lastIndexOf( )  = 뒤에서부터 일치하는 문자열의 위치를 리턴.
+match( )        = 문자열 내에 regExp 가 있는지 확인한다.
+replace( )       = regExp 를 replacement 로 바꾼 뒤 리턴.
+search( )        = regExp 와 일치하는 문자열의 위치를 리턴.
+slice( )           = 특정 위치의 문자열을 추출해 리턴.
+split( )           = separator 로 문자열 잘라서 배열을 리턴.
+substr( )         = start 부터 count 만큼 문자열을 잘라서 리턴.
+substring( )     = start 부터 end 까지 문자열을 잘라서 리턴.
+toLowerCase( ) = 문자열을 소문자로 바꿔서 리턴.
+toUppercase( ) = 문자열을 대문자로 바꿔서 리턴.
+
++) ­String 객체의 메서드는 자기 자신을 변화시키지 않고 리턴하므로 문자열을 변화시키고 싶으면 아래와 같이 사용한다.
+
+<script>
+var str = '@abcd@ef';
+var patternNum = /[0-9]/;                  //숫자 패턴
+var patternEng = /[a-zA-Z]/;               //문자 패턴
+var patternSpe = /[~!@#$%^&*()_+|<>?:;{}]/; // 특수문자 패턴
+var patternKor = /[가-힣ㄱ-ㅎㅏ-ㅣ]/; //한글패턴. 정규표현식 가-힣에서 ㄱ~ㅎ, ㅏ~ㅣ 를 추가함
+	document.write('글씨길이 : ' + str.length + '<br>');
+	document.write('스트링 더하기 : ' + str.concat(str) + '<br>');
+	document.write('부분 글씨 : ' + str.substr(3, 2) + '<br>');
+	document.write('앞에서부터 일치하는 글자 위치 : ' + str.indexOf('*') + '<br>');
+	document.write('뒤에서부터 일치하는 글자위치' + str.lastIndexOf('@') + '<br>');
+	document.write('1번째부터 2번째 앞까지 :' + str.slice(1, 2)+'<br>');
+	document.write('str을 다 대문자로 : '+str.toUpperCase()+'<br>');
+	document.write('str에 숫자가 포함되었는지 : '+patternNum.test(str) +'<br>');
+	document.write('str에 알파벳이 포함되었는지 : '+patternEng.test(str) +'<br>');
+ 	document.write('한글포함 여부 : ' + patternKor.test(str) + '<br>');
+	document.write('str에 특수문자가 포함되었는지 : '+patternSpe.test(str) +'<br>');
+	document.write('str='+str)
+
+/*Object.prototype.test = function () {
+            alert(this);   여기에서의 test 를 오브젝트에 넣었기때문에 이렇게 한곳에선 상단의 test를 사용못한다.
+        }; */ 
+
+</script>
+
+4.3 HTML 관련 메소드
+String 객체의 HTML 관련 메소드.
+
+anchor( )		= a 태그로 문자열을 감싸 리턴.
+big( )		= big 태그로 문자열을 감싸 리턴.
+blink( )		= blink 태그로 문자열을 감싸 리턴.
+blod( )		= b 태그로 문자열을 감싸 리턴.
+fixed( ) 		= tt 태그로 문자열을 감싸 리턴.
+fontcolor ( )	= font 태그로 문자열을 감싸고 color 속성을 주어 리턴.
+fontsize( ) 	= font 태그로 문자열을 감싸고 size 속성을 주어 리턴.
+italics( )		= I( i 대문자.) 태그로 문자열을 감싸 리턴.
+link( )		= a 태그로 href 속성을 지정해 리턴.
+small( )		= small 태그로 문자열을 감싸 리턴.
+strike( )		= strike 태그로 문자열을 감싸 리턴.
+sub( )		= sub 태그로 문자열을 감싸 리턴.
+sup( )		= sup 태그로 문자열을 감싸 리턴.
+
+<script>
+        var string = 'JavaScript';
+        var output = '';
+        output += 'anchor: ' + string.anchor() + '<br/>';
+        output += 'big: ' + string.big() + '<br/>';
+        output += 'blink: ' + string.blink() + '<br/>';
+        output += 'bold: ' + string.bold() + '<br/>';
+        output += 'fixed: ' + string.fixed() + '<br/>';
+        output += 'string: ' + string.fontcolor('red') + '<br/>';
+        output += 'fontsize: ' + string.fontsize(15) + '<br/>';
+        output += 'italics: ' + string.italics() + '<br/>';
+        output += 'link: ' + string.link('http://hanb.co.kr') + '<br/>';
+        output += 'small: ' + string.small() + '<br/>';
+        output += 'strike: ' + string.strike() + '<br/>';
+        output += 'sub: ' + string.sub() + '<br/>';
+        output += 'sup: ' + string.sup() + '<br/>';
+        document.write(output);
+    </script>
+
+5. Array 객체.
+5-2. Array 생성자 함수.
+
+Array( ) = 빈 배열 생성.
+Array( n ) = 매개변수만큼의 크기를 가지는 배열을 만든다.
+Array(mixed, ... mixed)  매개변수를 배열로 만든다.
+
+var array1 = [52, 273, 103, 57, 32];
+        var array2 = new Array();
+        var array3 = new Array(10);
+        var array4 = new Array(52, 273, 103, 57, 32);
+
+5-3. Array 객체의 속성 : lenght = 배열 요소의 갯수를 알아낸다.
+5-4. Array 객체의 메소드
+
+concat( )	  = 매개변수로 입력한 배열의 요소를 모두 합쳐 배열을 만들어 리턴.
+join( )	  = 배열안의 모든 요소를 문자열로 만들어 리턴.
+pop ( )	  = 배열의 마지막 요소를 제고하고 리턴.
+push ( )	  = 배열의 마지막 부분에 새로운 요소를 추가.
+reverse ( ) = 배열의 요소 순서를 뒤집는다.
+slice ( )     = 배열 요소의 지정한 부분을 리턴.
+sort ( )      = 배열의 요소를 정렬한다.
+splice ( )    = 배열 요소의 지정한 부분을 삭제하고 삭제한 요소를 리턴.
+
+<script>
+        var arr1 = new Array('hig', 'abc', 'abd'); //['hig' ,'abc', 'abd']
+        var arr2 = [52, 103, 273, 32, 57];
+        document.write('arr1 정렬전 : ' + arr1 + '<br>');
+        arr1.sort(); // 정렬 = ascii 코드 순으로 정렬.
+        document.write('arr1 정렬후 : ' + arr1 + '<br>');
+        document.write('arr2 정렬전 : ' + arr2 + '<br>');
+        arr2.sort(function (left, right) { // 내림차순 or 오름차순 정렬.
+            return left - right; //오름차순정렬. left.name , left.kor 해서 원하는 차순으로 정렬.
+            //return right - left; 내림차순 정렬.
+
+        });  
+        document.write('arr2 오름차순 정렬후 : ' + arr2 + '<br>');
+
+        arr2.reverse();  //배열의 요소 순서를 뒤집는다.
+        document.write('arr2 뒤집은 후 : ' + arr2 + '<br>');
+
+        var slicedArr2 = arr2.slice(0, 3); //0인덱스부터 3앞까지. (0~2)
+        document.write('arr2 최솟값 : ' + slicedArr2 + '<br>');
+    </script>
+
+5-5. 오름차순 정렬 , 내림차순 정렬.
+
+// 총점 기준으로 내림차순 정렬
+        students.sort(function (left, right) {
+            return right.getSum() - left.getSum();  //return left.getSum() - right.getSum(); <-- 오름차순 정렬.
+        });
+
+
+6. Date 객체
+Date 객체의 겟터와 셋터.
+var date = new Date( );		var date = new Date( );
+date.get				date.set
+getDate			    	setDate
+getDay				setDay
+getFullYear  (연도를 가져올때 추천.)	setFullYear     
+getHous				setHous
+getMilliseconds			setMilliseconds
+getMinutes			setMinutes
+getMonth			setMonth
+getSeconds			setSeconds
+getTime				setTime
+    .				   .
+    .				   .
+    .				   .
+
+6.2 생성
+- 특정한 날짜를 생성하기 위해서는, Date의 매개변수에 숫자를 연, 월-1, 일, 시, 분, 초, 밀리초 순서로 입력해 객체를 생성한다. 
+6.3 메서드
+
+<script>
+        var date = new Date(2020, 0, 1, 13, 5 , 30);
+        var output = '';
+        output += '★toDateString: ' + date.toDateString() + '\n';
+        output += '★toLocaleDateString: ' + date.toLocaleDateString() + '\n';
+        output += '★toLocaleString: ' + date.toLocaleString() + '\n';
+        output += '★toLocaleTimeString: ' + date.toLocaleTimeString() + '\n';
+output += '★toTimeString: ' + date.toTimeString() + '\n';
+        output += '★toString: ' + date.toString() + '\n'; 
+        output += '★toUTCString: ' + date.toUTCString() + '\n';
+    </script>
+
+
+
+
+6.4 날짜 간격 계산
+- Date 객체는 D-Day를 구할 때도 활용할 수 있다. 날짜 간격을 구할 때는 getTime() 함수를 사용한다. 
+  getTime()함수는 1970년 1월1일 자정부터 지난 밀리초를 구한다. 이를 사용해 두 시간 사이의 초간격을 구하고 다시 날짜로 바꿀 수 있다.
+
+<script> //dataInterval.js
+
+        // this.getInterval(that): this날과 that날 사이의 날짜 계산.
+Date.prototype.getInterval = function (that) {
+    if (this > that) {
+        var intervalMili = this.getTime() - that.getTime();
+    } else {
+        var intervalMili = that.getTime() - this.getTime();
+    }
+    var intervalDay = intervalMili / (1000 * 60 * 60 * 24);
+    return Math.trunc(intervalDay);
+};
+
+
+// var intervalMili = limitday.getTime() - today.getTime();
+// var intervalDay = intervalMili / (1000 * 60 * 60 * 24);
+    </script>
+
+<script src="dataInterval.js"></script>
+    <script>
+        var today = new Date(); // 21-01-27 15:37;
+        var limitday = new Date(2021, 3, 30, 18, 20, 0) // 수료시점
+        document.write('오늘 : ' + today + '<br>');
+        document.write('날짜시간 : ' + today.toLocaleString() + '<br>'); //현재 지역의 맞게 나타남.
+        document.write('날짜 : ' + today.toLocaleDateString() + '<br>');
+        document.write('시간 : ' + today.toLocaleTimeString() + '<br>');
+        document.write('수료시점 : ' + limitday.toLocaleString() + '<br>');
+       
+        var intervalDay = today.getInterval(limitday);
+        document.write('남은 날짜는 : ' + intervalDay +'일');
+    </script>
+
+
++) Math 객체
+Math 객체의 속성.
+
+E
+LN2
+LN10
+LOG2E
+LOG10E
+PI
+SQRT1_2
+SQRT2
+
+Math 객체의 메소드.
+
+abs( )	=  x의 절대값을 리턴.
+acos( )	=  x 의 아크 코사인 값을 리턴.
+asin( )	=  x 의 아크 사인 값을 리턴.
+atan( )	=  x 의 아크 탄젠트 값을 리턴.
+atan2( )	 = x 와 y 의 비율로 아크 탄젠트 값을 구해 리턴.
+ceil( )	 = x 보다 크거나 같은 가장 작은 정수를 리턴.
+cos( )	 = x 의 코사인 값을 리턴.
+esp( )	 = 자연로그의 x 제곱을 리턴.
+floor( )	 = x보다 작거나 같은 가장 큰 정수를 리턴.
+log( )	 = x 의 로그 값을 리턴.
+max (x,y,z, ~ ,n )  = 매개변수 중 가장 큰 값을 리턴.
+min ( x, y, z, ~ n)  = 매개변수 중 가장 작은 값을 리턴.
+pow( )	  = x 의 y 제곱을 리턴.
+random( )  = 0 부터 1까지의 임의의 수를 리턴.
+round( )    = x를 반올림하여 리턴.
+sin( )   	  = x의 사인 값을 리턴.
+squt( )	  = x의 제곱근을 리턴.
+tan( )	  = x 의 탄젠트 값을 리턴.
+
+8. ECMAScript 5 객체들
+­ ECMAScript 5란 HTML 5와 함께 출현한 자바 스크립트 표준안.
+기존의 자바스크립트에서 객체 관련 부분을 보완했다. IE 9.0이상이나 그 외 브라우저에서 테스트해야 한다

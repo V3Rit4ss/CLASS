@@ -1,0 +1,329 @@
+1. 객체 개요.
+ <script>  /* 여러가지 변수를 모아놓은 자료형 typeof() 이용시 object */
+        var arr = [1, 2, 3]; //arr= { 0번방 :1, 1번방 :2, 2번방 :3 } element3개
+        var person = { 'name': '홍길동', 'age': 25 }; // property 두개.(key or propertyName)
+        document.write('arr의 타입:' + typeof (arr) + '<br>');
+        document.write('person의 타입:' + typeof (person) + '<br>');
+        document.write('arr[0] : ' + arr[0] + '<br>');
+        document.write('person[name] : ' + person['name'] + '<br>');
+        document.write('person.name : ' + person.name + '<br>'); //자바식.
+</script>
+
+결과 : 
+arr의 타입:object
+person의 타입:object
+arr[0] : 1
+person[name] : 홍길동
+person.name : 홍길동
+
+2. 속성과 메서드
+※ 배열 내부에 있는 값을 요소(element). 객체 내부에 있는 값은 속성(property).
+자바 스크립트에서는 요소와 속성을 구분하지 않고 쓴다.  객체 속성 중 함수형 자료형인 속성을 특별히 메서드라고 부른다.
+
+<script>
+        var f = function () { };
+        var i = 10;
+        var arr = [273, 3, 'Hello'];
+        var person = {
+            name: '홍길동', age: 25, eat: function (food) { //eat 은 메소드  name, age 는 데이터
+                alert(this.age + '살' + this.name + '은 ' + food + '를 먹는다.');
+            },
+        }
+        person.eat('덮밥');
+        document.write('person : ' + person + '<br>'); // 값을 안보여주고  person : [object Object] 라 나옴.
+        document.write('arr : ' + arr + '<br>'); //값을 뿌려준다.
+    </script>
+
+
+
+3. 객체와 반복문
+배열은 단순 for 반복문과 for in 반복문으로 요소에 쉽게 접근. 객체는 단순 for문은 불가. for in반복문을 사용한다
+<script>
+ // 변수를 선언
+        var product = {
+            name: 'Microsoft Visual Studio 2012 Ultimate',
+            price: '15,000,000원',
+            language: '한국어',
+            supportOS: 'Win 32/64',
+            subscription: true
+        };
+        // 출력.
+        var output = '';
+        for (var key in product) {
+            output += '●' + key + ': ' + product[key] + '\n';
+        }
+  alert(output);
+    </script>
+
+4. 객체와 배열의 출력.
+
+<script>
+        var arr = [1, 2, 3]; //출력 = 일반for, for-in, forEach()
+        for (var idx in arr) { // idx 라는 변수는 아무거나 해도 댐. ex)xxx 라던지 hole 이라던지
+            document.write(idx + '번 째 : ' + arr[idx] + '<br>');
+        }
+
+
+        var obj = { name: '홍길동', age: 25 }; // 출력 = for-in 문 만 사용. 'name' '' 생략 가능.   name: '홍길동' = property 라 한다.
+        for (var key in obj) {
+            document.write(key + ':' + obj[key] + '<br>');
+        }
+    </script>
+
+
+5.메소드(함수) 갖고 있는 객체의 데이터 출력.
+
+<script>
+        var arr =  [10, 20, 30,]; //남은 , 는 무시.
+        var product = {
+            'name': 'Micorsoft Visual Studio', 'price': 0, 'language': '한국어',
+            'supportOS': 'win 32/64', 'method': function () { alert('method'); },  //혹시 모를 데이터 추가할까봐 , 를 남겨둠.
+        };
+        for (var key in product) {
+            if (key != 'method') { //key 가 method 빼고.
+                document.write(key + " : " + product[key] + '<br>');
+            }
+        }
+
+    </script>
+
+6. in 키워드.
+
+in 키워드를 for 키워드와 별도로 사용하면 해당 키가 객체 안에 있는지 확인할 수 있다.
+<script>
+	var output = '';
+        var student = {
+            name: '홍길동',
+            kor: 92, mat: 98, eng: 96, sci: 98
+        };
+        output += "'name' in student : " + ('name' in student) + '\n';
+        output += "'gender' in student : " + ('gender' in student);
+  alert(output);
+   </script>
+
+6-2 with 키워드 
+반복해서 사용해야하는 것을 조금 짧게 만들어주는 에약어이다.
+
+<script>
+        var student = {
+            name: '홍길동', kor: 92, mat: 93, eng: 90, sci: 95,
+            output : '객체안에 output', // 파이썬에도 이렇게한다. 미리 알아두면 편하니 끝에 , 를 남겨둠.
+        }
+        var output = '';  //출력하는 변수 생성.,   선언된 변수는 window객체 안의 변수로댐.
+        with (student) {//student. 을 생략해주는 예약어 with()
+            window.output += '이름은' + name + '<br>'; //student.name 을 생략해줌.
+            window.output += '국어 점수 : ' + kor + '<br>';
+            window.output += '수학 점수 : ' + mat + '<br>';
+            window.output += '영어 점수 : ' + eng + '<br>';
+            window.output += '과학 점수 : ' + sci + '<br>';  // 상단의 student 안에 output 이 있어서.  window. 를 붙힘
+        }
+        document.write(output);
+        document.write('name in student : ' + ('name' in student)); //student 안에(in) name 이있냐? for-in 문을 이렇게도 쓸수있음.
+    </script>
+
++ with 키워드를 쓰다가 충돌이 나서 작동이 안될수도 있으니 조심해야한다.
+
+
+7. 객체내에는 속성값으로 함수가 올 수도 있다.
+ex) 자바에서 쓰던 toString 함수를 만들어보자.
+
+<script>
+        /*  자바에서 했던것을 자바스크립트에서 만들어보자.
+         class Person{
+            private String name;
+            private int kor;
+            public String toString(){
+             return this.name+'은'+kor;
+            }
+        }
+         Person person = new Person('홍길동',90);
+         System.out.println(person);
+         
+         */
+
+        var student = {
+            name: '홍길동', kor: 90, mat: 100, eng: 97, sci: 88,
+            toString: function () { 
+                var output = ''; //출력하는 변수
+                for (var key in this) { //안에선 this
+                    if (key != 'toString') { //key 가 투스트링이 아닐때만 출력.
+                        output += key + ' : ' + this[key] + '<br>';
+                    }
+                }
+                return output;
+            },
+        }
+
+        document.write(student); //출력해야하는 메소드 안에서만 toString 생략 가능.
+
+       /* var output = '';  toString 안에다 넣을 예정임.
+        for (var key in student) {
+            if (key != 'toString') {
+                output += key + ':' + student[key] + '<br>';
+            }
+        } 
+        document.write(output);
+        */
+
+
+8. 객체속성 추가 및 삭제.
+8-1 객체 속성 추가.
+<script>
+        var student = {
+            name: '홍길동',
+        }; // 1
+        student['name'] = '김길동';  //2
+        student.name = '신길동'; //3 최종 데이터값. 기존 객체의 속성값 변경.
+        student.kor = 100; //객체의 속성추가.
+        student.mat = 66;
+        student.hobby = '프로그래밍';
+        student.toString = function () {  // <--  toString 메소들를 만듬.
+            var output = '';
+            for (var key in this) {
+                if (key != 'toString') { //내부에서는 this[key] 로 해야 인식가능. 원하는 값만을 원하기때문에 'toString' 메소드는 출력하지않게.
+                    output += key + ' : ' + this[key] + '<br>';
+                }
+            }
+            return output;
+        };
+
+8-2 객체 속성 삭제
+
+        document.write(student);
+        //student 객체 안 : name, kor , mat , hobby , toString
+        delete (student.hobby); //객체안의 hoobby 속성 제거.
+        document.write('<h2>속성제거 후</h2>');
+        document.write(student);
+    </script>
+
+
+9. 객체 배열을 사용한 학생 데이터 관리.
+
+ <script>
+        var students = [ //학생 정보배열 생성.
+            { name: '홍길동', kor: 100, mat: 80, eng: 90, sci: 89 }
+        ];
+            students.push({ name: '박길동', kor: 90, mat: 86, eng: 90, sci: 70 })
+            students.push({ name: '김길동', kor: 80, mat: 59, eng: 90, sci: 83 })
+            students.push({ name: '이길동', kor: 66, mat: 90, eng: 90, sci: 90 })
+            students.push({ name: '최길동', kor: 48, mat: 100, eng: 90, sci: 60 })
+
+        for (var idx in students) { // 총점을 구하는 메소드 생성후 추가.
+            students[idx].getSum = function () {
+                return this.kor + this.mat + this.eng + this.sci;
+            };
+            students[idx].getAvg = function () {  // 평균을 구하는 메소드 생성, 추가
+                return this.getSum() / 4; //소수점 인식해서 유지댐. 자바는 짤렸음.
+            };
+            students[idx].toString = function ()   //toString 메소드를 이용하여 출력.
+                var output = '';
+                for (var key in this) {
+                    if (key != 'toString' && key != 'getSum' && key != 'getAvg') {
+                        output += key + ':' + this[key] + '\n';
+                    } else if (key == 'getSum' || key == 'getAvg') {
+                        output += key.substring(3) + ':' + this[key]() + '\n'; // function내용이나오니 ()
+                    }
+                }
+                return output;
+
+            };
+        }
+//여러 방면으로 출력.
+        // 일반 for문.
+        var output = '';
+        for (var idx = 0; idx < students.length; idx++) {
+            output += idx + '번 째\n';
+            output += students[idx];
+        }
+        alert(output); //alert 는 br 이 안댐.
+        //document.write(output.replace('\n','<br>'));
+        document.write(replaceAll(output, '\n', '<br>')); //첫번째 아이만 적용댐. 그래서 맨아래 처럼 전체적용시킴.
+
+        //for - in
+        document.write('<h2>2. for-in 문 이용</h2>');
+        for (idx in students) {
+            document.write(students[idx] + '<br>');
+
+        }
+
+        //forEach()
+        document.write('<h2>3. forEach() 문 이용</h2>'); //data , idx 에서 idx 만 생략가능
+        students.forEach(function (data, idx) {
+            document.write(idx + '번 째 : ');
+            document.write(data + '<br>');
+
+        });
+
++) replaceAll 사용.
+
+        // replaceAll : output에서 oldStr을 newStr로 모두 교체
+        function replaceAll(str, oldStr, newStr){
+            //join , split
+            return output.split(oldStr).join(newStr);
+        }
+       
+    </script>
+
+
+
+10. split & join.
+
+ <script>
+        var output = 'abcd@abcd@abcd';
+        var splitOutput = output.split('@'); //abcd 와 abc 로 나뉨
+        //  document.write(output.replace('@', 'XX')); //원하던 결과가 아님.
+        document.write(splitOutput + '분리된 횟수 : ' + splitOutput.length + '<br>');
+        var sumSplitOutput = splitOutput.join('XX');
+        document.write(sumSplitOutput);
+    </script>
+
+
+11. 함수를 이용한 객체 배열.
+
+ <script> //위에만들던 아래에 만들던 따로 빼던 상관무. 단, 따로뺀 파일의 링크를 맨위에 해야함.
+
+        function makeStudent( name, kor, mat, eng, sci ) {
+            var resultObj = {
+                name : name,  //속성값 = name(key)
+                kor : kor,
+                mat : mat,
+                eng : eng,
+                sci : sci,
+                getSum : function () {
+                    return this.kor + this.mat + this.eng + this.sci;
+                },
+                getAvg: function () {
+                    return this.getSum() / 4;
+                },
+                toString: function () {
+                    var output = '';
+                    for (var key in this) {
+                        if (key != 'toString' && key != 'getSum' && key != 'getAvg') {
+                            output += key + ' : ' + this[key] + '\t';
+                        } else if (key == 'getSum' || key == 'getAvg') {
+                            output += key.substring(3) + ' : ' + this[key]() + '\n'; // this[key]() 호출.
+                        }//if else
+                    }//for
+                    return output;
+                }, // toString
+            }; // resultObj
+            return resultObj;
+        } //makeStudent 함수 끝
+       
+        var students = [makeStudent('홍', 100, 90, 80, 70),
+            makeStudent('김', 10, 60, 80, 70),
+            makeStudent('박', 100, 67, 80, 70),
+        ];
+        students.push(makeStudent('이', 90, 80, 60, 70, 90));
+        students.push(makeStudent('최', 30, 40, 60));
+        students.forEach(function (value, idx) { //변수선언은 내맘대로. data => value
+            document.write(idx + '번 째 : <br>' + value + '<br>');
+
+        })
+
+        /*
+         makeStudents('홍', 100, 90, 80, 70) 의 결과
+         = {name:'홍', kor:100 , mat:90 , eng:80 , sci:70}
+         */
+
+    </script>

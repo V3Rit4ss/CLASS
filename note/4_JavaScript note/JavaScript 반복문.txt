@@ -1,0 +1,141 @@
+1. 배열 : 자바의 배열보다 자바스크립트의 배열이 더욱 다양하게 들어가고 거기에 따른 여러가지들이 많이 다르다.
+또한 for문에서 for-in , forEach() 가 새로 나왔는데 for-in 과 forEach()가 많이쓰이니 꼭 알아둬야한다.
+<script>
+        // int[] arr = {1, 2, 3};
+        //object {} =>  var person = { name: '홍길동', age: 25 };
+        var array = [273, 'hello', true, function () { alert(1); }, [1, 2, 3]]; //자바스크립트의 배열에 이렇게나 다양하게 들어갈수있음.
+        document.write(array[0]);
+        document.write(array[1]);
+        document.write(array[2]);
+        document.write(array[3]);
+        document.write(array[4]);
+        
+    </script>
+
+※ 배열의 length속성과 push()메서드
+<script>
+        var array = [0,1,2,3,4];
+        alert('length of array : ' + array.length);
+        array.push(5);
+        alert('5 push 후 : ' +array);
+        alert('5 push 후 length of array : ' + array.length);
+    </script>
+
+※ 문자열과 배열
+<script>
+        var a = 'abcde';
+        alert('length of array : ' + a.length);
+        alert(a[0]);
+        alert(a[0] + a[1] + a[2] + a[3] + a[4] + a[5]);
+    </script>
+
+2. while 반복문
+※ 1초동안 while문이 몇번 반복되는지 출력하는 자바스크립트 코드를 구현하시오.
+<script>
+        var value = 0;
+        var startTime = new Date().getTime(); 
+        while (new Date().getTime() < startTime + 1000) {
+            value++;
+        }
+        alert(value);
+    </script>
+
+3. do while 반복문
+<script>
+        var value = 0;
+        do {
+            alert(value + '번째 반복문');
+        } while (++value < 5);
+        alert(value);
+    </script>
+
+4. for 문
+<script>
+        var array = ['포도', '사과', '바나나', '망고'];
+        for (var i = 0 ; i < array.length; i++) {
+            alert(array[i]);
+        }
+        for (var i = array.length - 1; i >= 0 ; i--) {
+            alert(array[i]);
+        }
+
+
+
+# (반복문, 함수)를 이용한 배열출력.
+
+ <script>
+        var arr = [273, 32, '홍길동']; //배열의 속내부가 오브젝트와 비슷해서 타입이 오브젝트로 나온다.
+    //   var arr1 = { 0: 273, 1: 32, 2: '홍길동' }; //object
+        var person = { name: '홍길동', age: 25 };
+        //1. 일반 for문.
+        document.write('<h3>1. 일반 for문 이용 </h3>');
+        for (var idx = 0; idx < arr.length; idx++) {
+            document.write(idx + '번째 :' + arr[idx] + '<br>');
+        }
+
+        //2. for - in문
+        document.write('<h3>2. for-in 문 </h3>');
+        for (var idx in arr) { //확장 for 문과 비슷하나 완전 다르다.
+            document.write(idx + '번째 :' + arr[idx] + '<br>');
+        }
+
+        //3. forEach()함수 이용 1  => 배열에서 사용가능.
+        document.write('<h2>3. forEach() 사용 </h2>');
+        //배열명 = arr
+        //배열안의 데이터는 273, 32, '홍길동'
+        // 배열의 인덱스는   0,  1,     2  들어가는 순서는 data 먼저 그다음엔 idx
+        arr.forEach(function (data, idx) {  //data= 배열데이터. 
+            document.write(idx + '번째 :' + data + '<br>');  // data <=>  arr[idx] 가능.
+        });             //함수형 언어에서 자주쓰임.
+
+        //4. forEach()함수 이용 2   -> 반복문 실행시 idx가 필요없을때
+        document.write('<h2>4. idx없이 forEach() 사용 </h2>');
+        arr.forEach(function (data) {
+            document.write(data + '<br>');
+        });
+
+    </script>
+
+5. 중첩 for 문
+ <script>
+        // *
+        // **
+        // ***
+        var temp = '';
+        for (var i = 1; i < 4; i++) {
+            for (var j = 1; j <= i; j++) { //j는 i만큼 반복
+                temp += '*';
+            }
+            temp += '\n';
+        }
+        alert(temp);
+
+    </script>
+
+
+6. break 키워드 vs. continue 키워드
+※  break문과 continue문
+<script>
+        for (num = 1 ; num < 5 ; num++) {
+            if (num % 3 == 0)
+                break;
+            alert(num);
+        }
+    </script>
+<script>
+        for (num = 1 ; num < 5 ; num++) {
+            if (num % 3 == 0)
+                continue;
+            alert(num);
+        }
+    </script>
+
+<script>
+        for (var i=0 ; true ; i++){
+            alert(i + '번째 반복문입니다');
+            if (!confirm('계속 하시겠습니까?')) { //진행여부를 묻는 질문
+                break;
+            }
+        }
+        document.write(i + '까지 수행');
+    </script>

@@ -1,0 +1,150 @@
+단일행 함수
+
+# 단일행함수(INPUT1 -> OUTPUT 1)
+  오직 단일 행에서만 적용가능하고 행 별로 하나의 결과를 리턴
+  문자, 숫자, 날짜 형 변환 함수 등
+
+# 그룹함수(INPUT n행 -> OUTPUT 1행)
+  여러 개의 행을 조작하여 행의 그룹당 하나의 결과를 리턴
+
+ex. SELECT SUM(SAL) FROM EMP;              -- 그룹함수(input n행, output)
+ex. SELECT DEPTNO, SUM(SAL) FROM EMP GROUP BY DEPTNO;
+
+0. DUAL 테이블과 SQL 함수 분류
+(1) DUAL 테이블의 구조
+
+DUAL은 테스트하기 위한 용도의 oracle 내장 객체, 한 행으로 출력된다. 주로, 연산, 함수적용내용 확인 시 활용.
+  산술연산결과를 한줄로 얻기 위해 오라클에서 제공하는 테이블
+
+DESC DUAL;를 통해 실행결과를 보면 DUAL 테이블은 DUMMY라는 단 하나의 컬럼으로 구성되어 있다. 이 컬럼에는 최대 길이는 1byte.
+
+DUMMY 컬럼엔 과연 어떤 값이 저장되어 있는 것일까?
+­ SELECT * FROM DUAL; 
+­ DESC DUAL;
+­ SELECT 12*4 FROM DUAL;
+­ SELECT 12*4 FROM EMP;
+­ DUAL 테이블은 DUMMY라는 단 하나의 컬럼에 X라는 단 하나의 로우만을 저장하고 있으나 이 값은 아무런 의미가 없다. 
+­ 쿼리문의 수행 결과가 하나의 로우로 출력되도록 하기 위해서 단 하나의 로우를 구성하고 있을 뿐, 그래서 다음의 함수 실습에 이용할 것 이다
+
+1. 숫자 함수 : 숫자를 처리하는 함수. 절대값, 수학함수(sin, cos, tan…), 올림(ceil), 반올림(round), 내림(trunc), 나머지(mod) 등
+
+(1) ABS(x) : 절대값
+(2) COS(x) : COSINE 값을 반환
+(3) EXP(x) : e(2.71828183……)의 x승
+(4) FLOOR(x) : 소수점 아래를 버림
+(5) LOG(x) : log값을 반환
+(6) POWER(m,n) : m의 n승
+(7) SIGN(n) : n<0이면 -1, n=0이면 0, n>0이면 1을 반환
+(8) SIN(x) : SINE값 반환
+(9) TAN(x) : tangent값 반환
+(10) ROUND(x) : 특정 자릿수에서 반올림
+(11) ROUND(데이터, 반올림할 소수점 자리수) ; 반올림할 자리수가 음수인 경우 -1은 십단위. -2는 백단위
+(12) TRUNC(x, n):n으로 지정한 자리수 이하를 버림
+(13) MOD(x, n) : x를 n으로 나눈 나머지값
+
+
+2.문자 관련 함수.
+
+(1) LOWER(str) : 소문자로
+(2) UPPER(str) : 대문자로
+(3) INITCAP(str) : 첫 글자만 대문자로 나머지 글자는 소문자로
+(4) CONCAT(str1, str2) : 문자 연결
+(5) SUBSTR(str, 시작할위치, 추출할갯수) : 문자를 잘라 추출 (한글은 1byte), 시작할위치는 인덱스 아님
+                    시작할 위치가 음수이면 끝에서부터 자리수를 센다
+(6) SUBSTRB(str, 시작할위치,추출할갯수) : 문자를 잘라 추출 (한글은 2byte)
+(7) LENGTH(str) : 문자길이 (한글은 1byte)
+(8) LENGTHB(str) : 문자길이 (한글은 2~3byte)
+(9) INSTR(str, 찾을글자, 시작위치, 몇번째발견 검색된 횟수) str에서 찾을글자를 몇번째 발견하는지
+(10) LPAD, RPAD : 입력 받은 문자열과 기호를 정렬하여 특정 길이의 문자열로 반환한다
+(11) TRIM : 잘라내고 남은 문자를 표시한다
+(12) CONVERT : CHAR SET을 변환 SELECT CONVERT(ENAME,'US7ASCII','UTF8') FROM EMP;
+(13) CHR : ASCII코드 값으로 SELECT CHR(65) FROM DUAL;
+(14) ASCII : ASCII코드값을 문자로
+(15) REPLACE : 문자열에서 특정문자를 변경
+
+
+3. 날짜 관련 함수
+
+(1) SYSDATE : 시스템 저장된 현재 날짜를 반환한다.
+(2) MONTHS_BETWEEN  : 두 날짜 사이가 몇 개월인지를 반환한다
+(3) ADD_MONTHS : 특정 날짜에 개월 수를 더한다
+(4) NEXT_DAY : 특정 날짜에서 최초로 도래하는 인자로 받은 요일의 날짜를 반환한다
+(5) LAST_DAY : 해당 달의 마지막 날짜를 반환한다
+(6) ROUND : 인자로 받은 날짜를 특정 기준으로 반올림한다
+(7) TRUNC : 인자로 받은 날짜를 특정 기준으로 버린다
+
+
+4. 형변환함수 : 오라클을 사용하다 보면 숫자, 문자, 날짜의 데이터 형을 다른 데이터형으로 변환해야 하는 경우가 생기는데, 이럴때 사용하는 함수가 형변환 함수이다
+
+(1) TO_CHAR(날짜, 패턴) : 날짜를 패턴에 맞게 문자로 형변환.
+-- YY(년도) MM(월) MON(월 이름) DD(일) DY(요일)
+-- HH24(0~23시) AM(오전/오후) HH(0~11시) M1(분) SS(초)
+
+(2) TO_CHAR(숫자, 패턴) : 숫자값을 패턴에 맞게 문자로 형변환.
+-- 패턴내 0 을쓰면 : 자릿수 표시. 자릿수가 맞지 않으면 0으로 채워짐.
+-- 패턴내 9 를 쓰면 : 자릿수 표시. 자릿수가 맞지 않으면 채우지 않음 (자바에서는 #)
+-- 패턴내 $ 를 쓰면 : 통화 단위. 통화 단위가 숫자 앞에 붙음.
+-- 패턴내 L 을 쓰면 : 지역통화단위가 숫자앞에 붙음. 타임존에 따라 해당 지역통화로 바뀜.
+
+(3) TO_DATE(문자, 패턴) : '81/01/01' -> 문자를 패턴에 맞게 날짜형으로 변환.
+--81/5/1 ~ 83/5/1 까지 사이의 입사한 직원 출력.
+SELECT * FROM EMP WHERE HIREDATE BETWEEN '81/05/01' AND '83/05/01'; 
+ --사용자 PC에 데이트 타입이 어떨지 모르니 이렇게 하면 주의해야한다.
+
+SELECT * FROM EMP WHERE HIREDATE BETWEEN TO_DATE('19810501', 'YYYYMMDD') AND TO_DATE('19830501', 'YYYYMMDD');
+--그러니 이렇게 하는게 좋다.
+
+--2020년 11월 30일 부터 현재까지 날짜수를 출력 (시스템의 날짜형 포멧을 모른다.)
+SELECT CEIL(SYSDATE-TO_DATE('20201130', 'YYYYMMDD')) FROM DUAL; --올림 29일
+SELECT TRUNC(SYSDATE-TO_DATE('20201130', 'YYYYMMDD')) FROM DUAL; -- 내림 28일
+
+(4) TO_NUMBER(문자, 패턴) : 문자를 패턴에 맞게 숫자형으로 변환.
+SELECT TO_NUMBER('1,000', '9,999') FROM DUAL;
+SELECT TO_NUMBER('1,000', '9,999')*1.1 FROM DUAL; 
+--'1,000'*1.1 그냥 하면 문자형을 계산을 못하기에 투넘버로 숫자형으로 형변환 시켜서 하지만, 굳이 숫자를 문자로 써서 계산하는 일이 별로 없다.
+
+
+5. NULL 관련 함수 : NVL(널 일 수 도있는 데이터, 널 데이터 대산 할 값) --매개변수 2개는 타입 일치.
+
+오라클 아우터 조인 시 대상 컬럼에 "(+)" 기호를 붙여서 조인을 하면된다. 
+아우터 조인을 사용하는 이유는 기준 테이블의 데이터가 모두 조회(누락 없이) 되고, 대상 테이블에 데이터가 있을 경우 해당 컬럼의 값을 가져오기 위해서이다
+
+--사원이름, 직속상사의 이름(직속상사가 없으면 CEO로 출력)
+SELECT W.ENAME, NVL(M.ENAME, 'CEO') FROM EMP W, EMP M WHERE W.MGR=M.EMPNO(+) ;  -- (+) : 아우터 조인.
+
+--사원이름, 직속상사의 사번(직속상사가 없으면 CEO 로 출력)
+SELECT ENAME, NVL(TO_CHAR(MGR), 'CEO') MGR FROM EMP; 
+SELECT * FROM EMP;
+
+
+6. DECODE 함수 (매개변수=데이터, 값1, 값2, 결과2, ... 값N, 결과 N , 그외 결과) 
+
+--이름 , 부서번호, 부서이름 
+SELECT ENAME , D.DEPTNO, DNAME FROM EMP E, DEPT D WHERE E.DEPTNO=D.DEPTNO;
+SELECT ENAME, DEPTNO, 
+    DECODE(DEPTNO, 10, 'ACCOUNTING', 20, 'RESEARCH', 30, 'SALES', 40, 'OPERATIONS', 'ETC') AS "DNAME" FROM EMP;
+    --JOIN 쓴거나 DECODE 나 똑같이 나온다.
+
+
+7. 조건에 따라 서로 다른 처리가 가능한 CASE 함수
+(1) 형식 : SELECT 절 CASE WHEN 조건1 THEH 결과 1
+ 	WHEN 조건2 THEH 결과 2
+	WHEN 조건3 THEH 결과 3
+	ELSE 결과n END
+
+SELECT ENAME, DEPTNO, CASE WHEN DEPTNO=10 THEN 'ACCOUNTING' 
+    WHEN DEPTNO=20 THEN 'RESEARCH' 
+    WHEN DEPTNO=30 THEN 'SALES' 
+    WHEN DEPTNO=40 THEN 'OPERATIONS' 
+    ELSE 'ETC' END AS "DNAME" FROM EMP;
+
+
+8. 그외 함수. [ EXTRACT, 레벨별 출력]
+SELECT EXTRACT(YEAR FROM HIREDATE) YEAR FROM EMP;
+SELECT TO_CHAR(HIREDATE, 'YYYY') YEAR FROM EMP;
+SELECT EXTRACT(MONTH FROM HIREDATE) MONTH FROM EMP;
+SELECT TO_CHAR(HIREDATE, 'MM') MONTH FROM EMP;
+
+--LEVEL, START WITH(최상위 레벨의 조건), CONNECT BY PRIOR(레벨들 연결조건)
+SELECT LEVEL, LPAD(' ',LEVEL*2)||ENAME ,MGR FROM EMP 
+    START WITH MGR IS NULL CONNECT BY PRIOR EMPNO=MGR;  --이거 잘 안쓰이긴 한다.

@@ -1,0 +1,105 @@
+api
+
+API 를 알기전.
+
+1. JDK 라이브러리(자바 표준 라이브러리)에 대하여 알아보자.
+지금까지 무심코 사용해 왔던 String클래스와 System클래스도 모두 이 이 라이브러리에 속한 클래스이다.
+이 라이브러리는 JDK안에 포함되어 있는데 자바 가상기계가 자바 프로그램을 실행할 때 이 라이브러리의 클래스와 인터페이스들을 자동으로 읽어 들이기 때문에 우리가 지금까지 그 존재를 인식하지 않고도 사용할 수 있었던 것 !
+
+※JDK에서 많은 패키지 제공
+
+①  java.lang 자바프로그램의 기본적인 기능을 제공. 명시적으로 지정하지 않아도 모든 자바 프로그램에 포함되는 패키지   java.lang.String나 java.lang.Exception은 모두 java.lang.을 생략 가능
+②  java.util 유용한 유틸리티 클래스를 제공
+③  java.io 입출력 기능을 제공하는 패키지
+④  java.net 네트워킹과 관련된 기능을 제공하는 패키지
+⑤  java.awt 그래픽 유저인터페이스(GUI)를 구축하기 위한 다양한 컴포넌트를 제공하는 패키지
+⑥  java.awt.event awt컴포넌트들의 이벤트를 제어하는 패키지
+
+2.  JAVA 필수 API
+JAVA는 개발자들이 편리하게 이용할 수 있는 풍부한 클래스들이 아주  많다.
+이러한 클래스들을 이용해서 개발자들은 깊은 지식이 없이, 그냥 사용만 하면 되고, 이러한 기능들을 정의해 둔 클래스들을 API(Application Programming Interface)라고 한다.
+그냥 쉽게 말하자면, API란, 누군가가 만들어 놓은 기능들이라고 생각하면 된다.
+
+지금 JAVA를 배우고 있으니, JAVA API에서 제공하는 이해하기 쉬운 클래스들을 익혀 나가면 된다. 그리고 그 중에서도 자주 쓰이는 API만 익히고, 나머지는 프로젝트를 하면서 조금씩 익혀나가면 된다.
+참고로 JAVA에는 3,000개가 넘는 클래스가 있기떄문에 모두 알 수 없고, 그때 그때 조금씩 공부하면서 익혀나가면 된다.
+
+※String의 주요 기능들(메소드)
+	String concat(String str) : 저장된 문자열과 str문자열을 결합
+	String substring(int begin) : 시작위치부터 마지막까지의 문자열을 반환
+	int length() : 문자열 길이를 반환
+	String toUpperCase() : 대문자로 반환
+	String toLowerCase() : 소문자로 반환
+	char charAt(int index) : index 위치의 문자를 반환
+	int indexOf(char ch) : 첫번째 ch문자의 위치를 반환
+	int lastIndexOf(char ch) : 마지막 ch문자의 위치를 반환
+	boolean equals(String str) : 지정된문자열과 str문자열이 같은지 비교
+	boolean equalslgnoreCase(String str) : 대소문자구분없이 지정된문자열과 str문자열이 같은지 비교
+	String trim() : 문자열 앞뒤 공백제거
+	String replace(char old, char new) : 문자열 내의 old문자를 new문자로 반환
+	String  repalceAll(String old, String new) : 문자열 내의 old문자열을 new로 반환
+
+3-2. String의 문제점
+
+※ String은 메모리를 과소비.
+Stirng클래스는 많이 쓰이고, 좋은 기능(메소드)를 많이 가지고 있지만, 이렇게 좋은 클래스가 치명적인 단점이 있다.
+바로 메모리를 과소비 하는 것인데, String객체의 경우 처음 초기화된 데이터에 변화가 생기면 기존 것을 재활용하지 않고 기존의 것은 버리고 새로운 메모리를 이용.
+
+위의 메소드는 String 객체가 가지고 있는 문자열의 내용을 바꾸는 것이 아니라 바뀐 내용을 갖는 새로운 String객체를 생성해 낸다. 
+그렇기 때문에 문자열 조작을 많이 하는 프로그램에서 이런 메소드를 많이 사용하면 String 객체가 너무 많이 생기기 때문에 효율적이지 않고, 많은 객체를 만들게 되면 메모리도 많이 쓰게 되고 프로그램의 성능도 떨어지기 때문.
+
+3-3. StringBuffer와 StringBuilder의 등장
+문자열 변수의 잦은 내용 변경이 불가피할 시에는, Stirng 클래스의 새로운 메모리를 생성하는 문제로 인해 속도가 느려 지는 현상이 있었다.
+그럴 때는 문자열 조작에 적합하게 만들어진 다른 클래스를 사용하는 것이 좋다.
+문자열 조작에 적합하게 만들어진 클래스로는 StringBuilder클래스와 StringBuffer클래스가 있다. 
+이 클래스들은 모두 객체 내부에 있는 버퍼(buffer, 데이터를 임시로 저장하는 메모리)에 문자열의 내용을 저장해 두고 그 안에서 추가, 수정, 삭제 작업을 한다. 그렇게 때문에 이 클래스들은 이용하면 새로운 객체를 만들지 않고도 문자열 조작을 할 수 있다.
+그래서 속도적인 측면에서 더욱 개선된 StringBuffer와 StringBuilder가 등장.
+
+※ StringBuilder 주요 기능(메소드)
+
+append(String str) : 문자열 str 추가
+insert(int index, String str) : 특정 index에 문자열 str 추가
+delete(int start, int end) : index위치 start부터 end앞 까지 삭제
+deleteCharAt(int index) : index위치의 특정 문자 하나 삭제
+int capacity() : 문자열 크기 반환
+ensureCapacity(int size) : 버퍼의 크기를 size만큼 늘리는 메소드
+trimToSize() : 과도한 버퍼 크기를 적당하게 줄이는 메소드
+
+※StringBuffer와 StringBuilder 차이점
+StringBuffer와 StringBuilder는 동일하다고 생각 하면 되는데, 약간의 차이가 있을 뿐 이다.
+단, StringBuffer가 StringBuilder보다 먼저 세상에 등장 한 클래스. 기능은 같고, 단지 StringBuilder가 속도 면에서 좀더 빠르다.
+
+4.System.currentTimeMillis()  : 현재시간을 알수있는 메소드
+※개발 테스트에 많이 쓰이는 System.currentTimeMillis()
+System.currentTimeMillis()는 1970년도부터 현재까지의 밀리세컨(1/1,000초) 단위로 표시.
+
+※ StringTokenizer 주요 기능(메소드) : 문자열 분할
+
+5. 날짜(Calendar와 GregorianCalendar) API
+※날짜와 시간을 표현할 때 많이 쓰이는 Calendar클래스는 싱글톤클래스
+※날짜와 시간을 표현할 때 많이 쓰이는 GregorianCalendar클래스는 일반클래스
+
+
+6.DateFormat :  Date 형식을 format을 이용하여 String 형으로 변환.
+
+<예제> DateFormat
+	public static void main(String[] args) {
+		GregorianCalendar gc = new GregorianCalendar();
+		SimpleDateFormat dateFormat 
+= new SimpleDateFormat("yyyy년 MM월 dd일 aa hh시 mm분 ss초");
+		// y년 M월 
+		// d일 
+		// D 월구분없는일(1~365) 
+		// E 요일 
+		// a오전/오후 
+		// W월의 몇번째 주 
+		// w 년의 몇번째주
+		// H시(0~23)
+		// h시(1~12)
+		// m 분 
+		// s초
+		// S밀리세컨드(1/1000)
+		String outString = dateFormat.format(gc.getTime());
+		System.out.println(outString);
+	}
+
+다음에는 수학적 계산에 사용되는 API 를 알아보자.

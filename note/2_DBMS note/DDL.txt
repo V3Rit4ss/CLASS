@@ -1,0 +1,151 @@
+DDL
+ 
+DDL  :  Data Definition Language ; 데이터와 그 구조를 정의
+  CREATE : 데이터 베이스 객체 생성
+  DROP : 데이터 베이스 객체를 삭제
+  ALTER : 기존에 존재하는 데이터베이스 객체를 다시 정의
+  TRUNCATE : 데이터베이스 객체 내용 삭제
+
++ --DDL 을 쓸때 마다 데이터 사전도 바로바로 바뀐다.
+
+1. CREATE  TABLE로 테이블 구조 정의하기
+CREATE TABLE BOOK(
+    BOOKID NUMBER(4),--도서번호 --넘버하고 아무것도 안하면 30~40자로 자동으로 잡힌다.
+    BOOKNAME VARCHAR2(20),--도서이름
+    PUBLISHER VARCHAR2(20),--출판사
+    RDATE DATE, --출판일
+    PRICE NUMBER(8),  --도서 가격
+    PRIMARY KEY(BOOKID) --테이블내 주키(PRIMARY KEY) = 유일한 코드, 유일한 값 ,중복X,NULL 값 불가.  --제약조건 중 하나인 프라이머리 키.
+    
+);
+
+1-1 서브쿼리를 이용한 테이블 생성.
+CREATE TABLE EMP02    --테스트형 으로 만들때 ..
+    AS
+    SELECT * FROM EMP;  --서브쿼리 결과만 옴, EMP02(제약조건은 미포함)   테이블내 서브쿼리는 가로 안넣어도댐.
+
+SELECT * FROM EMP02;
+INSERT INTO EMP02 (EMPNO, ENAME, DEPTNO) VALUES (7369, 'HONG', 90);   --제약조건이 없어서 중복된것도 들어간다.
+
+-- EMP03 : EMP 테이블에서의 EMPNO, ENAME, DEPTNO 만 추출.
+CREATE TABLE EMP03
+    AS
+    SELECT EMPNO, ENAME, DEPTNO FROM EMP;  --전체 테이블중에서 일정부분만 테스트 하고싶을때.
+
+SELECT * FROM EMP03;
+
+
+--EMP04 : EMP 테이블에서의 10번 부서만 추출.
+CREATE TABLE EMP04
+    AS
+    SELECT * FROM EMP WHERE DEPTNO=10;
+
+SELECT * FROM EMP04;
+
+--EMP05 : EMP 테이블에서 구조만 추출.
+CREATE TABLE EMP05
+    AS                             --[WHERE 1=0 ] 무조건 거짓이라 데이터는 빠지고 구조만 나온다.
+    SELECT * FROM EMP WHERE 1=0 ; --[ WHERE 1=1 ] 무조건 참이라 EMP 의 모든걸 가져옴
+
+
+[ * ] 데이터형 : 데이터베이스에는 문자, 숫자, 날짜, 이미지 등과 같은 다양한 형태의 데이터가 저장된다. 다음은 오라클에서 제공되는 데이터 형의 종류입니다. 
+
+(1) CHAR(size) ; 고정 길이 문자 데이터. VARCHAR2와 동일한 형태의 자료를 저장할 수 있고, 입력된 자료의 길이와는 상관없이 정해진 길이만큼 저장 영역 차지. 최소 크기는 1
+(2) VARCHAR2(size) ; Up to 2000 Bytes 가변 길이 문자 데이터. 실제 입력된 문자열의 길이만큼 저장 영역을 차지. 최대 크기는 명시해야 하며, 최소 크기는 1
+(3) NUMBER ; Internal Number Format 최고 40자리까지의 숫자를 저장할 수 있습니다. 이때 소수점이나 부호는 길이에 포함되지 않는다
+(4) NUMBER(w) ; W자리까지의 수치로 최대 38자리까지 가능하다. (38자리가 유효 숫자이다.)
+(5) NUMBER(w, d) ; W는 전체 길이, d는 소수점 이하 자릿수이다. 소수점은 자릿수에 포함되지 않는다.
+(6) DATE : BC 4712년 1월 1일~AD 4712년 12월 31일까지의 날짜
+(7) LOB : 2GB까지의 가변 길이 바이너리 데이터를 저장시킬 수 있고, 이미지 문서, 실행 파일을 저장할 수 있다
+LOB(Large OBject) 데이터 형은 텍스트, 그래픽 이미지, 동영상, 사운드와 같이 구조화되니 않은 대용략의 텍스트나 멀디미디어 데이터를 저장하기 위한 데이터 형. 
+최대 4GB 까지 저장가능. 오라클에서 제공되는 LOB 데이터 형은 BLOB, CLOB, NCLOB, BFILE 등이 있다. 
+BLOB는 그래픽 이미지, 동영상, 사운드와 같은 구조화되지 않은 데이터를 저장하기 위해 사용된다. 
+CLOB는 e-BOOK과 같은 대용량의 텍스트 데이터를 저장하기 위해서 사용. 
+NCLOB은 국가별 문자셋 데이터를 저장하고, BFILE은 바이너리 데이터를 파일 형태로 저장한다.
+
+(3) 식별자 명명규칙
+반드시 문자로 시작. A~Z까지 대소문자, 0~9까지의 숫자, 특수기호는 _,$,#만 포함 가능
+1~30글자까지 가능. 공백 허용 안함.
+오라클에서 사용되는 예약어나 다른 객체명과 중복 불가
+
+
+2.  ALTER TABLE로 테이블 구조 변경하기
+(1) ALTER TABLE 명령문은 기존 테이블의 구조를 변경하기 위한 DDL 명령문. 테이블에 대한 구조 변경은 컬럼의 추가, 삭제, 컬럼의 타입이나 길이를 변경할 때 사용, 
+   테이블의 구조를 변경하게 되면 기존에 저장되어 있던 데이터에 영향을 주게 된다.
+
+(2) ALTER TABLE로 칼럼 추가, 수정, 삭제하기 위해서는 다음과 같은 명령어를 사용.
+	ADD COLUMN 절을 사용하여 새로운 칼럼을 추가한다.
+	MODIFY COLUMN 절을 사용하여 기존 칼럼을 수정한다.
+	DROP COLUMN 절을 사용하여 기존 칼럼을 삭제한다
+(3) ALTER TABLE ADD 문은 기존 테이블에 새로운 컬럼을 추가한다. 새로운 컬럼은 테이블 맨 마지막에 추가되므로 자신이 원하는 위치에 만들어 넣을 수 없다.
+    또한 이미 이전에 추가해 놓은 로우가 존재한다면 그 로우에도 컬럼이 추가되지만, 컬럼 값은 NULL 값으로 입력된다.
+	ALTER TABLE table_name
+	ADD (column_name data_type expr, …);
+(4) 기존 컬럼 속성 변경하기
+	ALTER TABLE MODIFY 문을 다음과 같은 형식으로 사용하면 테이블에 이미 존재하는 컬럼을 변경할 수 있게 되는데, 컬럼을 변경한다는 것은 컬럼에 대해서 데이터 타입이나 크기, 기본 값들을 변경한다는 의미이다.
+	ALTER TABLE table_name
+	MODIFY (column_name data_type expr, …);
+
+(5) 기존 컬럼 삭제
+	테이블에 이미 존재하는 컬럼을 삭제해 보자. 
+ALTER TABLE ~ DROP COLUMN 명령어로 칼럼을 삭제할 수 있다. 
+	ALTER TABLE table_name 
+	DROP COLUMN column_name;
+
++ 논리적으로 특정 필드를 접근 못하도록 하는.
+  ALTER TABLE EMP03 SET UNUSED (SAL);
+  SELECT * FROM EMP03;  --SAL 이 안보이지만 잠깐 숨겨둔다.
+
++ 논리적으로 접근 불가했던 필드를 삭제 (새벽)
+   ALTER TABLE EMP03 DROP UNUSED COLUMNS; -- 물리적으로 삭제시 테이블 억세스 불가.
+
+5. 테이블 명을 변경하는 RENAME
+(1) 기존에 사용하던 테이블의 이름을 변경하기 위한 명령어로 RENAME이 제공.
+	RENAME old_name TO new_name
+
+6. 테이블 삭제 (DROP TABLE)
+SELECT * FROM EMP01; --있는지 없는지 확인 하고.
+DROP TABLE EMP01;  
+DROP TABLE DEPT;   -- 다른 테이블에서 참조하는 데이터가 있을 경우 DROP 불가
+                    --DEPT는 부모클래스 EMP 는 자식클래스  DEPT 를 지울라면 참조하는 클래스를 없애야 사라짐.
+
+6-1. 테이블 내에 데이터 싹다 제거. (TRUNCATE TABLE) 복구 불가.
+SELECT * FROM EMP02;
+TRUNCATE TABLE EMP02; -- DDL 명령어는 취소 불가.
+
+
+
+7. 데이터 딕셔너리와 데이터 딕셔너리 뷰
+(1) 데이터베이스 자원을 효율적으로 관리하기 위한 다양한 정보를 저장하는 시스템 테이블을 데이터 딕셔너리. 
+ 데이터 딕셔너리는 사용자가 테이블을 생성하거나 사용자를 변경하는 등의 작업을 할 때 데이터베이스 서버에 의해 자동으로 갱신되는 테이블로 사용자는 데이터 딕셔너리의 내용을 직접 수정하거나 삭제 할 수 없습니다.
+ 이러한 데이터 딕셔너리를 사용자가 조회해 보면 시스템이 직접 관리하는 테이블이기에 암호 같은 기호만 보여질 뿐 내용을 알 수 없습니다. 
+ 데이터 딕셔너리 원 테이블은 직접 조회하기란 불가능한 일입니다
+ 의미 있는 자료 조회가 불가능하기에 오라클은 사용자가 이해할 수 있는 데이터를 산출해 줄 수 있도록 하기 위해서 데이터 딕셔너리에서 파생한 데이터딕셔너리 뷰를 제공합니다.
+ 데이터딕셔너리뷰는 접두어 따라 다음의 세 종류가 있습니다
+
+USER_XXXX : 자신의 계정이 소유한 객체 등에 관한 정보 조회
+접두어로 USER가 붙은 데이터 딕셔너리는 자신의 계정이 소유한 객체 등에 관한 정보를 조회. 
+SHOW USER; = 현재 계정이 뭔지 보여준다.
+SELECT TABLE_NAME FROM USER_TABLES; --내가 만든 것들의 누적.
+SELECT * FROM USER_TABLES;
+SELECT * FROM USER_INDEXES; --데이터 빨리찾기 하기 위한.  인덱스는 시스템에서 자동적으로 만들어지기는 하나 내가 만든 인덱스면 이름이 다를것이다.
+SELECT * FROM USER_CONSTRAINTS;
+SELECT * FROM USER_VIEWS;  -- 뷰를 만든게 없어서 하나도 나오질 않는다.
+
+DBA_XXXX : 데이터베이스 관리자만 접근 가능한 객체 등의 정보 조회 
+   (DBA는 모두 접근 가능하므로 결국 DB에 있는 모든 객체에 관한 조회)
+
+--DBA_XXX : DBA 권한을 가진 사용자만 접근 가능한 객체 정보.
+SELECT * FROM DBA_TABLES;
+SELECT TABLE_NAME, OWNER FROM DBA_TABLES;
+SELECT * FROM DBA_INDEXES;
+SELECT * FROM DBA_CONSTRAINTS;
+SELECT * FROM DBA_VIEWS;
+
+
+ALL_XXXX : 자신 계정 소유 또는 권한을 부여 받은 객체 등에 관한 정보 조회
+--ALL_XXX : SCOTT 이 소유한 객체나 권한이 부여된 객체
+SELECT * FROM ALL_TABLES;
+SELECT * FROM ALL_CONSTRAINTS;
+SELECT * FROM ALL_INDEXES;
+SELECT * FROM ALL_VIEWS;

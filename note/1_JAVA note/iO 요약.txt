@@ -1,0 +1,45 @@
+1. 자바 입출력 ( io ) 이란?
+I/O란? 입력(Input)과 출력(Output)을 뜻 한다. 
+컴퓨터한테 입력하는 것은 Input이며, 컴퓨터가 어떤 것을 출력하는 것을 Output.
+앞에서 살펴본 ‘System.out.println("HelloWorld~~");’ 구문이 바로 Output .
+앞으로 어떤 데이터를 ‘읽는다’ 라고 하면 입력(Input)이라고 생각하면 되고, 데이터를 ‘쓴다‘라고 하면 출력(Output)이라고 생각 하면 된다.
+
+(1)  Input : 파일 데이터를 읽는다. 키보드의 데이터를 읽는다. 네트워크상의 데이터를 읽는다(전송)
+(2)  Output :파일에 데이터를 쓴다. 모니터에 데이터를 쓴다(출력). 네트워크상에 데이터를 쓴다(전송)
+
+2.  Java에서의 파일입출력 API = 기본 스트림
+(1)  InputStream : 1byte단위 입력 API. 이미지, 동영상 등의 데이터에 주로 사용
+(2)  OutputStream : 1byte단위 출력 API. 이미지, 동영상 등의 데이터에 주로 사용
+(3)  Reader : 2byte단위 입력 API. 문자열에 주로 사용
+(4)  Writer : 2byte단위 출력 API. 문자열에 주로 사용
+
+	입력 API = InputStream 
+[이미지 , 동영상 등 데이터용 1byte 씩 ]
+	출력 API = OutputStream 
+
+------------------------------------------------
+
+	입력 API = Reader
+[주로 문자열에서 사용된다. 2byte 씩 ]
+	출력 API = Writer
+
+보조스트림.
+(5)  DataInputStream / DataOutputStream = 기본스트림 + 해서 이용
+(6)  BufferedReader / BufferedWriter   = 기본 스트림인 Reader / Writer 를 이용.
+(7)  PrintWriter  = 기본스트림 1,2,3,4 다 사용가능.
+
+
+[ i/o에 앞서 File클래스] 파일 크기, 속성, 파일이름 정보를 갖고, 생성 및 삭제 메서드 포함
+	- 파일 안엔 디렉토리도 포함 : 생성, 디렉토리에 포함된 파일 리스트도 가져올 수 있다.
+	- 생성/삭제 메서드
+		File file = new File(“경로명/파일명”); 논리적인 파일이나 디렉토리
+		exists(); 현재 파일이나 디렉토리가 있는지 여부
+		delete(); 파일 또는 디렉토리 삭제
+-  정보 메서드
+canExecute(); 실행할 수 있는 파일인지 여부
+getName(); 파일이름
+getPath();  전체 경로
+isFile(), isDirectory(); 파일/디렉토리 인지 여부
+length();  파일 크기
+list(); 디렉토리인 경우 포함된 파일의 문자열 배열
+listFiles(); 디렉토리인 경우 포함된 파일을 배열로

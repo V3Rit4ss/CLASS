@@ -1,0 +1,28 @@
+제어문 & 반복문.
+for( ⑴ i = 0 ;  ⑵ i<11 ; ⑷ i++) {
+     ⑶System.out.println(i+". 안녕하세요");
+}  for 문 : 미리 설정한 횟수 만큼 반복전으로 수행.
+⑷에서 증가 후 다시 ⑵으로 가서 10까지 반복한다.
+
+int i =10;
+while( i>=1 ) {
+System.out.print(i+".  ");
+i-- ; // i 값이 감소한다.
+} while 문 : while 문 선언전에 int 변수를 지정하고 while 문을 선언. 조건식을 넣고,
+ 그 조건식이 참일때 까지 계속 실행할 명령문을 넣으면 된다.
+
+ex) 키보드로 짝수를 입력받고 출력하기.
+int num;
+Scanner sc = new Scanner(System.in);
+do {
+	System.out.print("반드시 한자리 짝수를 입력하시오 : ");  //최초 한번은 무조건 실행. 두번째부터는 조건식이 참이면 계속 수행하는 명령문들.
+	num = sc.nextInt();				       // 위하 동문.
+}while(num%2==1);
+System.out.printf("입력하신 수는 %d이고 짝수",num);
+sc.close();
+
+do-while 문 : 총 10번중에서 1번은 무조건 실행 하고 그다음 수행할때 값이 아니면 수행안함.
+
+
+ if,swithc,for,while 모두 무한루프에 빠질수있으니 조심해야한다. 
+    

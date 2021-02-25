@@ -1,0 +1,89 @@
+
+//    java 에서의 연산자 종류와 우선순위.
+//    ① 1차 연산자  :  ( )  
+//    ② 단항연산자  :  !  ++  --  [증감 연산자 : ]  
+증감연산자를 변수주머니 앞에 [ ++n ] 하면 연산값이 바로 활성화가 되어서 변화한 결과값이 나오지만 
+[ n++ ] 로 하게 되면 연산전 결과값인 [ n ] 만 나오지만 그림자가 남아있어서 뒷 조건식이 있으면 한 템포 느리게 연산이 된다.
+	int temp = 10;
+		System.out.printf("4. %d %d %d %d\n", 
+				temp++, ++temp, temp--, temp--);
+		//		10	12	12	11
+		System.out.printf("5. 최종 temp = %d\n", temp);  // 최종 temp =10
+
+//   ③ 이항연산자 中 승법연산자 : *  /  %  [산술 연산자]
+//    ④ 이항연산자 中 가법연산자 : +  -   [산술 연산자]
+//    ⑤ 이항연산자 中 관계연산자 : <  <=  >  >=  ==  != [ 비교(동등)관계 연산자 ] 
+//    ⑥ 이항연산자 中 비트곱연산자 : &   [ 논리 연산자 ]
+//    ⑦ 이항연산자 中 비트합연산자 : |     [ 논리 연산자 ]
+//    ⑧ 이항연산자 中 논리곱연산자 : &&  [ 논리 연산자 ]
+//    ⑨ 이항연산자 中 논리합연산자 : ||     [ 논리 연산자 ]
+//    ⑩ 조건연산자(3항연산자) :  {a=b} " ? " { y } " : " { z }     [ 3항 연산자 ]
+//    ⑪ 할당연산자  : =  +=  -=  *=  /=  %=   [ 대입(할당)연산자 ] 
+
+//스캐너 활용법 (사용자의 키 입력값)
+
+package com.lec.question;
+
+import java.util.Scanner;   // 입력값을 받을려고 할때 활성화 시키는것  
+
+public class Q5 {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);   // 입력값을 받아야할때 쓰는것
+		System.out.println("국어");   // 특정 단어를 띄우고 싶을때
+		int kor = sc.nextInt();   // 활성화 창에 특정 값을 넣을때 까지 띄워져있음.
+		System.out.println("영어");
+		int eng =sc.nextInt();
+		System.out.println("수학");
+		int mat =sc.nextInt();
+		int tot = kor + eng + mat;
+		// (double)tot /3 // 3을 넣을라면 이렇게
+		double avg = tot / 3.0;  // tot / 3 을 하게되면 값 이상함
+		System.out.printf("국어 : %3d\n", kor);  //%3d 를 한 이유는 세자리숫자 들을 정렬할려고
+		System.out.printf("영어 : %3d\n", eng); 
+		System.out.printf("수학 : %3d\n", mat);
+		System.out.printf("총점 : %d\t평균 : %.2f\n", tot , avg);    // %.2f\n 소숫점 두자리짜리 표기.
+		sc.close();   // 스캐너의 활성화 종료 명령어. 스캐너의 노란밑줄 사라짐.
+	}
+}
+
+
+// java 제어문 에서의 조건문 if ~ else 와 switch case .
+
+지정한 변수값들을
+	if (조건식) { 에 넣고 맞으면 ~
+	system.out.println("맞습니다.");
+} else {
+	system.out.println("아닙니다.")
+
+또는
+	if (조건식) { 에 넣고 맞으면 ~
+	system.out.println("맞습니다.");
+} else [ 또는 ] if (조건식) { 이거는?
+	system.out.println("모릅니다.");
+}else {
+	system.out.println("아닙니다.");    
+
+즉, if 문에서 첫 조건식이 맞으면 뒷 조건식 안함. 첫 조건식이 안맞으면 다음 조건식에 또 안맞으면 , 반복 반복 할수있음
+단 스위치 와 케이스 를 쓰면 코드줄이 줄어드는 장점이있다.
+
+
+package com.lec.condition;
+
+public class Ex04_switch {
+	public static void main(String[] args) {   // 이렇게 단순하게 표시할수있다. 그렇다고 if문을 완전히 안쓰는것도 아니기에 둘다 알아둬야한다.
+		int num =2;  //변수 지정.	// 스위치 문은 파이썬에는 없기에 if문을 써야한다.
+		switch(num) {  // 스위치 뒤에 변수 주머니
+		case 1:  //case 뒤 정수값들 또는 단어 , 문장
+			System.out.println("주사위 1"); break; // 브레이크가 있어야 걸리는곳에서 연산이 끝. '스위치문을 할때는 브레이크를 까먹지 말것.'
+		case 2:
+			System.out.println("주사위 2"); break;  //브레이크가 없으면 모든 조건식을 거쳐서 활성창에 모든 결과값이 나온다.
+		case 3:
+			System.out.println("주사위 3"); break;
+		default:					// default 는 변수값외에 다른 값이 들어가면 나오게 한다.
+			System.out.println("그 외"); break;
+		}
+	}
+}
+
+
+  

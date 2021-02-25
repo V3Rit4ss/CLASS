@@ -1,0 +1,273 @@
+1 이벤트 관련 용어 정리
+­ 이벤트란 키보드를 이용해 버튼을 입력하거나 마우스 클릭과 같이 다른 것에 영향을 미치는 것. 자바 스크립트에는 다음과 같은 이벤트가 있다
+­ 사전적 정의 : 자바 스크립트에서 DOM을 통해 동적인 화면처리를 위해 처리하는 내용
+   마우스 이벤트, 키보드 이벤트, HTML 프레임 이벤트, HTML 입력 양식 이벤트, 유저 인터페이스 이벤트, 구조 변화 이벤트, 터치 이벤트
+(ex) onclick, onmouseover, onmouseout, onkeyup(키보드의 특정키를 클릭했다가 손가락을 벗어났을 때, event.keyCode 해당키를 눌렀을 때 고유 코드값..)
+­ 이벤트를 연결한다. Window 객체의 onload 속성에 함수 자료형을 할당하는 것
+­ load는 이벤트 이름, 이벤트 타입
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        window.onload = function () {
+            var header = document.getElementById('header');
+            function whenClick() { alert('Click'); }
+            header.onclick = whenClick;
+        }
+    </script>
+</head>
+<body>
+    <h1 id="header">Click</h1>
+</body>
+
+
+­ header 객체의 이벤트 이름은 click, 이벤트 속성은 onclick, 이벤트리스너는 whenClick()함수
+­ 문서 객체에 이벤트를 연결하는 방법을 이벤트 모델
+
+-인라인 이벤트모델
+<script>
+        function whenClick() {
+            alert('click');
+        }
+    </script>
+</head>
+<body>
+    <h1 onclick="whenClick()">Click 해봐</h1>
+</body>
+
+
+-기본 이벤트모델
+<script>
+        //on 으로 시작되는것들의 function 을 걸면 모두 이벤트가 된다.
+        window.onload = function () {
+
+            var header = document.getElementById('header');
+            var whenClick = function () {
+                alert('click');
+            };
+            var p = document.getElementsByTagName('p')[0];
+            for (var key in header) {
+                if(key == 'onclick')
+                p.innerHTML += key + ':' + header[key] + '<br>';
+            } //널로 들어가있다가
+
+            //이벤트?
+            header.onclick = whenClick;
+            //on으로 시작하는 속성들을 이벤트속성에 function을 할당시키는것을 이벤트라 한다.
+            //이벤트 이름 : click
+            //이벤트 속성 변수 : onclick
+            //이벤트 리스너 함수 : whenClick
+            for (var key in header) {
+                if (key == 'onclick')
+                    p.innerHTML += key + ':' + header[key] + '<br>';
+            }//값이 들어갔다.
+        }; //이러한것을 기본이벤트 모델이라 한다.
+        
+
+      //  header.onclick = whenClick;
+
+    </script>
+</head>
+<body>
+    <h1 id="header"> Click ? </h1>
+    <p></p>
+</body>
+
+- 고전적 이벤트 모델
+
+    <script>
+        window.onload = function () {  //고전적 이벤트 모델.
+            var header = document.getElementById('header');
+            header.onclick = function () {
+                alert('click');
+
+            };
+
+        };
+    </script>
+</head>
+<body>
+    <h1 id="header">click ? </h1>
+</body>
+
+- 표준이벤트 모델.
+
+<script>
+        window.onload  = function () {
+            var header = document.getElementById('header');
+            header.addEventListener('click', function () { //콜백함수.
+                alert('click');
+            });
+
+        };
+    </script>
+</head>
+<body>
+    <h1 id="header" >Click's ? </h1>
+</body>
+
+
+- 이벤트 발생 객체와 이벤트 객체
+<script>
+        window.onload = function () {
+            var header = document.getElementsByClassName('header');
+          // 이렇게 안하고싶음  header[0].onload = function () { };
+            for (var idx in header) {
+                //클릭한 header의 글자색과 border 변경
+                header[idx].onclick = function () {
+                    // this : 클릭 이벤트가 발생된 컴포넌트 객체
+                    this.style.color = 'orange';
+                    this.style.border = '1px solid red';
+                };
+            }
+        };
+    </script>
+</head>
+<body>
+    <h1 class="header">click1</h1>
+    <h1 class="header">click2</h1>
+</body>
+
+- 이벤트 강제 실행
+<script>
+        window.onload = function () {
+            var btnA = document.getElementById('btnA');
+            var btnB = document.getElementById('btnB');
+            var countA = document.getElementById('countA');
+            var countB = document.getElementById('countB');
+            //btnA 를 클릭할 경우, 강제로 btnB의 클릭 이벤트 발생.
+            btnA.onclick = function () {
+             //   countA.innerHTML = countA.innerHTML + 1; // 이렇게 하면 문자로 인식함.
+                countA.innerHTML = Number(countA.innerHTML) + 1;
+                btnB.onclick(); // <== 이벤트 강제실행.
+            };
+            btnB.onclick = function () {
+                countB.innerHTML = Number(countB.innerHTML) + 1;
+            };
+        };
+    </script>
+</head>
+<body>
+    <button id="btnA">ButtonA</button>
+    <button id="btnB">ButtonB</button>
+    <h1>Button A - <span id="countA">0</span></h1>
+    <h1>Button B - <span id="countB">0</span></h1>
+</body>
+
+
+- 이벤트 제거.
+ <title></title>
+    <style>
+        span:nth-child(1) {
+            color:black;
+        }
+        span:nth-child(2) {
+            color: aqua;
+        }
+        span:nth-child(3) {
+            color: Highlight;
+        }
+        span:nth-child(4) {
+            color: red;
+        }
+        span:nth-child(5) {
+            color: lime;
+        } /* 색상 변화. */
+    </style>
+    <script>
+        var cnt = 0;
+        window.onload = function () {
+            document.querySelector('h1').onclick = function () {
+                cnt++
+                this.innerHTML += '<span>♥</span>';
+                //클릭 이벤트 한번만 가능. (이벤트 제거.)  -> 이번엔 5번만 허용.
+            //    this.onclick = null; //이벤트 제거
+                if (cnt >= 5) {
+                    this.onclick = null;
+                }
+            };
+
+        };
+    </script>
+</head>
+<body>
+    <h1>좋아요</h1>
+</body>
+
+※ 인라인 이벤트 모델 – 디폴트 이벤트 제한
+<form onsubmit=”return whenSubmit()”>
+
+ <script>
+        window.onload = function () {
+            document.querySelector('form')[0], onsubmit = function () {
+                var pw = document.getElementById('pw').value;
+                var pw1 = document.getElementById('pw1').value;
+                if (pw != pw1) {
+                    return false; //이벤트 제한(디폴트 이벤트 제한.) 다르게 치면 넘어가지 않음.
+                }
+            };
+
+        };
+    </script>
+</head>
+<body>
+    <form> 
+        pw : <input type="password" name="pw" id="pw" /><br />
+        pw : <input type="password" name="pw1" id="pw1" /><br />
+        <input type="submit" />
+    </form>
+</body>
+
+
+
+-이벤트 전달.
+= 어떠한 이벤트가 먼저 발생해 어떤 순서로 발생하는지를 이벤트 전달이라 한다. 
+자바스크립트는 자식 노드에서 부모 노드 순으로 이벤트를 실행한다. 이를 이벤트 버블링 방식이라 한다.
+
+<style>  /*  이벤트 전달. */
+        #a {
+            border:1px solid red;
+        }
+        #b {
+            border:1px solid blue;
+        }
+        #c {
+            border:1px solid green;
+        }
+    </style>
+</head>
+<body>
+    <div id="a" onclick="alert('a영역')" >
+        a 영역
+        <div id="b" onclick="alert('b영역')">
+            b영역  <!-- b 경고창 나오고 a 경고창 나옴-->
+            <div id="c" onclick="alert('c영역')">
+                c영역 <!--c, b, a 경고창 하나씩 나옴-->
+            </div>
+        </div>
+    </div>
+</body>
+
+
+※ event.keyCode(입력된 키 아스키코드)
+
+
+ <script> //onkeyup 눌렀다가 땠을때. keyCode 대소문자 구문함. 조심.
+        window.onkeyup = function () {
+            var p = document.getElementsByTagName('p')[0];
+            if (event.keyCode >= 48 && event.keyCode <= 57) {
+                p.innerHTML += '상단 숫자 키보드  : ' + (event.keyCode - 48) + '의 아스키코드 : ' + event.keyCode
+                    + '<br>';
+            } else if (event.keyCode >= 96 && event.keyCode <= 105) //넘버패드 숫자.
+                p.innerHTML += ' 넘버패드 입력한 수 : ' + (event.keyCode - 96) + '의 아스키코드 : ' + event.keyCode
+                    + '<br>';
+             //   p.innerHTML += '입력한 키의 아스키코드 : ' + event.keyCode + '<br>';
+        };
+    </script>
+</head>
+<body>
+    <p></p>
+</body>
+
+
