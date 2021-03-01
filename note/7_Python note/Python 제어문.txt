@@ -1,0 +1,143 @@
+파이썬 에서의 제어문.
+1. if 문
+조건문에는 if 라는 키워드를 사용
+- if 다음에는 '조건식'이 존재하는데 이 '조건식'이 참(True)이면 들여쓰기 한 문장 실행
+- if 문장 끝에는 콜론(:) 을 입력
+     콜론은 블록의 시작을 의미
+- if 문의 '조건식'이 참(True)일 때 실행되는 문장은 들여쓰기를 해야 한다.
+
+2. if ~ else 문
+- 조건식이 참일 경우에 실행할 문장과 거짓일 경우 실행할 문장이 다를
+- 경우 if 구문에 else 구문을 추가
+- else 구문은 if 문의 조건식이 False일 경우 실행하는 블록을 정의
+- else는 단독으로 사용될 수 없으며 반드시 if와 같이 사용돼야 함
+
+ex>
+score = int(input('Enter your score >'))
+if score>=90 :
+    print('참 잘했어요')
+    print('다음에도 기대할께요')
+else:
+    print('분발하세요')
+    
+print('점수를 입력받아 잘한 사람에게 메세지를 출력함')
+
+3. if ~ elif ~ else 문
+- 여러 개 조건식을 사용하려면 elif 구문을 이용
+- elif는 단독으로 사용 안됨
+
+ex>
+score = int(input('Enter your score >'))
+if 90 <= score <= 100:
+    grade ='A' #java와 다르게 if블럭 벗어나도 사용가능.
+elif 80 <= score < 90:
+    grade ='B'
+elif 70 <= score < 80:
+    grade = 'C'
+elif 60 <= score < 70:
+    grade = 'D'
+elif 0 <= score < 60:
+    grade ='F'
+else :
+    grade = '유효하지 않는 점수'
+print('입력한 점수는 {}이고 {}등급'.format(score, grade))
+
+
+4. for-in 문
+- for 변수 in 나열 가능한자료:
+    반복할 문장1
+    반복할 문장2
+    ..
+else :
+    변수에 값이 할당되지 않을때 한번 실행할 문장.
+- else 구문은 선택사항
+
+* range(from, to, by)
+for 문장의 items 객체 위치에 range(start, stop, step)함수를 이용하여 반복문을 실
+행시킬 수 있음. range() 함수를 이용하면 인덱스 위주의 반복을 실행시킬 수 있음
+- range() 함수의 start가 생략되면 0부터 시작.
+- range() 함수의 step은 얼마씩 증가시킨 값을 갖게 할 것인지 결정
+  range(0, 10, 3)으로 수정하면 출력되는 결과는 [0, 3, 6, 9]
+
+ex>
+for i in range(10): # 또는 range(1,10,2): 
+    print(i,end='\t')
+else:
+    print('DONE')
+
+5. while
+- while 조건 : 
+    반복할 문장1
+    반복할 문장2
+    ...
+else:
+    조건이 거짓일 경우 실행할 문장.
+- else 구문은 선택사항.
+- 무한 반복문에 빠지지 않도록 조건식이 바뀔수 있는 변수값을 수정하는 코드 필요
+
+ex>
+# 셀 옆에 In[*] 라고 뜰텐데 계속 실행중 이라고 한다.
+i = 0
+while i < 10 :
+    print(i, end='\t')
+    i += 1
+else:
+    print("i값이 {}이라서 빠져나감".format(i))
+
+
+6. break & continue
+- break를 만나면 break를 포함하는 반복문을 완전히 탈출
+- continue는 반복문 내에서 continue 이후의 문장을 건너뜀
+
+ex>
+num = 0
+while num <= 10:
+    num += 1
+    if num == 5:
+        break; #현재 반복문 탈출. or continue.
+    print(num, end='\t')
+
+7. 3절. 중첩루프 : 반복문 안에 반복문.
+2차원 이상의 데이터 구조의 모든 항목들을 처리하기 위해 사용
+
+ex>
+list_2d = [[1,2,3,4,5],[10,20,30,40],[11,22,33,44]]
+print(list_2d) 
+
+for i in range(len(list_2d)):
+    for j in range(len(list_2d[i])):
+        print("{}행 {}열 : {}".format(i, j, list_2d[i][j]), end='\t')
+    print()
+
+7-1 break와 continue의 중첩루프 탈출
+- break 문을 사용하면 조건에 따라서 반복문을 종료
+- continue 문을 사용하면 현재 반복문 블록을 실행시키지 않고 다음 반복으로 이동
+- 파이썬에서 반복문의 실행을 제어하는 break와 continue는 가장 안쪽에 있는 루프에만 적용
+
+ex>
+# break를 만나면 바깥쪽 반복문 까지 탈출, 방법1. 플래그 변수 이용.
+break_out_flag = False
+for a in range(3):
+    for b in range(1,3):
+        if a == b:
+            break_out_flag =True
+            break;
+        print(a, b)
+    if break_out_flag:
+        break;
+7-2. 예외처리를 이용한 중첩루프 탈출
+- 바깥 반복문에서 안쪽 반복문을 실행시키기 위해 예외처리 코드를 작성
+
+ex>
+class BreakOutLoop(Exception):  #class 생성 = class BreakOutLoop:
+    pass #아무것도 수행하지 않는다. class에 아무것도 없으면 에러 발생.
+
+for a in range(3): #0~2까지 
+    try:
+        for b in range(1,3):
+            if a == b:
+                raise BreakOutLoop
+            print(a, b)
+    except BreakOutLoop :
+        break;
+# 들여쓰기 조심.

@@ -1,0 +1,89 @@
+파이썬 데이터 구조.
+1. 리스트
+리스트를 이용하면 여러 개 값을 저장
+리스트를 만들려면 대괄호(‘[’와 ‘]’)를 이용
+인덱스를 이용해 읽기와 쓰기를 지원
+부분 데이터셋을 뽑아내는 슬라이싱(slicing)을 지원
+파이썬의 인덱스는 0부터 시작
+
+2. 파이썬에서 리스트 다루기
+
+방법	        설명
+listData = [ ] : 리스트를 만들어 줌(일차원.)  , 다차원리스트 x_2d = [[1,2,3,4,5],[10,20,30,40,50],[1,3,5,7,9],[2,4,6,8,10]]
+len(listData)  :리스트의 항목의 수를 반환
+mix(listData), 
+max(listData)  : 리스트에서 가장 작은(min) 항목과 가장 큰(max) 항목을 반환
+listData[start:stop] : 리스트의 start 위치부터 stop 위치까지 부분 데이터를 추출(stop 위치의 항목은 포함 안 됨)
+listData.append(value) :  list에 value를 추가 (맨 뒤에 추가)
+listData.clear() 	    :  list의 모든 항목을 삭제
+listData.count(value)   :  리스트에서 value의 개수를 반환
+listData.extend(newList) : list에 newList를 추가 (리스트를 항목별로 맨 뒤에 추가)
+          +     	      : 두 리스트를 연결함
+          *   : 리스트를 곱한 수 만큼 반복.  ex> 3*numbers  => [1,2,3,1,2,3,1,2,3]
+listData.index(value, position=0)  : position위치 이후에서 value의 값이 있는 인덱스를 반환
+listData.insert(index, value)  :  list의 index위치에 value를 삽입 (지정한 인덱스 위치에 기입)
+listData.remove(value) : 리스트에서 해당 값을 삭제
+del listData[index] : 리스트에서 인덱스를 이용해 항목을 삭제
+listData.pop()  : 리스트에서 가장 마지막 항목을 반환하고 삭제
+listData.reverse()  : 리스트의 항목들의 순서를 반대로 함
+listData.sort(reverse=False) : 리스트의 항목들을 정렬. reverse 속성을 True로 하면 내림차순으로 정렬
+
+3. 리스트 복제
+copy( )  : 복제된 새로운 객체를 생성. (하나만 수정해도 주소값이 달라서 둘다 다른 객체로 인식한다.)
+=  : 주소를 복사해 같은 객체를 참조. (하나의 객체를 수정하면 주소가 같아서 둘다 수정된 값이 출력된다.)
+
+
+4. 튜플
+- 튜플(tuple)은 소괄호(‘(’와 ‘)’)를 이용해 만듬
+- 읽기 전용
+  튜플은 속도가 빨라 수정이 필요 없는 배열 형태의 데이터 타입에 사용
+  데이터를 수정할 수 없기 때문에 제공되는 함수가 많지 않음
+
+tupleData = ( )  : 튜플을 만들어 준다.
+len(tupleData) : 튜플의 항목 수를 반환.
+min(tuple), max(tuple) : 튜플에서 가장 작은 값(min)과 가장 큰 값(max)을 반환.
+tupleData.count(value) : 튜플에서 value의 개수를 반환.
+tupleData.index(value,position) : position 위치 이후에서 value가 있는 인덱스를 반환.
+
+5. 딕셔너리
+- 키(key)와 값(value)의 쌍으로 구성된 자료 구조
+- 딕셔너리를 만들기 위해서는 중괄호(‘{’와 ‘}’)를 이용
+- 값은 중복이 가능하며 모든 타입이 가능
+- 인덱스를 이용한 데이터의 참조는 지원 안함
+- 딕셔너리 키 목록에 없는 데이터를 사용하여 참조하면 에러가 발생
+
+*key
+- 중복이 없이 유일한 값이어야 함
+- 리스트 타입을 사용할 수 없지만 튜플 타입은 사용할 수 있음
+
+dictData = {“key”:“value”, ... } : 딕셔너리를 만들어 준다.
+len(dictData) : 딕셔너리의 항목의 수를 반환.
+dictData.items( ) : 딕셔너리의 각 항목들을 (key, value) 형식의 튜플들로 반환.
+dictData.keys( ) : 딕셔너리의 키(key)들을 반환.
+dictData.values( ) : 딕셔너리의 값(value)들을 반환.
+
+6. 셋(set)
+* ★순서가 정해지지 않고, 중복을 허용하지 않는 집합
+* 중괄호(‘{’와 ‘}’)를 이용하여 정의
+ex>
+fruits = {"apple","orange","banana","apple","bear"}
+결과 {'apple', 'banana', 'bear','orange'}
+fruits.add("apple")
+결과 {'apple', 'banana', 'bear','orange'}
+fruits.add("mango")
+결과 {'apple', 'banana', 'bear','mango','orange'}
+
+7.enumerate
+- 반복자(iterator) 또는 순서(sequence) 객체를 인수로 받음
+- enumerate(iter) 이라고 사용했을 경우 이 함수는 iter 객체를 (0,iter[0]), (1, iter[1]), (2, iter[2]), ... 이런 형식으로 반환
+ex>
+fruits = ['watermelon','orange','mango','grape','banana','apple']
+for index, value in enumerate(fruits):
+     print("{ }번째 데이터는 { } 입니다.".format(index+1, value))
+
+1번째 데이터는 watermelon입니다.
+2번째 데이터는 orange입니다.
+3번째 데이터는 mango입니다.
+4번째 데이터는 grape입니다.
+5번째 데이터는 banana입니다.
+6번째 데이터는 apple입니다.
