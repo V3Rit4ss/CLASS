@@ -1,0 +1,137 @@
+R Text mining (텍스트 마이닝)
+#문자로 된 데이터에서 가치 있는 정보를 얻어 내는 분석 기법
+#SNS나 웹 사이트에 올라온 글을 분석해 사람들이 어떤 이야기를 나누고 있는지 파악할 때 활용
+#형태소 분석(Morphology Analysis) : 문장을 구성하는 어절들이 어떤 품사로 되어 있는지 분석
+
+#분석 절차
+– 형태소 분석
+– 명사, 동사 형용사 등 의미를 지닌 품사 단어 추출
+– 빈도표 만들기
+– 시각화
+
+(1)사전준비 작업.
+
+install.packages("KoNLP") # available 에러.  4.대 버전에서는 불가함.
+# 가능하게 할려면 이렇게 해야한다.
+#1.KoNLP 검색.
+#2. CRAN - Package KoNLP
+#3. archive 클릭.
+#4. 최하단의 파일을 다운로드.(최신버전.)
+
+#install.packages 명령어를 안쓰고 수동으로 직접 패키지를 다운하려고 할때,
+#우측의 패키지 탭에서 install 하는법.
+install.packages("devtools") #.1
+
+
+#KoNLP 가 의존하는 package들 미리 install.
+install.packages("rJava") #자바가 사용자의 pc에 있어야 한다.
+install.packages("memoise")
+install.packages("hash")
+install.packages("tau")
+install.packages("Sejong")
+
+#pakages -> install 도구를 이용하여 KoNLP 패키지를 수동으로 install 할 수 있다.
+#1. pakages 탭 -> 좌측상단 install -> install from = 다운받은 tar.gz 확장자 포함으로 바꾸고 해당 파일을 선택 후 인스톨.
+#2. Fail to install scala-library-2.11.8.jar. 에러 해결법.
+#2-2 . 3번 하기전에 pc 의 이름이 한글이면 영어로.
+#3. C:\Users\tjoeun\Documents\R\win-library\4.0\KoNLP\java
+#3-2.  3번 경로에 scala-library-2.11.8.jar. 파일을 넣어야한다.
+
+library(KoNLP)
+#Checking user defined dictionary! 뜨고,
+Sys.getenv("JAVA_HOME")
+# rJava 때문에 환경변수 확인.
+#사전 설정하기.
+useNIADic() # 첫 로드하면 뭐라 할텐데, 1. 엔터. 983012 words dictionary was built. => 983012개의단어.
+
+(2) 데이터 불러오기
+txt <- readLines("hiphop.txt")
+## Warning in readLines("hiphop.txt"): incomplete final line found on
+## 'hiphop.txt'
+
+
+(3)특수문자 제거
+install.packages("stringr")
+library(stringr)
+
+# 특수문제 제거
+txt <- str_replace_all(txt, "\\W", " ")
+
+
+(4)가장 많이 사용된 단어 알아보기
+# 명사 추출하기
+extractNoun("대한민국의 영토는 한반도와 그 부속도서로 한다")
+## [1] "대한민국" "영토"     "한반도"   "부속도서" "한"
+# 가사에서 명사추출
+nouns <- extractNoun(txt)
+
+# 추출한 명사 list를 문자열 벡터로 변환, 단어별 빈도표 생성
+wordcount <- table(unlist(nouns))
+
+
+(5) 자주 사용된 단어 빈도표 만들기
+# 데이터 프레임으로 변환
+df_word <- as.data.frame(wordcount, stringsAsFactors = F)
+
+# 변수명 수정
+df_word <- rename(df_word,
+                  word = Var1,
+                  freq = Freq)
+
+# 두 글자 이상 단어 추출
+df_word <- filter(df_word, nchar(word) >= 2)
+
+top_20 <- df_word %>%
+  arrange(desc(freq)) %>%
+  head(20)
+
+2. 워드 클라우드 만들기
+패키지 준비하기
+# 패키지 설치
+install.packages("wordcloud")
+# 패키지 로드
+library(wordcloud)
+## Loading required package: RColorBrewer
+library(RColorBrewer)
+
+
+
+(1) 단어 색상 목록 만들기
+pal <- brewer.pal(8,"Dark2")  # Dark2 색상 목록에서 8개 색상 추출
+워드 클라우드 생성
+set.seed(1234) # 난수 고정
+wordcloud(words = df_word$word,  # 단어
+          freq = df_word$freq,   # 빈도
+          min.freq = 2,          # 최소 단어 빈도
+          max.words = 200,       # 표현 단어 수
+          random.order = F,      # 고빈도 단어 중앙 배치
+          rot.per = .1,          # 회전 단어 비율
+          scale = c(4, 0.3),     # 단어 크기 범위
+          colors = pal)          # 색깔 목록
+
+
+(2) 단어 색상 바꾸기
+pal <- brewer.pal(9,"Blues")[5:9]  # 색상 목록 생성
+set.seed(1234)      # 난수 고정
+
+wordcloud(words = df_word$word,    # 단어
+          freq = df_word$freq,     # 빈도
+          min.freq = 2,            # 최소 단어 빈도
+          max.words = 200,         # 표현 단어 수
+          random.order = F,        # 고빈도 단어 중앙 배치
+          rot.per = .1,            # 회전 단어 비율
+          scale = c(4, 0.3),       # 단어 크기 범위
+          colors = pal)            # 색상 목록
+
+
+3. 단어 빈도 막대 그래프 만들기
+library(ggplot2)
+
+order <- arrange(top20, freq)$word               # 빈도 순서 변수 생성
+
+ggplot(data = top20, aes(x = word, y = freq)) +
+  ylim(0, 2500) +
+  geom_col() +
+  coord_flip() +
+  scale_x_discrete(limit = order) +              # 빈도 순서 변수 기준 막대 정렬
+  geom_text(aes(label = freq), hjust = -0.3)     # 빈도 표시

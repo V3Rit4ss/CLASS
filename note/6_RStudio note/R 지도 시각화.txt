@@ -1,0 +1,48 @@
+R 지도 시각화.
+
+1.단계 구분도(Choropleth Map)
+- 지역별 통계치를 색깔의 차이로 표현한 지도
+- 인구나 소득 같은 특성이 지역별로 얼마나 다른지 쉽게 이해할 수 있음
+
+ex>
+* 미국 주별 강력 범죄율 단계 구분도 만들기
+- 패키지 준비하기
+install.packages("ggiraphExtra")
+library(ggiraphExtra)
+install.packages("mapproj") #ggChoropleth 함수 사용을 위한 패키지지
+library(mapproj)
+install.packages("maps") # map_data함수를 통해 지도 정보 이용
+library(maps)
+library(ggplot2)
+library(tibble) # 행이름(지역명)을 변수로 하기위한 작업. 
+
+*미국 주별 범죄 데이터 준비하기
+str(USArrests)
+head(USArrests)
+
+library(tibble)
+
+# 행 이름을 state 변수로 바꿔 데이터 프레임 생성
+crime <- rownames_to_column(USArrests, var = "state")
+
+# 지도 데이터와 동일하게 맞추기 위해 state의 값을 소문자로 수정
+crime$state <- tolower(crime$state)
+
+*미국 주 지도 데이터 준비하기
+library(ggplot2)
+states_map <- map_data("state")
+str(states_map)
+
+*단계 구분도 만들기
+ggChoropleth(data = crime,         # 지도에 표현할 데이터
+             aes(fill = Murder,    # 색깔로 표현할 변수
+                 map_id = state),  # 지역 기준 변수
+             map = states_map)     # 지도 데이터
+
+* 인터랙티브 단계 구분도 만들기
+ggChoropleth(data = crime,         # 지도에 표현할 데이터
+             aes(fill = Murder,    # 색깔로 표현할 변수
+                 map_id = state),  # 지역 기준 변수
+             map = states_map,     # 지도 데이터
+             interactive = T)      # 인터랙티브 (마우스 포인터에 반응하는.)
+

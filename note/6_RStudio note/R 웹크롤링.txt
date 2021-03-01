@@ -1,0 +1,171 @@
+R 웹 크롤링
+웹크롤링
+
+1. 정적 웹크롤링
+
+2. 동적 웹크롤링
+https://github.com/mozilla/geckodriver/releases/tag/v0.17.0
+https://sites.google.com/a/chromium.org/chromedriver/
+https://www.seleniumhq.org/download/
+
+#CMD 
+java -Dwebdriver.gecko.driver="geckodriver.exe" -jar selenium-server-standalone-3.141.59.jar -port 4445
+
+
+#1. 정적 웹 크롤링 : 단일 페이지의 크롤링(rvest 패키지 사용.)
+install.packages("rvest")
+library(rvest)
+
+
+url <- 'https://movie.naver.com/movie/point/af/list.nhn'
+text <- read_html(url, encoding = 'CP949') #특정 페이지의 전체.
+text
+#영화제목 - .movie
+nodes <- html_nodes(text,'.movie') #nodes 를 해야 여러개 가져옴.
+nodes
+title <- html_text(nodes)
+title
+
+#해당 영화 페이지.
+movieInfo <- html_attr(nodes, 'href') 
+movieInfo <- paste0(url, movieInfo) #스페이스가 하나도 안들어간다.
+movieInfo
+
+#csv 파일로 out
+write.csv(page, 'outData/movie_review.csv') # 해당 파일을 열고 실행시키면 안됨!
+write.csv(page, 'outData/movie_review.csv', row.names = F) #행번호 삭제.
+
+
+
+#여러 페이지 정적 웹크롤링.
+home <- 'https://movie.naver.com/movie/point/af/list.nhn'
+site <- 'https://movie.naver.com/movie/point/af/list.nhn?&page='
+movie.review <- NULL
+
+for(i in 1:100){   #i는 1~100까지.
+  url <- paste0(site, i);
+  #cat(url,'\n') 확인하고 싶을때.
+  text <- read_html(url, encoding = 'CP949')
+  #영화 제목
+  nodes <- html_nodes(text,'.movie')
+  title <- html_text(nodes)
+  #해당 영화 페이지.
+  movieInfo <- html_attr(nodes, 'href') 
+  movieInfo <- paste0(url, movieInfo)
+  #평점 - .list_netizen_score em
+  nodes <- html_nodes(text, '.list_netizen_score em')
+  point <- html_text(nodes)
+  #영화 리뷰 - .title
+  nodes <- html_nodes(text, '.title')
+  review <- html_text(nodes, trim = T)
+  review <- gsub('\t','', review)
+  review <- gsub('\n','', review)
+  review <- unlist(strsplit(review, '중[0-9]{1,2}'))[seq(2,20,2)] 
+  review <- gsub('신고', '',review)
+  page <- cbind(title, movieInfo)
+  page <- cbind(page, point)
+  page <- cbind(page, review)
+  movie.review <- rbind(movie.review, page)
+  
+} #1페이지당 10개의 리뷰라서 1000행 이 나옴. 
+
+#상단의 for문이 잘 되었는지 확인.
+View(movie.review)
+write.csv(movie.review, 'outData/movie.review100page.csv')
+#여기까지가 정적 크롤링.
+
+
+class(movie.review) #데이터프레임 타입이 아니다.
+
+
+#2. 동적 웹 크롤링(셀레니움 패키지 이용) : 스크롤다운, 로그인이후, 버튼(Ajax), ...
+#특정 폴더 생성후, 3개의 파일을 다운받아 압축을 풀고 셀레니움 서버 가동.(note폴더 참조.)
+
+
+#필요한 패키지 다운과 로드
+install.packages("RSelenium")
+library(httr)
+library(rvest)
+library(RSelenium)
+
+
+
+# # # 셀레니움 동적 웹크롤링 준비 끝.# # #
+# 예제1. 특정부분에 text를 입력한 후 엔터한 결과를 크롤링
+remDr <- remoteDriver(port=4445L, #포트번호
+                      browserName = 'chrome')#사용할 브라우저
+
+remDr$open() # 실행시키고난 다음 나타난 웹브라우저를 끄면 안댐.
+# 항상 실행할때마다 초기화 상태라 확장자 프로그램같은것들 초기화 된다.
+# 차라리 셀레니움 서버를 통한 웹말고 옆에 일반적인 웹을 실행시키고 하는게 좋다.
+remDr$navigate('https://www.youtube.com')
+
+webElem <- remDr$findElement(using = 'css','#search')
+
+webElem$sendKeysToElement(list('과학 다큐 비욘드', key='enter')) #특정 데이터를 검색하게.
+
+
+html <- remDr$getPageSource()[[1]] #현재 페이지의 html 소스 가져오기.
+html <- read_html(html)
+html
+
+
+#'#video-title' css 안의 text 가져오기
+youtube_title <- html %>% 
+  html_nodes('#video-title') %>% 
+  html_text()
+youtube_title[1:5] #제대로 들어갔는지 확인
+youtube_title <- gsub('\n', '', youtube_title) # \n 을 빈칸으로.
+youtube_title <- trimws(youtube_title) #앞뒤 스페이스 삭제
+youtube_title # 확인.
+
+
+youtube_title_url <- html %>% 
+  html_nodes('#video-title') %>% 
+  html_attr('href')
+youtube_title_url[1:10]
+
+youtube_title_url <- ifelse(is.na(youtube_title_url), '',
+                            paste0('https://www.youtube.com', youtube_title_url))
+
+#youtube_title 만 text파일로 out  /row.names=F : 행번호 x
+write.table(youtube_title, file = 'outData/과학다큐결과.txt', sep=',', 
+            row.names= F, quote= F)
+
+result <- cbind(youtube_title, youtube_title_url)
+write.csv(result, file = 'outData/과학다큐결과.csv', row.names=F) #row.names = F 행 번호 삭제.
+
+
+#예제2. 마우스 스크롤 다운한 후 크롤링(덧글)
+#cmd를 껐을때. 셀레니움 폴더를 가서 cmd구동.
+# 그후 java -Dwebdriver.gecko.driver="geckodriver.exe" -jar selenium-server-standalone-3.141.59.jar -port 4445 입력.
+#그 다음 아래의 코드를 실행.
+remD <- remoteDriver(port=4445L, #포트번호
+                      browserName = 'chrome')#사용할 브라우저
+remD$open() # 서버를 통해 브라우저 open.
+# 실행시키고난 다음 나타난 웹브라우저를 끄면 안댐.
+
+remD$navigate('https://youtu.be/tZooW6PritE') #특정 웹사이트 접속.
+btn <- remD$findElement(using='css selector',
+                        value = '.html5-main-video') #동영상 을 멈추기위한 사전 작업.
+btn$clickElement() #메인 동영상 플레이 멈춤.
+
+#마우스 스크롤 다운.
+remD$executeScript('window.scrollTo(0,500)') #x는 좌우, y는 상하.로 스크롤이 움직인다.
+remD$executeScript('window.scrollTo(0,1000)')
+remD$executeScript('window.scrollTo(0,2000)')
+remD$executeScript('window.scrollTo(1000,3000)')
+remD$executeScript('window.scrollTo(1000,5000)')
+
+
+# 현재 페이지의 html소스 가져오기.
+html <- remD$getPageSource()[[1]]
+html <- read_html(html)
+comments <- html %>% 
+  html_nodes('#content-text') %>% 
+  html_text()
+comments[1:10] # 확인.
+
+write.table(comments,file = 'outData/댓글.txt',
+            sep=',' , quote=F)  #row.names=F)
+?write.table

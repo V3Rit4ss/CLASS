@@ -1,0 +1,188 @@
+1. 데이터 시각화
+
+(1) 시각화 단계
+데이터 -> 데이터 가공 -> 사각화 -> 디자인
+
+* 데이터 가공
+- 데이터를 R language 에서 사용하기 쉬운 형태로 변환한다.
+- 주로 base, stats, plyr, reshape, reshape2 등의 패키지를 사용한다.
+
+* 시각화
+- R language 를 사용하여 원 데이터를 시각화하거나 분석된 결과를 시각화 한다.
+- graphics, ggplot , ggplot2 등의 패키지를 기본적으로 사용한다.
+- 생성된 시각화 이미지는 jpg, png , pdf 형태로 저장 할 수 있다.
+
+* 디자인
+- 시각화 결과를 보고 하거나 외부로 배포할 경우, 의미를 명확하게 전달하기 위해서 인포그래픽스 작업을 진행한다.
+- 디자인 작업은 R language 가 아닌 외부 전문 이미지 편집 도구를 사용한다.
+
+
+(2)시각화의 종류
+
+- 산점도(점 그래프) 
+  = Scatter plot : 색 추가, 모양추가, 크기추가 , 산점도행렬(Scatter plot matrix)
+
+- 선 그래프 
+  = Line graph : line -> 방향, path -> 무방향, Time series plot(시계열 그래프)
+
+- 히스토그램 
+  = Histogram : 연속형 변수의 빈도수 분포, 단일 변수 차트
+
+- 밀도 그래프
+  = Density : 값이 아니라 밀도값으로 그린 선 그래프
+
+- 막대 그래프 
+  = Bar chart : 이산형 변수의 빈도수 분포표, 단일 변수 차트, 도수분포표(Frequency table) 또는 누적 막대 그래프
+
+- 박스 그래프 
+  = Boxplot : 사분위수와 이상값 표시
+
+- 모자이크 플롯 
+  = Mosaic plot : 이산형 데이터의 다차원 도수 분포표
+
+- 파이 차트
+  = Pie chart : 이산형 변수의 빈도수 분포, 단일 변수 차트
+
+(3) High level plotting commands
+  = 고수준 그래프 함수들은 그래프 영역에 그래프를 그릴 때 항상 새로운 그래프를 시작한다.
+     그러므로 그래프 함수를 호출 할 때마다 그림이 그려지는 영역을 초기화 하고 다시 그린다.
+
+* 고수준 그래프 함수 
+(1) plot( )  : 일반적인 기본 그래프 함수.
+(2) barplot ( ) : 막대 그래프 함수.
+(3) boxplot ( ) : 박스플롯 그래프 함수.
+(4) hist ( ) : 히스토그램 그래프 함수.
+(5) curve( ) : 수식을 그래프로 그린다.
+(6) qqnorm ( ) : 분위수 - 분위수(Q-Q) 그래프 함수.
+(7) pie ( ) : 원 그래프 함수.
+
+(4) Low level plotting commands
+  = 저수준 그래프 함수는 새로운 그래프를 생성할 수는 없습니다. 그러므로 이미 그려진 그래프에 점 ,선 ,텍스트 그리고 
+     장식등을 더하기 위해 사용한다.
+
+* 저수준 그래프 함수
+(1) points( ) : 점을 추가하는 함수.
+(2) lines ( ) : 선을 추가하는 함수.
+(3) abline( ) : 직선을 추가하는 함수.
+(4) polygon( ) : 닫힌 다각형을 추가하는 함수.
+(5) text ( ) : 문자를 추가하는 함수.
+(6) segments( ) : 선분을 추가하는 함수, segments(x1 , y1 , x2  , y2)는 두점 (x1, y1)과 (x2 , y2)를 잇는 직선을 추가.
+
+
+(5) 그래프 파라미터
+par : par() : 그래프를 조정하거나 특성을 지정.  [선굵기, 종류, 글꼴, ...~ ] , par() 함수의 리턴값은 실행전의 특성을 리턴한다.
+ask : True 이면 그래프를 여러개 그릴떄 다음 그래프를 그리기 위해 사용자의 입력을 받는다.
+bg : 배경색을 설정. 기본 배경색은 white .
+bty : 그래프의 박스타입(type of box)을 설정 한다. ( 'o', 'L', '7', 'c', 'u', ']' ) , 문자 모양대로 테두리가 만들어진다. n은 박스테두리가 없다.
+      o 가 디폴트이며, 박스의 상/하/좌/우 모두 테두리를 표시한다.
+cex : 텍스트 또는 기호(symbol) 의 크기를 설정한다.
+col : 기호의 색을 설정한다. 숫자도 가능, (1 : black, 2 : red, 3 : green , 4 : blue, 5 : cyan , 6 : purple, 7 : yellow, 8 : gray , ~ )
+font : 텍스트의 폰트를 설정.( 1 : normal, 2 : italics, 3 : bold , 4 : bold italics, 5 : expected )
+las : axis label 스타일을 설정. ( 0 : axes 와 평행, 1 : 수평, 2 : 축에 수직, 3 : 수직)
+lty : 선의 유형을 설정. ( 0 = blank, 1 = solid , 2 = dashed, 3 = dotted , 4 = dotdash , 5= longdash, 6 = twodash)
+      또는 ( "blank" ,"solid" ,"dashed" ,"dotted" ,"dotdash" ,"longdash" ,"twodash" )
+mar : 그래프의 여백을 조정. par(mar= c(bottom, margin , left, top, right )) 형식으로 설정.
+mfcol : n개의 행으로 된 그래프 행렬을 만든다. c(nr,nc)를 martrix 형태로 분할해서 그래프를 열 순서로 그린다.
+mfrow : n개의 열로 된 그래프 행렬을 만든다. c(nr,nc)를 martrix 형태로 분할해서 그래프를 행 순서로 그린다.
+pch : 점의 표시 유형을 설정 한다. pch = '임의의 문자' 를 이용하면 임의의 문자가 점 대신 출력 되며, pch = n 를 이용하면, pch simbol 마크를 출력한다.
+ps : 글꼴을 설정한다. (1 : normal, 2 : italics , 3 : bold, 4 : bold italics , 5 : expected )
+new : 기본값은 FALSE이다. TRUE이면, 고수준 그래프 함수를 이용하더라도 이전 그래프를 삭제하지 않고 그린다.
+
+2. ggplot2 
+- Hadley Wichham 교수가 만든 데이터를 이해하는데 좋은 시각화 도구로 데이터와 시각화 요구를 객체화 시켜 시각화를 구현.
+
+* 주요 시각화 함수 
+- qqplot( ) : 손쉽고 빠르게 시각화 하기위한 도구.
+- ggplot( ) : 데이터와 시각화 요소를 분리하여 시각화하는 도구. 
+
+* ggplot2 의 시각화 구조 
+
+- 1단계 : 배경 설정(축)
+
+- 2단계 : 그래프 추가(점,막대, 선)
+
+- 3단계 : 설정 추가(축, 범위, 색, 표식)
+
+ex>
+#4. ggplot2 패키지 함수.
+install.packages("ggplot2")
+library(ggplot2)
+#1단계.  그래프 초기화.(데이터셋, 변수설정) ggplot . 그 자체로는 그래프 표현x.
+ggplot(data=mtcars, aes(x=wt, y=mpg))
+
+#2단계.  그래프의 결과물에 대응하는 geom 함수.
+ggplot(data=mtcars, aes(x=wt, y=mpg)) + 
+  geom_point()
+
+#3단계.  그래프의 제목,부제목, 캡션, 축이름 등 부가 요소를 추가. =labs함수
+# + 기호를 이용해서 함수들을 연결하는 방식으로 그래프  생성.
+ggplot(data=mtcars, aes(x=wt, y=mpg)) +  # aes 가 geom_point() 안에 계속 계승이 된다.
+  geom_point()+
+  labs(title = 'wt & Fuel consumption',
+       x = 'weight(1,000lbs)',
+       y = 'Fuel consumption (miles per gallon)',
+       subtitle = '(차량 무게와 연비와의 관계)',
+       caption = 'source : mpg datasets')
+
+* 기하객체 (Geometric object, geom)
+- geom_point( )  : 산점도
+- geom_smooth( ) : 회귀선
+- geom_line( ) : 선그래프(방향 : 왼쪽 -> 오른쪽)
+- geom_histogram( ) : 히스토그램
+- geom_density( ) : 밀도그래프
+- geom_bar( ) : 막대그래프, 도수분포표
+- geom_pointrange( ) : 값과 범위표시
+- geom_hline( ) : 가로선
+
+* 미적 속성(Aesthetic attributes, aes)
+- x , y   :   x , y 좌표의 값
+- color : 색상분류 기준(선/점의 색)
+- shape : 점의 모양 분류 기준, NA, 표시하지 않음
+- size : 점의 크기 , 선의 굵기(1.default)
+- alpha : 투명도, 작을수록 투명함
+- fill : 색상 분류 기준 (채워넣는 색)
+= 미적 속성은 적용하는 기하객체로 상속된다.
+
+
+3. 통계적 가설 검정(Statistical hypothesis testing)
+= 데이터에서 나타난 차이나 변화가 ‘실제’인지 아니면 그냥 우연의 결과인지 확인하는 절차다.
+R은 stats 패키지에 t.test()라는 함수를 가지고 있다.
+
+# 두 그룹간 평군의 차이가 통계적으로 유의한지 검증 : t-test 분석.
+# 세그룹 이상 집단의 평균차이가 유의한지 검증 : ANOVA분석 (분산분석)
+# (샘플이 완전할때 하는.  샘플갯수는 300개 이상 있어야 테스트 가능.)
+
+- 단일표본 T-검정 (1 Sample T-Test)
+- 독립표본 T-검정 (2 Sample T-Test)
+- 분산 분석 (ANOVA: Analysis of Variance)
+ 
+#1. 두 그룹간의 평균의 차이가 유의한지 분석.
+ToothGrowth
+table(ToothGrowth$supp)
+#(1) 도표로 차이의 유의성 표현.(tapply, by, summaryBy, aggregate ... , +[평균,분산])
+#(2) 그래프로 시각화된 유의성 표현.(바이올린표, 산점도, 상자도표)
+#(3) 통계적으로 유의한지 검증.
+#위 3가지를 다해야한다.
+
+# 일원표본 t.test 
+table(ToothGrowth$supp, useNA = "ifany") #결측치 빈도까지 출력.
+table(ToothGrowth$supp, exclude = NULL) #결측치 빈도까지 출력.
+a <- ToothGrowth[ToothGrowth$supp == 'OJ','len']
+b <- ToothGrowth[ToothGrowth$supp=='VC','len']
+
+t.test(a-b)
+t.test(a,b)
+#p-value 가 0.05보다 작은 경우, 귀무가설(=두 그룹의 평군이 같다.)을 기각한다.
+# => 두 그룹이 다르다.
+
+#p-value 가 0.05보다 큰 경우 귀무가설을 기각하지 못한다.
+# => 두 그룹이 다르지는 않다.
+
+
+#이원표본 t.test (순서 : (1)등분산성 테스트 -> (2)t.test분석)
+var.test(len~ supp, data = ToothGrowth) #p-value가 0.05보다 작은 경우,
+#귀무가설(두 그룹의 분산이 같다.) 을 기각한다. -> 등분산성이 성립하지 못한다.
+
+#p-value가 0.05보다 큰 경우, 귀무가설을 기각하지 못한다. -> 등분산성이 성립한다.
+
+#---- 등분산성 테스트 완료.
