@@ -2,6 +2,10 @@ Python is easy.
 Python is smart.print 窃荐肺 颇老 静扁啊 啊瓷钦聪促.
 1.规过. Hello
 World
+2.规过. Python is easy.R is easy.Java is easy.1.规过. Hello
+World
+2.规过. Python is easy.R is easy.Java is easy.3.规过. Python is easy.R is easy.Java is easy.1.规过. Hello
+World
 2.规过. Python is easy.
 R is easy.
 Java is easy.
