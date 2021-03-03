@@ -1,0 +1,593 @@
+파이썬 의 함수.
+
+1. 함수의 정의 및 사용.
+* 입력 값을 받아 다른 값을 출력하도록 미리 만들어져 있는 것
+* 반복해서 사용한 코드들을 묶어 놓고 그것에 이름을 붙인 것
+* 반복해서 사용할 코드는 함수를 이용하면 훨씬 구조적이고 간결한 코드를 작성할 수 있음
+
+* 함수 정의
+  - 함수를 사용하려면 먼저 함수가 정의(define)되어 있어야 함
+* 함수 호출
+  - 정의되어 있는 함수를 사용하려면 ‘함수명()’ 형식으로 사용
+  - 한 쌍의 소괄호 안에는 함수가 실행되기 위해 필요한 값을 입력
+
+1.1 함수 정의하기
+
+def function_name([param1, param2, ...]):
+     expression
+- def : 함수를 정의하기 위해 사용하는 키워드
+- function_name : 함수의 이름. 변수 이름 만드는 것처럼 함수를 구분하는 이름.
+  함수 이름은 문자, 숫자, _를 포함할 수 있으며, 숫자로 시작할 수 없음.
+- param1, param2, ... : 함수의 매개변수(Parameter variable). 
+  함수가 실행될때 필요로 하는 값을 받기 위해 사용, 매개변수는 선택사항.
+- expression : 함수가 실행할 구문. 반드시 들여쓰기가 되어 있어야 한다.
+
+
+1) 매개변수와 인수
+- 매개변수(Parameter Variable) : 함수 정의 시 지정하는 함수가 실행을위해 필요하는 값을 받을 변수들
+- 인수(Argument) : 함수 호출 시 함수 실행을 위해 전달하는 값
+ex>
+def my_add(num1, num2, num3=0): # 기본값을 갖는 매개변수는 뒤에
+    return num1+num2+num3
+
+print(my_add(20,30,40))
+print(my_add(20,30))
+
+2) 매개변수가 없는 함수 정의
+- 함수 안에서 실행하는 값을 사용하지 않을 때 매개변수를 선언하지 않는 함수를 정의
+- 함수를 만드는 것을 ‘함수를 정의(define)한다’라고 표현
+- 함수를 사용하는 것을 ‘함수를 호출(call)한다’라고 표현
+ex>
+ex>
+def my_hello():
+    print('Hello, world')
+    print('Hello, Python')
+
+
+3) 매개변수가 있는 함수 정의
+- 함수가 실행하기 위해 어떤 값을 받아야 한다면 매개변수를 선언
+- 매개변수는 일반 변수와 동일한 사용법과 특징을 가지고 있음
+- 매개변수는 함수 안에서 사용할 값을 받는 변수
+- 매개변수의 이름은 변수 이름 만드는 규칙에만 맞으면 자유롭게 선언할 수 있음
+- 함수 정의 시 괄호(‘(’와 ‘)’) 안에 선언한 이름으로 함수 안에서 사용할 수 있음
+- 매개변수는 여러 개 사용할 수 있음, 
+  그러나 함수 호출 시 인수의 개수는 함수 정의 시, 매개변수의 개수와 일치해야 함
+
+
+
+
+1.2. docstring
+- 함수 본문의 첫 번째 문장에 문자열을 포함
+- 함수의 설명서 문자열 또는 docstring
+- 겹따옴표 3개("""와 """) 또는 홑따옴표 3개('''와 ''')를 이용
+- 문자열 스트링이 여러 개 일 경우 맨 처음의 문자열만 docstring이 됨
+ex>
+def my_function():
+    """
+    함수의 첫 라인에 독스트링을 포함시킬 수 있다.
+    독스트링은 함수의 설명서를 달아주는 역할. 주석보다 더 많은 기능
+    """
+    pass
+
+print(my_function.__doc__)
+
+
+1.3 함수 정의하고 호출하기.
+- 숫자 하나를 입력 받고 입력 받은 숫자까지 피보나치수열을 출력
+ex>
+def fibonacci(n):
+    """
+    매개변수로 들어온 n값 미만까지 피보나치 수열을 출력합니다.
+    """
+    a, b = 0, 1
+    while a < n :
+        print(a, end='  ')
+        a, b = b, a+b
+    print()
+
+if __name__=='__main__':
+    fibonacci(10)
+
+1.4 지역변수와 전역변수
+전역변수
+ex>
+gobal_var = 100 # 전역변수
+def func1():
+    print(gobal_var)
+
+func1( )
+
+=======
+
+지역변수
+ex>
+def func2():
+    local_var = 200
+    print(local_var)
+
+func2()
+======
+
+local_var # 에러.
+
+=======
+
+1.5. 변수의 참조
+- 함수 안에 정의된 변수들을 지역변수(Local Variable)
+- 로컬 심볼 테이블(Local Symbol Table)
+  함수가 실행될 때에 지역변수들은 함수 실행을 위한 특별한 영역에 저장
+  함수가 실행될 때 함수내의 모든 지역변수들은 해당 함수의 로컬 심볼 테이블에 값을 저장
+- 전역 테이블(Global Symbol Table)
+  함수 밖에 정의된 전역변수들을 저장하는 공간
+- 변수의 값을 조회 순서
+  먼저 로컬 심볼 테이블 > 전역 심볼 테이블 > 내장 된 이름 테이블
+
+1) 다음 코드는 함수 내에서 전역변수를 참조하고 있음
+- func1() 함수 내에 global_var 변수가 선언되어 있지 않으므로,
+    로컬 심볼 테이블에서 값을 찾을 수 없음
+- 전역 심볼 테이블에서 global_var 변수를 찾아 출력함
+ex>
+global_var = 100
+========
+
+def func1( ):
+   print(global_var)
+======
+func1( )
+=> 100
+
+2) 반대로 함수 안에 선언한 변수를 함수 밖에서 참조할 수 없음
+def func( ):
+   local_var = 200
+   print(local_var)
+
+func2( )
+=> 200
+
+print(local_var) # 에러
+
+1.6. Lexical 특성
+ex>
+# 렉시컬 특성
+g_var = 100
+def func3():
+    print('before', g_var)
+    g_var = 200 # 지역변수를 선언하면서 할당
+    print('after', g_var)
+func3()
+
+1.7 전역변수 수정.
+ex>
+g_var = 100
+def func3():
+    global g_var # g_var변수는 전역변수를 쓸 거야
+    print('before', g_var)
+    g_var = 200  # 전역변수 g_var에 다시 값 할당
+    print('after', g_var)
+print('func3() 실행 전', g_var)
+func3()
+print(g_var)
+
+
+1.8 값에 의한 호출.
+- 함수에 인수로 전달되는 변수가 스칼라 변수(숫자, 문자, 논리)일 경우
+ex>
+foo = 'a' # 전역변수
+id(foo)
+=> 2049386626736 (객체 주소값.)
+
+ex2>
+def func1(foo): # 매개변수는 지역변수
+    print('Before :', foo)
+    foo = foo * 3
+    print('After :', foo, '의 주소는', id(foo))
+func1(foo)
+==>
+Before : a
+After : aaa 의 주소는 2049476391152
+
+1.9참조에 의한 호출.
+- 함수에 인수로 전달되는 변수가 리스트, 딕셔너리, 셋....일 경우
+ex>
+L = [1,2,3,4,5]
+id(L)
+====
+def func2(foo): # foo는 지역변수
+    print('before:',foo, '의 주소 :', id(foo))
+    foo.append(6)
+    print('after:',foo,'의 주소 :', id(foo))
+func2(L)
+print('함수 호출 후에 L :', L, '의 주소 :',id(L))
+
+
+1.10. 함수 이름 변경 =  Python ; 함수형 언어, 객체 지향 언어
+- 함수 정의는 현재 심볼 테이블에 함수 이름을 지정
+- 함수 이름의 값은 인터프리터가 사용자 정의 함수로 인식하는 유형
+- 함수 이름 변경과 실행 결과 저장
+- 함수를 다른 이름의 변수에 할당하는 것 예제첨부
+- 함수 실행 결과를 저장 예제 첨부
+ex>
+def fibonacci(n):
+    """
+    매개변수로 들어온 n값 미만까지 피보나치 수열을 출력합니다.
+    """
+    a, b = 0, 1
+    while a < n :
+        print(a, end='  ')
+        a, b = b, a+b
+    print()
+
+=====
+type(fibonacci)
+
+fibo = fibonacci # fibonacci함수이름이 fibo로도 사용가능
+
+fibo(100) => 0  1  1  2  3  5  8  13  21  34  55  89  
+
+2절. 함수의 실행 결과를 반환하는 return
+- 함수의 반환 값은 함수가 실행한 결과를 함수를 호출한 곳에 전달하기 위해 사용
+def function_name(param):
+   # code
+   return return_value
+
+- return : 함수의 결과 값을 반환하기 위한 키워드
+- return_value :
+ 함수가 실행한 결과를 반환하는 값
+ 변수이름 또는 표현식으로 사용
+ 변수 또는 표현식의 결과는 모든 자료형 가능
+
+2.1. 반환 값이 없는 함수
+- fibonacci() 함수는 리턴 값이 없기 때문에 f200 변수에는 아무것도 저장되지 않음
+ex>
+f200 = fibonacci(200)
+f200
+f200(10) # 에러.
+
+2.2. 반환 값이 있는 함수
+ex>
+def fibonacci_print(n):
+    """
+    매개변수로 들어온 n값 미만까지 피보나치 수열을 출력합니다.
+    """
+    a, b = 0, 1
+    while a < n :
+        print(a, end='  ')
+        a, b = b, a+b
+    print()
+def fibonacci(n):
+    "n값 미만의 피보나치 수열을 return"
+    result = []
+    a, b = 0, 1
+    while a < n :
+        result.append(a)
+        a, b = b, a+b
+    return result
+
+2.3. 여러 개 값 반환
+- 여러 개 값을 반환하면 그 값들은 튜플에 저장되어 반환
+- 반환 값을 하나의 튜플 변수에 저장하거나, 
+  함수가 반환하는 값의 개수만큼 변수를 선언하여 반환 값이 저장되도록 할 수 있음
+ex>
+def swap(a, b):
+    return b, a
+
+x, y = 5 , 10
+print('함수 실행 전 ', x, y)
+x, y = swap(x, y)
+print('함수 실행 후 ', x, y)
+
+a = swap(x, y)
+print(type(a))
+print(a)
+
+3.1. 기본 값을 갖는 매개변수
+- 하나 이상의 인수에 대한 기본값을 지정
+- 가변인수 : 함수를 정의할 때에 허용하도록 정의 인수의 수 보다 적은 인수로 호출 할 수 있음
+ex>
+def make_url(ip, port=80):
+    return 'http://{}:{}'.format(ip, port)
+make_url("localhost",80)
+
+3.2. 기본 변수를 갖는 매개변수
+- 함수의 매개변수가 기본 값으로 변수 이름을 가질 수 있음
+- 이때 기본 값은 함수가 정의되는 지점에 평가됨
+i = 5
+def func2(arg = i):
+   print(arg)
+
+i = 6
+func2( )
+ 
+함수가 정의될 때 func2() 함수의 arg 변수에 전달되는 값은 5
+i 값이 바뀌더라도 함수를 호출할 때에 arg 인수를 지정하지 않는다면 arg의 기본값은 5가 됨
+
++) 변경 가능한 객체를 기본변수로 갖는 매개변수
+- 기본 변수가 리스트, 딕셔너리 또는 대부분의 클래스의 인스턴스와 같은 변경 가능한 객체 일 때,
+  호출시마다 전달된 인수를 사용
+ex>
+def func3(a, L=[ ]):
+   L.append(a)
+   return L
+print(func3(1)) => [1]
+print(func3(2)) => [1, 2]
+print(func3(3)) => [1,2,3]
+
+- 기본 변수를 함수들 호출 사이에 공유하지 않으려면 다음과 같은 형식으로 함수를 작성
+ex>
+def func4(a, L=[ ]):
+  if L is None:
+      L = [ ]   
+  L.append(a)
+  return L
+print(func4(1)) => [1]
+print(func4(2)) => [2]
+
+3.3. 키워드 인수
+- 함수를 호출 할 때에 kwarg=value 형식의 인수를 사용하여 호출 할 수 있음
+- 순서인수와 키워드 인수(기본값을갖는인수)가 같이 올 때는 키워드 인수가 반드시 뒤에 온다
+  def function명(변수명1, 변수명2, 변수명n=기본값):
+
+ex>
+def func4(a, L=None):
+    if L is None:
+        L = []
+    L.append(a)
+    return L
+func4(10)
+
+list_ =[]
+func4(10, list_) => [10]
+func4(20, L=list_)  => [10,20]
+func4(30, L=list_)  => [10,20,30]
+
+- 파라미터 이름을 포함한 인수 사용시 순서를 바꿀 수 있음
+- 기본값을 갖는 파라미터는 생략 가능
+- 필수 인수를 포함하지 않으면 에러
+ex>
+func4(L = list_, a=40) => [10,20,30,40]
+func4(a=60) => [60]
+func4( ) #에러.
+
++)
+필수 매개변수에 매개변수의 이름을 지정하지 않은 인수와,
+매개변수 이름을 지정한 인수를 동시에 사용할 수 없음
+ex> func4(50, a = 60) # 에러.
+
+함수 정의 시 존재하지 않는 매개변수 이름을 사용
+할 수 없다
+ex> func4(b=70)
+
+키워드 인수는 순서 인수 뒤에 와야 함
+ex> func4(L=list_, 70)
+
+3.4. 튜플 매개변수를 이용한 가변인수 설정
+- 매개변수 앞에 *를 붙여 정의
+- 인수들이 튜플에 저장되어 전달
+ex>
+# args 앞에 * => args 가 튜플로 전달.
+def add(*args): #args = (1,2,3,4,5)  , args = (1,) 하나는 이렇게 들어간다.
+    sum = 0
+    for num in args:
+        sum += num  #sum에 누적.
+    return sum
+
+print(add(1,2,3,4,5))
+print(add(1))
+print(add(1,2,3,4,5,6,7,8,9,10,11))
+
++)튜플 인수의 순서
+- 가변 인수 앞에 0 개 이상의 일반 인수가 올 수 있음
+- 가변 인수는 함수에 전달되는 나머지 모든 입력 인수를 스쿠핑하기 때문에
+   형식 인수 목록의 마지막에 옴
+- *args 매개변수 다음에 나오는 형식적 매개 변수는 ‘키워드 전용’ 인수
+ex>
+1안.
+def concat(sep, *args): #*args와 sep 의 순서 바꿈
+    return sep.join(args)
+2안.
+concat('/','earth','mars','venus') #sep = '/' 로 들어감.
+
+3.5. 딕셔너리 인수
+- **name 형식의 최종 형식 매개 변수가 있으면 형식 매개 변수에 
+  해당하는 것을 제외하고 모든 키워드 인수가 들어있는 딕셔너리를 받음
+ex>
+def func5(**args):   # **args => 딕셔너리로 전달.
+             # args = {name='홍길동',age = 20, address = '서울시'} 이렇게 들어간다는것이다.
+    for key, value in args.items():
+        print("{}:{}".format(key,value))
+func5(name='홍길동',age = 20, address = '서울시')
+
+
+- 딕셔너리 인수는 위치 인수, 키워드 인수, 
+  그리고 튜플을 받는 *name형식의 가변 인수와 같이 사용될 수 있음
+- *name은 **name 앞에 나와야 함
+ex>
+# def func6 의 순서.
+# def func6(순서인수 > 튜플인수 > 키워드 인수(없음.) > 딕셔너리 인수)
+def func6(a, *b, **c):
+    print('a = ',a)
+    print('b = ',b)
+    print('c = ',c)
+
++)매개변수의 순서
+- 함수 선언 시 매개변수의 순서는 순서 인자, 튜플 인자,
+  키워드 인자, 딕셔너리 인자를 받을 수 있는 순서로 정의
+
+1)튜플 인수 언패킹
+- 인수가 이미 목록이나 튜플에 있지만 별도의 위치 인수가 필요한
+  함수 호출에 대해 압축을 풀어야하는 경우에는 반대 상황이 발생
+- 예를 들어 내장 된 range() 함수는 별도의 start 및 stop 인수를 필요
+- 별도로 사용할 수 없는 경우에는 * 연산자로 함수 호출을 작성하여 인(???)
+ex>
+def add(*args):
+    sum = 0
+    for num in args:
+        sum += num
+    return sum
+add(1,2,3,4)
+
++)numbers 변수를 add() 함수의 인자로 직접 넣을 수 없음
+   변수 앞에 *를 붙여 튜플을 언패킹 하여 전달
+
+
+2) 딕셔너리 인수 언패킹
+- 딕셔너리 데이터는 ** 연산자로 키워드 인수를 전달
+ex>
+def func5(**data):
+    for item in data.items():
+        print(item)
+func5(name='홍길동', age=24, address='마포')
+
+4.1. 람다식
+- 람다식은 작은 익명함수를 의미함
+- 작은 익명 함수는 lambda 키워드로 만들 수 있음
+lambda variable_define : statements
+
+- variable_define : 함수의 인수를 정의
+- statement :
+  함수가 실행할 문장을 작성
+  한 문장만 작성할 수 있음
+  return 구문이 없어도 statement의 결과를 반환
+
++)람다 식 사용 예
+- 람다식은 함수 객체가 필요한 곳이면 어디서든지 사용할 수 있음
+- 람다식은 한 개의 문장(표현식)만 작성할 수 있음
+- 중첩 된 함수 정의와 마찬가지로,
+  람다 함수는 포함 된 범위(scope)의변수들을 참조 할 수 있음
+ex>
+def add(a,b):
+    return a+b
+add(5,6)
+
+add2 = lambda a,b : a+b # a,b(변수) : a+b(return값)
+
+add2(1,2) => 3
+
+4.2. 리턴문에 람다식 사용
+- 리턴문에 함수의 이름을 사용
+- 리턴문의 함수는 반드시 지역함수일 필요는 없음
+ex>
+# 함수를 return 하는 함수
+"""
+make_box((5,)) => 1차원 5열 list 를 만드는 함수 fun => fun(10) => [10,10,10,10,10]
+make_box((2,3)) => 2차원 2행3열 list 를 만드는 함수 fun => fun(10)
+                                                          => [[10,10,10],[10,10,10]]
+                                                          
+"""
+
+def make_box(shape): #튜플이나 리스트가 들어가야한다.
+    def box(init_value):
+        if len(shape)==1:
+            return [init_value] * shape[0]
+        elif len(shape)==2:
+            return [ [init_value] * shape[1] ] * shape[0]
+    return box
+
+
+
+
+4.3. 함수 인수에 람다식 사용
+- 람다식의 다른 용도는 작은 함수를 인수로 전달하는 것
+ex>
+def map_template(func, L=[]):
+    result = []
+    for item in L:
+        result.append(func(item))
+    return result
+
+list_data = [1,2,3,4,5]
+def x_2(x):
+    return x*2
+map_template(x_2, list_data)
+
+print(list_data)
+map_template(lambda x : x*2, list_data)
+
+# map() : 함수 이용.
+list(map(lambda x:x*2, list_data))
+
+# 리스트 컴프리헨션
+[x*2 for x in list_data]
+
+
+
+5.1. 파이썬 내장 함수
+- 파이썬 내장함수는 import 하지 않고 즉시 사용 가능한 함수
+- 내장 함수명은 일종의 키워드로 간주되므로 식별자로 사용하는 것은 피하여야 함
+ex>
+# print = 5 이렇게 실행을 하게된다면 원래 있던 print 함수의 기능을 못쓴다.
+
+
+*입출력 관련 함수
+ print(x) => 객체를 문자욜로 표시한다.
+ input([prompt]) => 사용자 입력을 문자열로 반환한다.
+ help([x]) => x 에 대한 도움말을 출력한다.
+ globals( ) => 전역 변수의 리스트를 반환한다.
+ locals( ) 또는 vars( ) => 지역변수의 리스트를 반환한다. _ _dict_ _ 어트리뷰트를 반환한다.
+ del(x) 혹은 del x  => 객체를 변수공간에서 삭제한다.
+ eval(expr)  => 값을 구한다.
+ exec(obj)  => 파이썬 명령을 실행시킨다.
+ open(filename,[mode]) => 파일을 연다. 
+
+ 
+*기본 자료형의 생성과 변환 함수
+ object( )  => 새로운 object (모든 객체의 base) 를 생성한다.
+ bool(obj)  => 객체의 진리값을 반환한다.
+ int(obj)  => 문자열 형대의 숫자나 실수를 정수로 변환한다.
+ float(obj)  => 문자열 형태의 숫자나 정수를 실수로 변환한다.
+ complex(re ,[img])  => 문자열이나 주어진 숫자로 복소수를 생성한다.
+
+*기본 자료형의 정보를 얻는 함수
+ type(obj)  => 객체의 형을 반환한다.
+ dir(obj)  => 객체가 가진 함수와 변수들을 리스트 형태로 반환한다.
+ repr(obj)  => eval( ) 함수로 다시 객체를 복원할 수 있는 문자열 생성
+ ascii(obj)      repr( ) 와 유사하나 non-ascii 문자를 escape 한다
+ id(obj)  => 객체의 고유번호(int형)을 반환한다.
+ hash(obj)  => 객체의 해시값(int형)을 반환. (같은 값이면 해시도 같다.)
+ chr(num)  => ASCII값을 문자로 반환
+ ord(str)        한 문자의 ASCII 값을 반환
+ isinstance(obj, className)  => 객체가 클래스의 인스턴스인지를 판단.
+ issubclass(class, classinfo)  => class 가 classinfo 의 서브클래스 일때 True 반환.
+
+
+*열거형 정보를 얻는 함수
+- enumerate() 함수는 인덱스와 아이템을 하나씩 튜플 형식으로 반환
+- filter() 함수는 iterable 객체의 아이템들 중에서, 
+  func() 함수의 결과가 True인 경우의 아이템들만 묶어서 반환
+
+ len() => 시퀀스형을 받아서 그 길이 를 반환한다.
+ iter(obj, [sentinel]) => 객체의 이터레이터(iterator)를 반환한다.
+ next(iterator)   	   이터레이터의 현재 요소를 반환하고 포인터를 하나 넘긴다.
+ enumerate(iterable, start =0)  => 이터레이블에서 enumerate 형을 반환한다. 입력값으로 시퀀스자료형(리스트,튜플,문자열)을 입력받는다.
+ sorted(iterable,[key],[reverse])  => 정렬된 *리스트*를 반환.
+ reversed(seq)  => 역순으로 된 *iterator*를 반환.
+ filter(func, iterable)  => iterable의 각 요소중 func( ) 의 반환 값이 참인 것만을 묶어서 이터레이터로 반환.
+ map(func, iterable)  => iterable의 각 요소를 func( )의 반환값을 매핑해서 이터레이터로 반환.
+
+*산술/논리 연산과 관련된 함수
+hex(n)  => 정수 n의 16진수 값을 구해서 '문자열'로 반환
+oct(n)  => 정수  n의 8진수 값을 구해서 '문자열'로 반환
+bin(n)  => 정수  n의 2진수 값을 구해서 '문자열'로 반환
+abs(n)  => 절대값을 구한다. 복소수의 경우 크기를 구한다.
+pow(x,y,[z])  => 거듭제곱을 구한다 .pow(x,y)은 x**y 와 같다.
+divmod(a,b)  => a를 b로 나눈 (몫, 나머지)를 구한다. 튜플 반환.
+all(iterable)  => iterable의 모든 요소가 True 일 경우, True를 반환.
+any(iterable)  =>iterable의 하나 이상의 요소가 True 일 경우 True를 반환.
+max(iterable)  => 최대값을 구한다.
+max(arg1, arg2, ... ) 
+min(iterable)  => 최솟값을 구한다
+min(arg1, arg2, ... ) 
+round( )  => 반올림을 한다.
+
+
+꼭 알아야 하는 함수의 매개변수의 주요 주제들
+- 매개변수가 기본값을 가질 때 : 기본값이 있는 매개변수는 선택적으로 사용 가능
+- 매개변수의 기본값이 변수일 때
+- 매개변수의 기본값이 변경가능한 객체일 경우
+- 키워드 인수 : 함수 호출 시 인수가 매개변수 이름을 갖는 것
+- 튜플 매개변수 : 가변인수를 사용할 수 있음 *args
+- 딕셔너리 매개변수 **kwargs
+- 매개변수와 인수의 순서
+  인수의 순서 : 순서인수, 튜플인수, 키워드 인수, 딕셔너리 인수
+- 튜플 인수 언패킹
+- 딕셔너리 인수 언패킹
