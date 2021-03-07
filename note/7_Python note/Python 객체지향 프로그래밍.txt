@@ -1,0 +1,318 @@
+Python 객체지향 프로그래밍
+
+1. 객체와 클래스
+- 클래스 : 객체를 만들기 위한 틀(template, blueprint)
+- 객체 : 클래스의 인스턴스
+- 객체의 명사적 특성 : 데이터(Data), 변수(Variable), 필드(Field), 속성(Attribute)
+- 객체의 동사적 특성 : 행위(Behavior), 함수(Function), 메서드(Method), 기능(Operation)
+
+1-1. 클래스 정의
+- class 키워드 사용
+- 카멜 표기법
+
+ class ClassName:
+         class_body
+ex>
+class Person:
+     pass
+
+1-2. 객체 생성
+
+ex> 
+p1 = Person( )
+type(p1)
+=> _ _mian_ _.Person
+
+p1
+=> (_ _main_ _.Person at Ox5724ac8)
+
+2. 변수와 메소드
+- 클래스를 사용하는 가장 큰 이유
+  객체를 이용해 데이터를 저장하기 위해 -> 변수
+  객체 고유의 기능을 갖기 위해 -> 메서드
+- .은 참조 연산자로 사용
+
+ex>
+class Person:
+  name = "홍길동"
+  gender = "남자"
+
+p1 = Person( )
+print(p1.name)
+=> 홍길동
+
+2-1.객체에 멤버 추가
+
+ex>
+class Person:
+  def print_info( ):
+      print("Person 객체입니다.")
+
+p1 = Person( )
+p1.print_info( )
+=> 에러.   : 'Person 객체입니다' 라는 문장을 출력할 것 같지만 실제로는 에러가 발생.
+
++) 객체를 이용한 참조와 클래스를 이용한 참조
+ex>
+# 변수 추가
+class Person:
+    name = "홍길동"
+    gender = "남자"
+p1 = Person()
+print(p1.name, p1.gender)
+
+p2 = Person()
+p2.name = "이순신"
+print(p2.name,p2.gender) #데이터를 안바꾸면 class 의 데이터를 계속 참조하고있다.
+
+Person.name = "리사"
+Person.gender = "여자" # class 의 성별 데이터를 바꾸면.
+
+print(p1.name,p1.gender)
+print(p2.name,p2.gender) #이순신의 성별이 바뀐 성별로 참조한다. 
+
+* 인스턴스 메서드
+- 객체를 이용해 참조할 수 있는 메서드
+- 인스턴스 메서드의 첫 번째 인자는 self여야 함
+- self 인자는 객체의 멤버(변수 또는 메서드)에 접근하기 위해 사용
+
+ex>
+# 인스턴스 메소드
+class Person:   
+    name = "홍길동"
+    gender = "남자"      #self => java 에서의 this. 라 생각하면 된다
+    age = 30
+    def print_into(self):#객체만 실행가능한 메소드 = 인스턴스 메소드
+        print("{}는 {}살이고, {}입니다.".format(self.name, self.age, self.gender))
+print(Person.name, Person.gender)
+p1 = Person()
+p1.name = "리사"
+p1.gender = "여자"
+p1.print_into()
+
+
+* self
+- self를 인스턴스 메서드의 인자로 정의해서 자신 객체의 멤버를 참조할수 있도록 하는 것
+- self 대신에 파이썬의 키워드가 아니라면 다른 단어를 사용할 수 있음
+- 자신 객체임을 명백히 알리기 위해 self를 사용할 것을 권장
+
+* 네임스페이스
+- 파이썬은 클래스 객체와 인스턴스 객체의 이름 공간(namespace)이 분리되어 있음
+- 클래스 객체와 인스턴스 객체의 이름공간이 다르다는 의미
+- 파이썬은 동적으로 인스턴스 멤버를 추가하는 것이 가능
+
+* 인스턴스 객체를 통해 변수나 함수의 이름을 찾는 순서
+1. 인스턴스 영역
+2. 클래스 영역
+3. 전역 영역
+
++) class 메서드와 static 메서드
+- 인스턴스 메소드 : 반드시 첫번째 인자에 self를 기입. 객체를 통해서 호출할 메소드
+- 클래스 메소드 : @classmethod를 통해서 선언한 메소드. 첫 인자에 cls,(clazz)를 꼭 기입.
+- static 메소드 : @staticmethod를 통해서 선언한 메소드.
+
+ex>
+class Person: #object 를 상속하고있다.
+    name = "홍길동" #클래스변수들.
+    gender = "남자"
+    age = 30
+    def print_info(self): #인스턴스 메소드.(인자에 self)
+        print("일반(인스턴스=객체)메소드 = {}는 {}살 {}입니다.".format(self.name,
+                                                              self.age, self.gender))
+    @classmethod
+    def do_(cls): # 클래스메소드(인자에 cls or clazz)
+        cls.name = "신사임당"
+        cls.gender = "여자"
+        cls.age = 517
+        print("클래스 메소드 - {}는 {}살 {}입니다".format(cls.name, cls.age, cls.gender))
+    @staticmethod
+    def that_(): # static 메소드(인자가 없음)
+        print("static 메소드 - {}는 {}살 {}입니다.".format(Person.name, Person.age,
+                                                          Person.gender))
+
+p1 = Person()
+p2 = Person()
+p1.print_info()
+p2.print_info()
+
+p1.name = '김말동'
+p1.age += 1
+p1.print_info()
+p2.print_info()
+p2.that_() #static 메소드는 객체를 통해서도, 클래스를 통해서도 호출가능
+Person.that_() #static 메소드
+
+3. 생성자 ( _ _ init _ _ ( ))와 소멸자( _ _ del _ _  ( ))
+- 생성자 함수 : _ _ init _ _ (self[,매개변수1, ...]) 객체가 생성될때 자동 실행.
+      생성시 필요한 코드(객체멤버의 초기화)를 포함.
+- 소멸자 함수 : _ _ del _ _(self) 객체가 소멸될 떄 자동 실행.
+      소멸시 필요한 코드를 포함
+      인스턴스 객체의 레퍼런스 카운트가 0이 될때 실행.
+
+ex>
+class Person:
+    def __init__(self): #생성자 함수
+        print("Person 객체를 생성합니다.")
+        self.name = "홍길동" #일반 변수.
+        self.gender = "남자" 
+    def __del__(self): # 소멸자 함수
+        print("Person 객체를 소멸시킵니다.")
+    def print_info(self):
+        print("일반메소드 - {}님은 {}입니다".format(self.name, self.gender))
+
+p1 = Person() #("홍길동") 하면 오류나옴.
+p1.print_info()
+
+p1.name = "김길동" # 홍길동이라는 데이터를 바꾸고싶으면 이렇게.
+p1.print_info()
+
+del p1 #객체 소멸.
+
+p1 = Person() # 전에 있던 객체가 없어져야해서 소멸자 함수 실행.
+
++)
+★ 생성자 함수를 통한 멤버변수의 초기화 
+★ 파이썬은 함수를 (똑같은 함수를)중복정의(오버로딩) 불가. 
+★ 생성자 함수도 중복정의 불가 
+
+ex>
+class Person:
+    def __init__(self, name="홍길동", gender="남자"): #매개변수 2개로 호출될 생성자 함수
+        print("Person 객체를 생성합니다.")
+        self.name = name  # java => this.name = name.
+        self.gender = gender
+    def __del__(self): # 소멸자 함수
+        print("Person 객체를 소멸시킵니다.")
+    def print_info(self):
+        print("일반메소드 - {}님은 {}입니다".format(self.name, self.gender))
+    def __str__(self):
+        return "일반메소드 - {}님은 {}입니다".format(self.name, self.gender)
+
+p1 = Person("김길동","남자")
+p2 = Person(name = "박길동")
+p3 = Person()
+
+4. 상속과 재정의
+- 상속(Inheritance)은 객체 재사용의 한 방법
+- 상속을 이용하면 부모 클래스의 모든 속성들을 자식 클래스로 물려줄 수 있음
+
+부모클래스의 생성자 사용
+ Student 클래스의 생성자는 Person 클래스의 생성자를 이용하여 인스
+턴스 변수를 초기화 가능
+ 부모클래스의 생성자를 호출하여 자식클래스의 변수들을 쉽게 초기화
+ 상속관계가 있을 경우 자식 클래스는 부모 클래스의 변수와 메서드를 사용할 수 있다.
+
+ex>
+class Person:
+    def __init__(self, name="홍길동", gender="남자"): #매개변수 2개로 호출될 생성자 함수
+        print("Person 객체를 생성합니다.")
+        self.name = name  # java => this.name = name.
+        self.gender = gender
+    def __del__(self): # 소멸자 함수
+        print("Person 객체를 소멸시킵니다.")
+    def print_info(self):
+        print("일반메소드 - {}님은 {}입니다".format(self.name, self.gender))
+    def __str__(self):
+        return "일반메소드 - {}님은 {}입니다".format(self.name, self.gender)
+
+p1 = Person("홍길동", "남자") #매개변수 없으면 오류나옴.
+
+class Student(Person): #(Person) 상속받을 class.
+    pass
+
+issubclass(Student, Person)  # Student 가 Person의 subclass 가 맞는가 ? T or F
+
+s1 = Student() # super 클래스의 init 까지 상속.
+s1 = Student("이순신","남자")
+s1.print_info()
+
++) 재정의
+- 부모 클래스에서 정의한 함수를 자식클래스에서 다시 정의
+
+ex>
+class Person:
+    "name 과 gender를 갖는 Person 타입"
+    def __init__(self, name="홍길동", gender="남자"): #매개변수 2개로 호출될 생성자 함수
+        print("Person 객체를 생성합니다.")
+        self.name = name  # java => this.name = name.
+        self.gender = gender
+    def __del__(self): # 소멸자 함수
+        print("Person 객체를 소멸시킵니다.")
+    def print_info(self):
+        print("일반메소드 - {}님은 {}입니다".format(self.name, self.gender))
+    def __str__(self):
+        return "일반메소드 - {}님은 {}입니다".format(self.name, self.gender)
+
+class Student(Person): # 전체를 재정의 했다.
+    "name 과 gender 에 major 변수를 갖는 Student 타입"
+    def __init__(self, name, gender, major):
+        self.name = name
+        self.gender = gender
+        self.major = major
+    def __del__(self):
+        pass
+    def print_info(self): #재정의.
+        print(" %s님은 전공 %s에 %s입니다"% (self.name, self.major, self.gender))
+    def __str__(self):
+        return " %s님은 전공 %s에 %s입니다"% (self.name, self.major, self.gender)
+
+s1 = Student("홍길동", "남자", "빅데이터분석")
+print(s1)
+print(s1.__str__()) #위와 같은 기능.
+
+isinstance(s1, Student) #s1이 Student 타입이냐
+isinstance(s1, Person) # s1이 Person 타입이냐
+
+- super( )
+   super()는 부모 클래스의 멤버를 참조
+
+ex>
+
+class Student(Person): # 전체를 재정의 했다.
+	~~
+
+    def __str__(self):
+        return super().__str__() + " 전공은 {}입니다".format(self.major)
+        #return Person.__str__(self) + "전공은 {}입니다".format(self.major)
+
++) 정적 변수 (static 변수)
+static 변수 : 여러객체들 사이에 데이터를 공유하고 싶을 때 사용.
+클래스변수이름 앞에 under score 2개(__)붙이면 내부적으로 클래스명._클래스명 변수 이름으로 참조
+
+ex>
+class Student(Person): # 전체를 재정의 했다.
+    "name 과 gender 에 major 변수를 갖는 Student 타입(객체 갯수도 포함)"
+    __count = 0; # (정적변수) static 변수
+    def __init__(self, name, gender, major):
+        #부모 클래스의 생성자를 호출하여 자식클래스의 생성자를 쉽게.
+        Student._Student__count += 1 #인스턴스가 생성 될때 마다, 카운트 갯수 1씩 증가.
+        Person.__init__(self, name, gender) # 클래스이름을 넣을시
+        self.major = major                 #  __init__(self, name, gender) 똑같이 기입. 
+    def __del__(self):
+        Student._Student__count -= 1 #객체가 소멸 될때 마다, 카운트 갯수 1씩 감소.
+    def print_info(self): #재정의.
+        print(" %s님은 전공 %s에 %s입니다"% (self.name, self.major, self.gender))
+    def __str__(self):
+        return super().__str__() + " 전공은 {}입니다".format(self.major)
+        #return Person.__str__(self) + "전공은 {}입니다".format(self.major)
+    @classmethod
+    def get_count(cls):
+        return Student._Student__count
+
+s1 = Student("홍길동","남자","빅데이터")
+print(s1)
+print("객체 갯수 : ",Student.get_count())
+
+s2 = Student("홍길순","여자","통계")
+s2.print_info()
+print('객체 갯수 : ',s2.get_count())
+
+s3 = Student("홍길순","여자","통계")
+s3.print_info()
+print('객체 갯수 : ',s2.get_count())
+print('객체 갯수 : ',s3.get_count())
+print('객체 갯수 : ',Student.get_count()) #get_count 공유.
+
+del s3
+print('객체 갯수 : ',Student.get_count())
+

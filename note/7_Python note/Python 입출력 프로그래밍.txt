@@ -1,0 +1,423 @@
+Python 입출력 프로그래밍.
+
+1. 파일 입출력
+- open() : 파일 객체를 반환
+- file_pointer = open(file_name, mode, encoding='ASCII')
+
+* 구문에서…
+- file_pointer : 열린 파일 객체, 
+   파일 객체의 readline() 또는 readlines() 함수를 이용하여 파일로부터 데이터를 읽음
+   write() 함수는 데이터를 씀
+- mode : 파일 열기 모드를 의미
+   r : 읽기 모드 - 파일을 읽기만 할 때 사용
+  w : 쓰기 모드 - 파일의 내용을 쓸 때 사용
+  a : 추가 모드 - 파일의 마지막에 추가할 때 사용
+  b : 바이너리 모드 – 피클 등을 사용하여 저장하거나 불러올 때는 바이너리 모드로 지정해야 함
+- encoding : 파일의 인코딩을 지정
+  UTF-8 인코딩으로 저장되어 있는 파일이라면 encoding='UTF8'을 사용
+
+ex>
+f = open('data/ch09.sample.txt', 'w') #기본값은 , 'r' (읽기모드)
+print(f.writable()) # 가능한지 확인.
+
+f.write('Hello\nWorld\nHello\nPython') #이것만 해봤자 저장이 안된다.
+
+f.close() #그래서 close() 를 해줘야한다.
+
+with open('data/ch09.sample.txt', 'a') as f: # 'a' 기존 내용 다음에 내용이 추가가 된다.
+    print("print 함수로 파일 쓰기가 가능합니다.", file = f) #end='\n'(기본값) 포함해서.
+
+* 형식이 있는 텍스트 데이터
+- 형식이 있는 텍스트 데이터(member.txt)
+  홍길동,20,kildong@hong.com,서울시 강동구
+  홍길서,25,kilseo@hong.com,서울시 강서구
+- 이러한 형식으로 저장된 데이터를 읽어 사용하려면…
+  한 라인씩 읽기
+  한 라인을 콤마(,)등의 구분자(delimiter)로 분리(split)하기
+  자료형 변환하기
+  NA또는 없는 필드에 대한 예외 처리하기
+
+ex>
+#encoding = 'UTF8' 한글깨짐 방지.
+with open('data/ch09.member.txt', 'r', encoding = 'UTF8') as f: 
+    lines = f.readlines()
+    for line in lines:
+        data = line.strip().split(',')
+        name = data[0]
+        age = int(data[1].strip())
+        email = data[2].strip()
+        address = data[3].strip()
+        print("이름:{}\t나이:{}\t메일:{}\t주소:{}".format(name, age, email, address))
+
+
+2. 피클링
+- 파이썬 객체 계층 구조가 바이트 스트림으로 변환되는 것
+
+pickle.dump(obj, file, protocol = None, *, fix_imports = True)
+
+Pickler(file, protocol).dump(obj)
+
+* 구문에서...
+ - obj : 열려있는 파일에 저장할 객체
+ - file : 피클링하기 위한 파일 객체
+      단일 바이트 인수를 받아들이는 write() 메서드가 있어야 함
+      open() 함수를 이용해 파일을 열 때 피클링하기 위한 모드는 ‘wb’
+  - protocol : 프로토콜을 사용하기 위한 정수(0 ~ HIGHEST_PROTOCOL) 값
+      기본값은 DEFAULT_PROTOCOL, 음수이면 HIGHEST_PROTOCOL이 선택
+  - fix_imports : 이 인수가 True이고 프로토콜은 3보다 작으면 파이썬 2에서
+     피클 데이터 스트림을 읽을 수 있음
+
+ex>
+class Memder:
+    def __init__(self,name, age, email, address):
+        self.name = name
+        self.age = age
+        self.email = email
+        self.address = address
+    def __str__(self):
+        return "이름:{}\t나이:{}\t메일:{}\t주소:{}".format(self.name, self.age, 
+                                                  self.email, self.address)
+
+with open('data/ch09.member.data','wb') as f: #피클링은 항상 이렇게 사용.(메모장으로 확인불가)
+    import pickle
+    pickle.dump(user_list,f)
++) 피클링을 하려면 바이너리 쓰기모드('wb')로 열어야함.
+
+
+2-1. 언피클링
+피클링한 데이터를 다시 불러오는 것
+
+data = pickle.load(file, *, fix_imports = True, encoding = "ASCII")
+Unpickler(file).load( )
+ 
+*구문에서...
+- file : 불러올 파일 객체
+    이 객체는 정수 인수를 사용하는 read() 메서드와 인수가 필요 없는 readline() 메서드의 두 가지 메서드가 있어야 함
+    open() 함수를 이용해 파일을 열 때 ‘rb’ 모드로 열려야 함
+- fix_imports : 이 인수가 True 이면 피클은 파이썬 2 이름을 파이썬 3 이름에서 사용된 새 이름에 매핑하려고 시도
+- encoding : 기본값은 ‘ASCII
+   피클된 8비트 문자열 인스턴스를 어떻게 디코딩 하는지를 알려줌
+   8비트 문자열 인스턴스를 바이트 객체로 읽으려면 인코딩을 'byte'로 지정
+
+ex>
+with open('data/ch09.member.data','rb') as f:  # 언피클링 하려면 바이너리 읽기 모드로 열어야한다.
+    ul = pickle.load(f)
+
+
++) CSV(Comma Separated Values)
+- 스프레드시트 또는 데이터베이스를 가져오거나 내보내기 할 때 가장 많이 사용하는 일반적인 형식
+- 프로그래머는 엑셀(Excel)에서 사용하는 CSV 형식의 세부적인 내용을 알지 못해도
+  엑셀에서 선호하는 형식으로 데이터를 쓰거나 엑셀에서 생성된 CSV 파일의 데이터를 읽을 수 있음
+- csv 모듈
+  . 파이썬 기본 라이브러리에 포함
+  . 일반적으로 csv 모듈의 reader()와 writer()를 이용
+  . 데이터의 메타정보를 저장하고 싶다면 csv 모듈의 DictReader와 DictWriter 클래스를 사용하여,
+    딕셔너리 형식으로 데이터를 읽고 쓸 수 있음
+
+3. reader
+reader() 함수는 지정된 파일에서 분리된 문자열로 데이터를 읽기 위한 객체를 반환
+
+csv.reader(csvfile, dialect = 'excel', **fmtperams)
+
+* 구문에서...
+- csvfile : 데이터가 저장되어 있는 CSV 파일의 객체
+- dialect=’excel’ : 엑셀에서 생성한 CSV 파일의 일반적인 속성일 경우 기본값 ‘excel’을 사용
+    엑셀에서 생성된 탭(TAB) 구분 파일의 속성을 정의하려면 ‘excel-tab’을 사용
+    UNIX 시스템에서 생성되는 CSV 파일(라인 구분자가 \n) 속성을 사용하려면 ‘unix’를 사용
+- **fmtparams : 추가적인 속성을 부여할 때 사용
+   delimiter 속성(기본값은 ‘,’)은 필드 구분자를 지정
+   quotechar 속성(기본값은 ‘“’)은 인용할 문자를 지정
+   CSV 파일에서 읽은 각 행은 문자열 목록을 반환
+   quoting=csv.QUOTE_NONNUMERIC 속성을 지정하지 않으면 quotechar로 둘러싸인 문자가 아니어도,
+   자동으로 데이터 형 변환이 수행되지 않음
+
+ex>
+# UTF8 로 인코딩된 csv 파일 read
+import csv
+with open('data/ch09.member1.csv','r',encoding='UTF8') as f:
+    reader = csv.reader(f)
+   # print(list(reader)) # 리스트 타입으로 들어옴.
+   # print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+   # print(list(reader)) # 다시 뿌리면 아무것도 안나온다. 이유: 커서가 파일의 끝을 가리키고 있기때문.
+    for row in reader:
+        print(row)
+
++) quotechar 속성과 quoting 속성
+- 자동 형변환을 위한 딕셔너리 인수
+   quotechar='"'
+   quoting=csv.QUOTE_NONNUMERIC
+- 숫자 데이터가 아닌 문자 데이터가 문자열임을 알리는 따옴표 등으로
+  묶여있지 않을 경우 형변환 에러가 발생
+
+ex>
+# numeric엔 따옴표를 뺌.
+with open('data/ch09.member1.csv', encoding='utf8') as f: # 'r' 생략가능
+    reader = csv.reader(f, quotechar = '"', quoting = csv.QUOTE_NONNUMERIC)
+    for row in reader:
+        print(row)
+
+4. writer
+- 파일에 구분자로 연결된 문자열 데이터를 저장하는 객체를 반환
+
+csv,writer(csvfile, dialect = 'excel', **fmtparams)
+
+*구문에서...
+- csvfile : 데이터를 저장하기 위한 CSV 파일의 객체.
+   write() 메서드가 있는 모든 객체
+- dialect=‘excel’ : 엑셀에서 생성한 CSV 파일의 일반적인 속성일 경우 기본값 ‘excel’을 사용
+  엑셀에서 생성된 탭(TAB) 구분 파일의 속성을 정의하려면 ‘excel-tab’을 사용
+  UNIX 시스템에서 생성되는 CSV 파일(라인 구분자가 \n) 속성을 사용하려면 ‘unix’를 사용
+
+- **fmtparams : 추가적인 속성을 부여할 때 사용
+  delimiter 속성(기본값은 ‘,’)은 필드 구분자를 지정
+  quotechar 속성(기본값은 ‘“’)은 인용할 문자를 지정
+  quoting 속성은 문자열을 quotechar로 인용할지 여부를 결정
+  csv.QUOTE_NONNUMERIC을 사용하면 숫자가 아닌 데이터만 quotechar로 인용
+
+ex>
+# newline ='' 옵션을 빼면 개행 2번.
+try: # encoding='utf8' 빼면 CP949로 된다.
+    with open('data/ch09.member2.csv','w', newline='', encoding='utf8') as f:
+        writer = csv.writer(f)
+        for user in user_list:
+            writer.writerow(user)
+except FileNotFoundError as e:
+    print(e)
+
+# 숫자만 따옴표 안붙고, 문자엔 따옴표가 붙게 csv write newline='\n' 이 기본값.
+with open('data/ch09.member2-1.csv', 'w',newline='', encoding='CP949') as f:
+    writer = csv.writer(f, quoting = csv.QUOTE_NONNUMERIC)
+    writer.writerows(user_list) #writerows 한번에 들어간다. 
+    # 쥬피터 노트북에서 안열린다.
+
+5. DictReader
+- DictReader 클래스는 reader와 비슷하게 동작하지만 각 행의 정보를
+  OrderedDict 객체로 반환
+- CSV 파일에 각 열들의 이름(메타정보)을 지정해서 데이터를 딕셔너리 형식으로 불러옴
+
+csv.DictReader(f, fieldnames = None, restkey = None, restval = None, dialect = 'excel', *args, **kwds)
+
+*구문에서...
+- fieldnames : 파일객체 f가 헤더 정보를 포함하고 있지 않을 경우 필드의 이름들을 설정하기 위해 사용
+- restkey : 행에 필드 이름보다 많은 필드가 있으면 나머지 데이터가 restkey 속성에
+  지정된 필드 이름과 함께 저장
+- restval : 필드 이름보다 필드 수가 적으면 restval에 지정된 값으로 채워 짐
+
+ex>
+# header 가 있는 csv 파일을 딕셔너리데이터로 읽기.
+import csv
+with open('data/ch09.member3.csv','r', encoding='utf8') as f:
+    dict_reader = csv.DictReader(f)
+#    print(list(dict_reader))
+    for row in dict_reader:
+        print(row['name'],row['age'],row['email'],row['address'])
+
+# header 가 없는 csv 파일을 딕셔너리 데이터로 읽기
+# 해당 파일이 쥬피터 노트북으로 열리면 utf8 코드 임. 그래서 인코딩을 cp949로 바꿔준다.
+with open('data/ch09.member1-1.csv', 'r', encoding='CP949') as f:
+    dict_reader = csv.DictReader(f , fieldnames=['Name','Age','Email','Address'])
+    for row in dict_reader: # fieldnames 의 변수명을 아래에도 같게 해야한다.
+        print(row['Name'],row['Age'],row['Email'],row['Address'])
+
+
++) fieldnames 속성
+- csv 파일이 헤더 정보를 포함하고 있지 않을 경우 fieldnames 속성을 이용해서 각 필드들의 이름을 지정
+
+ex>
+# 현 행에 팀장 표시 추가. header 가 없는 경우  (member1-1.csv)
+with open('data/ch09.member1-1.csv', 'r') as f:
+    dict_reader = csv.DictReader(f, fieldnames=['Name','Age','Email','Address'],
+                                 restkey='job')
+    for row in dict_reader:
+        if row['job'][0] == '':
+            print(row['Name'],row['Age'],row['Email'],row['Address'])
+        else:
+            print(row['Name'],row['Age'],row['Email'],row['Address'],row['job'])
+
+# 현 행에 팀장 표시 추가. header 가 있는 경우  (member3.csv)
+with open('data/ch09.member3.csv', 'r', encoding='utf8') as f:
+    dict_reader = csv.DictReader(f, restval='')
+    for row in dict_reader:
+        print(row['name'],row['age'],row['email'],row['address'],row['job'])
+
++) restkey 속성
+- 지정한 필드의 이름보다 데이터의 수가 많을 경우 restkey 속성에 지정한 이름에 남는 데이터가 저장 됨
+- 지정한 필드의 수 보다 값이 적을 경우 restval 속성에 지정한 값이 저장됨
+
+
+6. DictWriter
+
+- DictWriter 클래스는 딕셔너리 데이터 행 별로 CSV 파일에 저장
+
+csv.DictWriter(f, fieldnames, restval = '', extrasaction = 'raise', dialect = 'excel', *args, **kwds)
+
+*구문에서...
+- fieldnames : 저장할 데이터의 헤더 정보를 지정
+- restval : 필드 이름보다 필드 수가 적으면 restval에 지정된 값으로 채워짐
+- extrasaction : extrasaction 인수는 ‘raise’일 경우 딕셔너리 데이터에,
+  필드 이름에 없는 추가 값이 있을 경우 ValueError를 발생시킴. ‘ignore’일 경우 딕셔너리의 추가 값이 무시됨
+
+writerow( )
+- writerow( ) 함수는 한 개 행을 저장
+
+ex>
+with open('data/ch09.member4.csv','w', encoding='utf8', newline='') as f:
+    dict_writer = csv.DictWriter(f, fieldnames = fieldnames)
+    dict_writer.writeheader() #header 부분 write.
+   # dict_writer.writerheader(user1)  일일히 하나씩 하거나,
+   # dict_writer.writerheader(user2)
+   # dict_writer.writerheader(user3)
+   # for user in  user_list: for문 또는,
+   #     dict_writer.writerow(user)
+    dict_writer.writerows(user_list)   # 한번에. 
+
+
++) extrasaction = 'raise'  , extrasaction = 'ignore'
+
+ex>
+# extrasaction = 'ignore' => fieldnames필드에 없는거 무시하고 들어가라.
+with open('data/ch09.member5.csv', 'w', encoding='utf8', newline='') as f:
+    dict_writer = csv.DictWriter(f, fieldnames = fieldnames, 
+                                 extrasaction = 'ignore') 
+                                # extrasaction = 'raise') fieldnames 없는 필드면 예외발생.
+    dict_writer.writeheader()
+    dict_writer.writerows(user_list)
+
+7. JSON 데이터
+- JSON(JavaScript Object Notation)은 데이터를 교환하기 위한 형식
+- 사람이 읽고 쓰기 쉽고, 기계가 분석하고 생성하기도 쉬움
+
+
+7-1. json.dump
+- dump() 함수는 파이썬 객체를 JSON 형식으로 변환
+
+json,dump(obj, fp, *, skipkeys = False, ensure_ascii = True, check_circular = True, allow_nan = True, cls = None,
+	  indent = None, separators = None, default = None, sort_keys = False, **kw)
+
+*구문에서...
+- obj : JSON 데이터로 변환할 파이썬 객체
+- fp : JSON 데이터를 저장하기 위한 파일 객체
+- skipkeys : skipkeys가 True이면 기본 유형(str, int, float, bool, None)이 아닌 키의 TypeError를 발생시키지 않음
+-나머지 인수에 대한 설명은 교재를 참고하세요.
+
+ex>
+# 딕셔너리 list 를 json 파일로 저장한 경우.
+# ensure_ascii=False 부분이 없으면 한글이 유니코드로 저장.
+# indent='\t' 가독성을 높히기 위해.
+import json
+with open('data/ch09.member1.json','w') as jsonfile:
+    json.dump(data, jsonfile, ensure_ascii=False, indent='\t')
+
+
+class Member:
+    def __init__(self, name, age, email, address):
+        self.name = name
+        self.age = age
+        self.email = email
+        self.address = address
+    def as_dict(self):
+        return{"name":self.name, "age":self.age, "email":self.email, 
+               "address":self.address}
+    def __str__(self):
+        return "{}\t{}\t{}\t{}".format(self.name, self.age, self.email, self.address)
+
+member1 = Member("홍길동",20 , "hong@hong.com","서울")
+member2 = Member("김길동",25,"kim@hong.com","파주")
+member3 = Member("윤길동",25,"yun@hong.com","인천")
+member_list = [member1,member2,member3]
+
+with open('data/ch09.member2.json', 'w', encoding='utf8') as jsonfile:
+    json.dump(member_list, jsonfile, ensure_ascii=False, indent= '\t',
+             default=Member.as_dict)
+
+8. json.load
+- load() 함수는 JSON 형식 데이터를 파이썬 객체로 변환
+
+
+json.load(fp, *, cls=None, object_hook=None, parse_float=None, parse_int=None,
+	 parse_constant=None, **kw)
+
+*구문에서...
+- fp : JSON 데이터가 저장되어 있는 파일 객체
+- cls : JSONDecoder의 서브클래스를 지정
+  그렇지 않으면 JSONDecoder가 사용
+- object_hook : object_hook은 디코딩 된 객체 리터럴의 결과로 호출되는 함수를 지정
+   dict 대신 object_hook의 반환 값이 사용
+
+ex>
+# json 파일을 딕셔너리 리스트 변수로 Load
+with open('data/ch09.member2.json', 'r', encoding='utf8') as jsonfile:  # json파일 읽기.
+    member_list= json.load(jsonfile)
+    for row in member_list:
+        print(row)
+
+member_list # 기본타입이 딕셔너리 타입으로 들어옴.
+
+type(member_list), type(member_list[0]) # 0번방의 타입?
+
+
++) object_hook 를 이용한 역직렬화.
+ex>
+class Member:
+    def __init__(self, name, age, email, address):
+        self.name = name
+        self.age = age
+        self.email = email
+        self.address = address
+    def __str__(self):
+        return "{}\t{}\t{}\t{}".format(self.name, self.age, self.email, self.address)
+
+def as_member(dict):
+    return Member(dict['name'],dict['age'],dict['email'],dict['address'])
+
+m = {'name':'홍길동','age':20, 'email':'hong@hong.com','address':'서울'}
+
+print(as_member(m))
+
+with open('data/ch09.member2.json', 'r', encoding='utf8') as jsonfile:
+    member_list = json.load(jsonfile, object_hook = as_member) 
+#object_hook = as_member => 읽은데이터를 객체로 만들어 반환하는 메소드를 지정.
+
+for member in member_list:
+    print(member)
+
+type(member_list), type(member_list[0])
+
+
+9. HDF5(Hierarchical Data Format)
+- HDF 그룹에 의해 관리되고 있는 이기종 데이터를 저장, 관리, 처리하기위한 고성능 데이터 소프트웨어 라이브러리 및 파일 형식
+- HDF5는 빠른 입/출력 저장 및 처리를 위해 만들어졌다.
+- HDF5 포맷을 읽고 쓰기 위한 방법
+  판다스(Pandas) 패키지의 read_hdf() 함수와 to_hdf() 함수를 사용해서 데이터프레임으로 읽거나 쓰는 방법
+  h5py 모듈의 File 클래스를 이용해 파일 객체를 생성하고 읽는 방법
+
+ex>
+# iris 데이터.
+import seaborn as sns
+iris_df = sns.load_dataset("iris")
+iris_df
+
+iris_dic = iris_df.to_dict() #데이터프레임변수를 딕셔너리 변수로 
+iris_dic
+
++) HDF 포맷 저장하고 불러오기
+ex>
+# iris_dic을 hdf5 파일로 쓰기.
+import h5py
+with h5py.File('data/ch09.iris.hdf5', 'w') as f:
+    for group, value in iris_dic.items():
+        grp = f.create_group(group)
+        for key, data in value.items():
+            grp.create_dataset(str(key), data=data)
+
+# iris_df 를 hdf5 파일로 쓰기.
+#type(iris_df) => pandas.core.frame.DataFrame
+iris_df.to_hdf('data/ch09.iris2.hdf5', key="iris")
+
++) 판다스를 이용한 HDF5 파일 입출력
+ex>
+import pandas as pd
+iris_df2 = pd.read_hdf('data/ch09.iris2.hdf5', key='iris')
+iris_df2
+#print(iris_df2)
+
